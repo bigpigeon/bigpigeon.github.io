@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "jekyll部署总结"
-date:   2015-02-15 22:14:54
+date:   2015-12-09 16:00:00
 categories: jekyll 
 excerpt: jekyll个人网站制作总结
 ---
