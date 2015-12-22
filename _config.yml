@@ -14,7 +14,7 @@ github_username:  bigpigeon
 permalink: /:year/:month/:day/:title/
 
 # Build settings
-markdown: kramdown
+markdown: redcarpet
 
 # highlight
 # 本地用rouge, github上用pygments
