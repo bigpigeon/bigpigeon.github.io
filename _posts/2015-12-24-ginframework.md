@@ -63,7 +63,7 @@ gin支持中间层
 
 ### 基本用法
 
-```golang
+```c
 package main
 
 import "github.com/gin-gonic/gin"
@@ -83,7 +83,7 @@ func main() {
 
 #### 先看看gin.Default的源码
 
-```golang
+```c
 func Default() *Engine {
 	engine := New()
 	engine.Use(Recovery(), Logger())
@@ -98,7 +98,7 @@ func Default() *Engine {
 
 #### 然后我们来看看Recovery干了什么
 
-```golang
+```c
 // Recovery returns a middleware that recovers from any panics and writes a 500 if there was one.
 func Recovery() HandlerFunc {
 	return RecoveryWithWriter(DefaultWriter)
@@ -131,7 +131,7 @@ func RecoveryWithWriter(out io.Writer) HandlerFunc {
 
 #### 再然后来看看Logger
 
-```golang
+```c
 // Instances a Logger middleware that will write the logs to gin.DefaultWriter
 // By default gin.DefaultWriter = os.Stdout
 func Logger() HandlerFunc {
@@ -178,7 +178,7 @@ func LoggerWithWriter(out io.Writer) HandlerFunc {
 
 #### 再来看看r.GET之后发生了什么
 
-```golang
+```c
 // routergroup file 
 func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
 	return group.handle("GET", relativePath, handlers)
@@ -196,7 +196,7 @@ func (group *RouterGroup) handle(httpMethod, relativePath string, handlers Handl
 
 #### 于是我们看看Engine的定义
 
-```golang
+```c
 // Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
 // Create an instance of Engine, by using New() or Default()
 Engine struct {
@@ -219,7 +219,7 @@ Engine struct {
 
 #### 最后看一下handler函数的Context参数
 
-```golang
+```c
 // Context is the most important part of gin. It allows us to pass variables between middleware,
 // manage the flow, validate the JSON of a request and render a JSON response for example.
 type Context struct {
@@ -258,7 +258,7 @@ func (c *Context) Next() {
 ### 包含参数的路径
 
 
-```golang
+```c
 package main
 
 import "github.com/gin-gonic/gin"
@@ -288,7 +288,7 @@ func main() {
 ### Query字符串参数
 
 
-```golang
+```c
 package main
 
 import "github.com/gin-gonic/gin"
@@ -311,7 +311,7 @@ func main() {
 
 ### Model binding and validation
 
-```golang
+```c
 package main
 
 import "github.com/gin-gonic/gin"
@@ -359,7 +359,7 @@ func main() {
 
 
 
-```golang
+```c
 package main
 
 import "github.com/gin-gonic/gin"
@@ -403,4 +403,4 @@ func main() {
 
 > 更多gin的信息可看这<https://gin-gonic.github.io/gin/>
 
-> PS:redcarpet没法识别golang然后就出各种高亮BUG了将就看吧
+> PS:redcarpet没法识别golang然后就出就用C的高亮了
