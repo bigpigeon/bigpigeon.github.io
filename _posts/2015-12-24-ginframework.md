@@ -3,14 +3,12 @@ layout: post
 title:  "gin框架介绍"
 date:   2015-12-24 6:25:00
 categories: gin golang 
-excerpt: gin golang
+excerpt: gin是一个高性能的web框架，并且有非常不错的实现，代码清楚易懂
 ---
 
-gin是一个高性能非常干净，非常透明的web框架
+#### gin的特性
 
-
-
-gin支持中间层
+支持中间层
 
 > - 一个请求过来经过 global middleware,group middleware 最后到该path的middleware处理
 
@@ -60,6 +58,14 @@ gin支持中间层
   <text transform="rotate(90 660.0000000000001,226.50000000000006) matrix(1.0229885578155518,0,0,1.5333333015441895,-14.080491662025452,-124.26665925979614) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_81" y="233.26087" x="658.93258" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function amount()</text>
  </g>
 </svg>
+
+基于Radix tree
+
+不会奔溃
+> - goroute奔溃后会在defer中恢复然后返回500
+
+更多特性请看[官网](https://gin-gonic.github.io/gin/)
+
 
 ### 基本用法
 
