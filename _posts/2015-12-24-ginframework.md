@@ -14,7 +14,7 @@ excerpt: gin是一个高性能的web框架，并且有非常不错的实现，�
 
 大概是这个样子
 
-<svg width="480" height="720" xmlns="http://www.w3.org/2000/svg">
+<svg width="50%" height="50%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720">
  <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
  <defs>
   <linearGradient id="svg_61" x1="0" y1="0" x2="1" y2="1">
