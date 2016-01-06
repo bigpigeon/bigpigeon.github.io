@@ -14,7 +14,7 @@ excerpt: gin是一个高性能的web框架，并且有非常不错的实现，�
 
 大概是这个样子
 
-<svg width="960" height="480" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="720" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
  <defs>
   <linearGradient id="svg_61" x1="0" y1="0" x2="1" y2="1">
@@ -32,30 +32,30 @@ excerpt: gin是一个高性能的web框架，并且有非常不错的实现，�
  </defs>
  <g>
   <title>Layer 1</title>
-  <g id="svg_57">
-   <path transform="rotate(4.352199554443359 382.6878967285165,249.14657592773509) " fill="#aaffff" stroke="#1bd1c4" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" d="m380.10974,209.39655l366.94824,5.68242l-357.77957,62.35545l-2.29205,-17.00888l-364.08419,28.47107l-4.58434,-34.01898l364.08415,-28.47102l-2.29224,-17.01006l0,0l0,0z" id="svg_55"/>
-   <text fill="#000000" stroke="#000000" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="159" y="261" id="svg_56" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve" transform="rotate(6.329278945922852 187.39025878906205,242.57537841796884) matrix(1.1405893158650124,-0.1200731699154113,0.12006203457560931,1.1406951015919626,-24.705882663885603,-30.584520314024992) ">request /amount/click</text>
-  </g>
+  <path transform="rotate(180 238.03820800781247,326.5081787109375) " id="svg_7" d="m207.32001,325.73959l30.71864,-320.23144l30.71776,320.23144l-15.3591,0l0,321.76859l-30.71864,0l0,-321.76859l-15.35866,0z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="#828282" fill="#5b5050"/>
   <g id="svg_71">
-   <ellipse fill="url(#svg_61)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="519.50001" cy="231.49999" id="svg_54" rx="318.49999" ry="225.49999"/>
-   <text transform="matrix(1.4533333778381348,0,0,2.3333332538604736,-211.02668738365173,-37.33333110809326) " fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" x="503" y="40" id="svg_62" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">global handlers</text>
+   <ellipse fill="url(#svg_61)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="243.50001" cy="364.49999" id="svg_54" rx="318.49999" ry="225.49999" transform="rotate(90 243.49999999999997,364.50000000000006) "/>
    <g id="svg_70">
-    <ellipse fill="url(#svg_64)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="646" cy="222" id="svg_63" rx="192" ry="122"/>
-    <text transform="matrix(1.117241382598877,0,0,1.600000023841858,-67.47241568565369,-73.20000290870667) " fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" x="634.57407" y="132.75" id="svg_65" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">group handlers path=/amount</text>
+    <ellipse fill="url(#svg_64)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="240" cy="494" id="svg_63" rx="192" ry="122" transform="rotate(90 239.99999999999997,494.00000000000006) "/>
     <g id="svg_69">
-     <ellipse fill="url(#svg_67)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="727" cy="225" id="svg_66" rx="112" ry="80"/>
-     <text transform="matrix(1.1960784196853638,0,0,1.6666666269302368,-130.980384349823,-113.33332657814026) " fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" x="720.67213" y="179" id="svg_68" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">handlers path=/click</text>
+     <ellipse fill="url(#svg_67)" stroke="#3ddbc8" stroke-width="5" stroke-linejoin="null" stroke-linecap="null" opacity="0.36" cx="240" cy="571" id="svg_66" rx="112" ry="80" transform="rotate(90 239.99999999999991,571.0000000000001) "/>
+     <text fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="238" y="494" id="svg_4" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">handle middleware</text>
+     <text fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="239" y="509" id="svg_5" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">path=/click</text>
     </g>
+    <text fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="289.97143" y="312.33334" id="svg_2" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve" transform="matrix(1.2068965435028076,0,0,1.799999952316284,-107.96551334857939,-219.59998703002927) ">group middleware</text>
+    <text fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="239" y="354" id="svg_6" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve">path=/amount</text>
    </g>
+   <text fill="#000000" stroke="#3ddbc8" stroke-width="0" stroke-linejoin="null" stroke-linecap="null" x="314.82313" y="78.11765" id="svg_1" font-size="12" font-family="Fantasy" text-anchor="middle" xml:space="preserve" transform="matrix(1.651685357093811,0,0,2.2666666507720947,-275.988748729229,-84.86666560173035) ">global middleware</text>
   </g>
-  <rect id="svg_72" height="286" width="47" y="90" x="276" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="#1bd1c4" fill="#2d3fc6"/>
-  <text transform="rotate(90 301.62106323242193,182.84387207031253) matrix(1.7917961062034058,0,0,1.8834476742524937,-218.1318388451736,-165.59681401862179) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_73" y="189.65074" x="289.86172" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function  recovery()</text>
-  <rect id="svg_75" height="349" width="55" y="60" x="326" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#1aef56"/>
-  <text transform="rotate(90 353.09765625000006,230.71270751953128) matrix(3.902939223805504,0,0,1.8285715429774143,-925.6625175890174,-105.33097001154798) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_77" y="188.60907" x="327.6022" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function log()</text>
-  <rect id="svg_78" height="150.99999" width="54" y="149" x="499" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#35f2dc" fill="#d81549"/>
-  <text transform="rotate(90 528.0281372070314,224.97917175292974) matrix(1.7638888359069824,0,0,2.200000047683716,-370.4860854148865,-242.4000096321106) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_79" y="216.95455" x="509.37795" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function auth()</text>
-  <rect id="svg_80" height="102" width="33" y="175" x="643" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#276eba"/>
-  <text transform="rotate(90 660.0000000000001,226.50000000000006) matrix(1.0229885578155518,0,0,1.5333333015441895,-14.080491662025452,-124.26665925979614) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_81" y="233.26087" x="658.93258" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function amount()</text>
+  <rect id="svg_72" height="37" width="286" y="122" x="101" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="#1bd1c4" fill="#2d3fc6"/>
+  <rect id="svg_75" height="43" width="349" y="165" x="71" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="#1348db" fill="#1aef56"/>
+  <rect id="svg_78" height="38" width="151" y="358" x="166" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="3" stroke="#35f2dc" fill="#d81549"/>
+  <text transform="matrix(1.7638888359069824,0,0,2.200000047683716,-370.4860854148865,-242.4000096321106) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_79" y="285.13637" x="347.80314" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function auth</text>
+  <rect id="svg_80" height="29" width="122" y="511" x="181" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" stroke="#1bd1c4" fill="#276eba"/>
+  <text transform="matrix(1.0229885578155518,0,0,1.5333333015441895,-14.080491662025452,-124.26665925979614) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_81" y="427.6087" x="249.34833" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function amount</text>
+  <text transform="matrix(1.7917961062034058,0,0,1.8834476742524937,-218.1318388451736,-165.59681401862179) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_73" y="167.35121" x="257.49196" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function  recovery</text>
+  <text transform="matrix(3.902939223805504,0,0,1.8285715429774143,-925.6625175890174,-105.33097001154798) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_77" y="163.45282" x="298.13723" opacity="0.36" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#1bd1c4" fill="#000000">function logger</text>
+  <text transform="matrix(1.369369387626648,0,0,1.5333333015441895,-68.33333671092987,-6.933332920074463) " xml:space="preserve" text-anchor="middle" font-family="Fantasy" font-size="12" id="svg_8" y="25.65217" x="225.16447" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#828282" fill="#ff0000">request /amount/click</text>
  </g>
 </svg>
 
