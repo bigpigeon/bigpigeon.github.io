@@ -1,0 +1,26 @@
+---
+layout: page
+title: demo
+permalink: /demo/
+---
+
+<div class="jumbotron">
+            <h1>Demo</h1>
+            <p>这里用来存放各种Demo</p>
+</div>
+
+<div class="row">
+            {% for demo in site.demo_posts %}
+                <div class="col-xs-6 col-lg-4">
+					<h2>
+					{{ demo.title }}
+					</h2>
+					<p>
+					{{ demo.excerpt }}
+					</p>
+					<p><a class="btn btn-default" href="{{ demo.url | prepend: site.baseurl }}" role="button">View details &raquo;</a></p>
+                </div><!--/.col-xs-6.col-lg-4-->
+                
+            {% endfor %}
+            
+            

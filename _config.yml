@@ -18,6 +18,20 @@ permalink: /:year/:month/:day/:title/
 # Build settings
 markdown: redcarpet
 
+collections:
+  demo_posts:
+    output: ture
+    permalink: /demo_posts/:path
+
+defaults:
+  -
+    scope:
+      path: "demo_posts"
+      type: "demos"
+    values:
+      layout: "demo"
+
+
 # highlight
 # 本地用rouge, github上用pygments
 # highlighter: pygments

@@ -145,3 +145,11 @@ function generateContent() {
     }
     console.log("myAffix!!!");
 }
+
+//offcanvas 的事件 以后可能都替换成这种
+
+$(document).ready(function () {
+  $('[data-toggle="offcanvas"]').click(function () {
+    $('.row-offcanvas').toggleClass('active')
+  });
+});
