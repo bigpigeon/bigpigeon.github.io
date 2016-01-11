@@ -21,7 +21,7 @@ markdown: redcarpet
 collections:
   demo_posts:
     output: ture
-    permalink: /demo_posts/:path
+    permalink: /demo_posts/:path/
 
 defaults:
   -
