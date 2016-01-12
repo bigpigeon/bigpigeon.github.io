@@ -2,7 +2,7 @@
 layout: post
 title:  "gin框架介绍"
 date:   2015-12-24 6:25:00
-categories: gin golang 
+categories: golang 
 excerpt: gin是一个高性能的web框架，并且有非常不错的实现，代码清楚易懂
 ---
 
