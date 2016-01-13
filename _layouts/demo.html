@@ -2,33 +2,6 @@
 layout: default
 ---
 
-<script>
-function CodeSubmitRewrite(obj){
-    var codeDom = obj.getElementsByClassName("code-container")[0];
-    function text(node) {
-        var s = "";
-        for (var i = 0; i < node.childNodes.length; i++) {
-            var n = node.childNodes[i];
-            if(n.nodeType === 1){
-                if (n.tagName === "BUTTON") continue
-                if (n.tagName === "SPAN" && n.className === "number") continue;
-                if (n.tagName === "DIV" || n.tagName == "BR") {
-                    s += "\n";
-                }
-                s += text(n);
-            }
-            if (n.nodeType === 3) {
-                s += n.nodeValue;
-            }
-        }
-        return s;
-    }
-    var s = text(codeDom);
-    s = s.trim();
-    obj.body.value = s;
-    return true;
-}
-</script>
 <div class="post-area post">
     <header>
         <h1>{{ page.title }}</h1>
@@ -36,12 +9,11 @@ function CodeSubmitRewrite(obj){
     <hr>
     <article class="page-content">
         
-        <form action="//play.golang.org/compile" onsubmit="CodeSubmitRewrite(this)" target="my-iframe" method="post" >
+        <form name="codecontainer" action="{{ site.play_bridge }}" onsubmit="CodeSubmitRewrite(this)" target="my-iframe" method="post" >
             <input type="hidden" name="version" value="2" />
+            <!-- <input type="hidden" name="body" /> -->
+            <textarea name="body" style="display:none;">{{ content }}</textarea>
             <!-- <textarea name="body">{{ content }}</textarea> -->
-            <input type="hidden" name="body" />
-            <div class="code-container"><pre><code class="golang" data-lang="golang"><span>{{ content }}</span></code></pre></div>
-            <input class="btn btn-sm btn-default demo-buttons" type="submit" value="run">
         </form>
         <iframe name="my-iframe" src="">
             <p>您的浏览器不支持  iframe 标签。</p>
@@ -51,6 +23,12 @@ function CodeSubmitRewrite(obj){
             <a href="//play.golang.org">golang在线运行代码地址</a> 
         </div>
     </article>
-</div>
 
+</div>
+<script>
+(function(){
+    document.codecontainer.submit()
+}())
+
+</script>
 
