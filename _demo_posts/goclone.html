@@ -1,0 +1,47 @@
+---
+layout: demo
+title: "goclone"
+date: 2015-12-09 16:00:00
+excerpt: golang各种数据结构的克隆方法
+---
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	//基本数据类型可以用任意方式克隆(int, float, complex, point)
+	type BaseType int
+	numA := BaseType(5)
+	numB := numA
+	var numC = numA
+	fmt.Printf("number\nA:%p\nB:%p\nC:%p\n", &numA, &numB, &numC)
+	//list类型和基本类型一样
+	listA := [3]int{1, 2, 3}
+	listB := listA
+	var listC = listA
+	fmt.Printf("list:\nA:%p\nB:%p\nC:%p\n", &listA, &listB, &listC)
+	//slice必须用copy才能克隆(slice被当成是list的指针)
+	sliceA := []int{1, 2, 3, 4, 5, 6}
+	sliceB := sliceA
+	var sliceC = sliceA
+	sliceD := make([]int, 6)
+	copy(sliceD, sliceA)
+	fmt.Printf("slice:\nA:%p\nB:%p\nC:%p\nD:%p\n", sliceA, sliceB, sliceC, sliceD)
+	//struct类型也和基本类型一样
+	type TestData struct {
+		id   int
+		data string
+	}
+	structA := TestData{0, "test"}
+	structB := structA
+	var structC = structA
+	var structD TestData
+	structD = structA
+	fmt.Printf("struct:\nA:%p\nB:%p\nC:%p\nD:%p\n", &structA, &structB, &structC, &structD)
+	//*struct
+	structPointA := &structA
+	structOtherB := *structPointA
+	fmt.Printf("other struct:\nA:%p\nB:%p\n", structPointA, &structOtherB)
+}
