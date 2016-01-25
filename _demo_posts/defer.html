@@ -1,0 +1,135 @@
+---
+layout: demo
+title: "go defer"
+date: 2016-01-16 17:59:00
+excerpt: golang中defer的各种使用场景
+---
+package main
+
+import (
+	"fmt"
+
+	"sync"
+	"testing"
+)
+
+//调用顺序
+func test0() {
+	defer func() {
+		fmt.Print("a\n")
+	}()
+	defer func() {
+		fmt.Print("b")
+	}()
+	defer func() {
+		fmt.Print("c")
+	}()
+	fmt.Println("test 0")
+}
+
+//lambda中闭包传的是对象引用
+func test1() {
+	doubleSum := func(x, y int) (z int) { //don't forget add () with return expression
+		fmt.Printf("start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n", &x, x, &y, y, &z, z)
+		defer func() {
+			fmt.Printf("defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n", &x, x, &y, y, &z, z)
+			z = z * 2
+		}()
+		x = x * 2
+		y = y * 2
+		return x + y
+	}
+	fmt.Println("test 1")
+	x, y := 10, 20
+	z := doubleSum(x, y)
+	fmt.Printf("x=%d,y=%d,z=%d\n", x, y, z)
+
+}
+
+// defer函数在注册时会复制参数，情况大概是这样
+// package = func(){ret=z;func(ret int){...}(ret) -> run func body -> package() ->return z}
+func test2() {
+	otherDoubleSum := func(x, y int) (z int) { //don't forget add () with return expression
+		defer func(ret int) {
+			fmt.Printf("defer:x=%d,y=%d,z=%d\n", x, y, ret)
+			ret = ret
+		}(z)
+		x = x * 2
+		y = y * 2
+		return x + y
+	}
+	fmt.Println("test 2")
+	x, y := 10, 20
+	z := otherDoubleSum(10, 20)
+	fmt.Printf("x=%d,y=%d,z=%d\n", x, y, z)
+}
+
+// 可以在defer的函数中捕获panic
+func test3() {
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("panic: %s\n", err)
+		}
+	}()
+	fmt.Println("test 3")
+	panic("panic test!")
+}
+
+// 延迟调用中引发的错误，可被后续延迟调用捕获, 但仅仅最后一个panic会被捕获
+// 写在defer中的语句要保证不能出错，不然无法恢复，当然嵌套defer是可以的
+func test4() {
+
+	defer func() {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Printf("nested recover: %s\n", err)
+			}
+		}()
+		if err := recover(); err != nil {
+			fmt.Printf("recover: %s\n", err)
+			panic("defer panic!!")
+		}
+	}()
+	defer func() {
+		panic("defer panic")
+	}()
+	fmt.Println("test 4")
+	panic("panic test!")
+}
+
+// defer的性能测试，开销不小,不建议在循环中使用
+var lock sync.Mutex
+
+func TestLock() {
+	lock.Lock()
+	lock.Unlock()
+}
+
+func TestDeferLock() {
+	lock.Lock()
+	defer lock.Unlock()
+}
+
+func BenchmarkTest(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		TestLock()
+	}
+}
+
+func BenchmarkTestDefer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		TestDeferLock()
+	}
+}
+
+func main() {
+	test0()
+	test1()
+	test2()
+	test3()
+	test4()
+	// 性能测试跑的时间太长无法在play中
+	//	fmt.Println(testing.Benchmark(BenchmarkTest))
+	//	fmt.Println(testing.Benchmark(BenchmarkTestDefer))
+}

@@ -1,14 +1,15 @@
 ---
 layout: demo
-title: "gohello"
+title: "go hello"
 date: 2015-12-09 16:00:00
 excerpt: 测试go hello world
 ---
 package main
 
 import "fmt"
+import "runtime"
 
 func main() {
 	fmt.Println("Hello, playground")
-	fmt.Println("hehe")
+	fmt.Println(runtime.GOMAXPROCS(0))
 }

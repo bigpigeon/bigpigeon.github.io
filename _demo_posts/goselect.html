@@ -1,0 +1,66 @@
+---
+layout: demo
+title: "go select"
+date: 2015-12-09 16:00:00
+excerpt: 测试select各种使用方法，在加default和不加default的区别
+---
+package main
+
+import (
+	"fmt"
+	"runtime"
+	"sync"
+	"time"
+)
+
+//测试select 加入default和不加default的区别
+func test() {
+	cA, cB := make(chan int), make(chan int)
+	//为防止在go routines跑完前进程退出
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	go func() {
+		defer wg.Done()
+		cA <- 5
+		cB <- 6
+	}()
+
+	//select 不加default则会等待有channel过来是才跑一次循环
+	go func() {
+		defer wg.Done()
+		for i := 0; i != 10; i++ {
+			select {
+			case _, ok := <-cA:
+				if ok {
+					fmt.Printf("ca is receive\n")
+				}
+			//为防止routines 2 死锁
+			case <-time.After(time.Second / 10):
+
+			}
+		}
+	}()
+	//select 加了default在没有channel过来时跑default
+	go func() {
+		defer wg.Done()
+		for i := 0; i != 10; i++ {
+			select {
+			case _, ok := <-cB:
+				if ok {
+					fmt.Printf("cb is receive\n")
+				}
+			default:
+				time.Sleep(time.Second / 10)
+				fmt.Printf("run in default\n")
+			}
+
+		}
+	}()
+	wg.Wait()
+}
+
+func main() {
+	runtime.GOMAXPROCS(1)
+	test()
+}

@@ -1,0 +1,85 @@
+---
+layout: demo
+title: "go array and slice"
+date: 2016-01-16 17:59:00
+excerpt: go array 和slice的关系
+---
+package main
+
+import (
+	"fmt"
+)
+
+//数组的初始化方式
+func arrayInit() {
+	fmt.Println("array init!")
+	a := [4]int{1, 3, 5, 7}
+	b := [...]int{2, 4, 6, 8}
+	c := [...]int{3: 10, 5: 20}
+	d := [...]struct {
+		x uint
+		y uint
+	}{
+		{50, 20},
+		{30, 40},
+	}
+	e := [...][2]int{
+		{1, 3},
+		{5, 7},
+	}
+
+	fmt.Println("a:", a)
+	fmt.Println("b:", b)
+	fmt.Println("c:", c)
+	fmt.Println("d:", d)
+	fmt.Println("e:", e)
+}
+
+func sliceInit() {
+	fmt.Println("slice init!")
+	a := []int{1, 3, 5, 7}
+	b := []int{2, 4, 6, 8}
+	c := []int{3: 10, 5: 20}
+	d := []struct {
+		x uint
+		y uint
+	}{
+		{50, 20},
+		{30, 40},
+	}
+	e := [][]int{
+		{1, 3},
+		{5, 7, 9},
+	}
+	fmt.Println("a:", a, cap(a))
+	fmt.Println("b:", b, cap(b))
+	fmt.Println("c:", c, cap(c))
+	fmt.Println("d:", d, cap(d))
+	fmt.Println("e:", e, cap(e))
+}
+
+func sliceAppend() {
+	fmt.Println("slice append")
+	data := [6]int{0, 1, 2}
+
+	s1 := data[:3]
+	s2 := append(s1, 100, 200, 300)
+	s3 := append(s2, 100, 200, 300)
+
+	fmt.Println("data:", data)
+	fmt.Println("s1:", s1)
+	fmt.Println("s2:", s2)
+	fmt.Println("s3:", s3)
+	//s2还是指向原数组的
+	s2[5] = 1000
+	fmt.Println("data:", data)
+	//因为append s2时超出了数组的容量 ，所以s3是从新分配的一个数组，和原数组没有任何关联
+	s3[5] = 100000
+	fmt.Println("data:", data)
+}
+
+func main() {
+	arrayInit()
+	sliceInit()
+	sliceAppend()
+}
