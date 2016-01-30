@@ -5,7 +5,7 @@ date:   2015-12-19 22:00:00
 categories: pac javascript  
 excerpt: 降低pac脚本的时间复杂度
 ---
-
+{% markdown %}
 最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.
 
 于是我翻看了它们的实现
@@ -99,73 +99,68 @@ function FindProxyForURL(url, host) {
 
 - 以下是我在nodejs下的性能测试结果 [测试js下载地址](/static/testdata/pac_benchmark.zip)
 
+{% endmarkdown  %}
+{% markdown %}
+> node benchmark.js 10000
+{% endmarkdown %}
+<div id="bench-chart-10000"></div>
+{% markdown %}
+> node benchmark.js 100000
+{% endmarkdown %}
+<div id="bench-chart-100000"></div>
+{% markdown %}
+> node benchmark.js 1000000
+{% endmarkdown %}
+<div id="bench-chart-1000000"></div>
 
-```
-[root@bigpigeon pac_benchmark]# node benchmark.js 10000
-       shadowsocks benchmark
-proxy_domain_two_node result 3ms
-no_proxy_domain_two_node result 2ms
-proxy_domain_three_node result 6ms
-no_proxy_domain_three_node result 3ms
-proxy_domain_four_node result 5ms
-no_proxy_domain_four_node result 4ms
-       lantern benchmark
-proxy_domain_two_node result 4ms
-no_proxy_domain_two_node result 32ms
-proxy_domain_three_node result 2ms
-no_proxy_domain_three_node result 39ms
-proxy_domain_four_node result 18ms
-no_proxy_domain_four_node result 47ms
-       bigpigeon_pac benchmark
-proxy_domain_two_node result 3ms
-no_proxy_domain_two_node result 3ms
-proxy_domain_three_node result 11ms
-no_proxy_domain_three_node result 3ms
-proxy_domain_four_node result 3ms
-no_proxy_domain_four_node result 3ms
-[root@bigpigeon pac_benchmark]# node benchmark.js 100000
-       shadowsocks benchmark
-proxy_domain_two_node result 24ms
-no_proxy_domain_two_node result 22ms
-proxy_domain_three_node result 37ms
-no_proxy_domain_three_node result 37ms
-proxy_domain_four_node result 47ms
-no_proxy_domain_four_node result 51ms
-       lantern benchmark
-proxy_domain_two_node result 29ms
-no_proxy_domain_two_node result 279ms
-proxy_domain_three_node result 27ms
-no_proxy_domain_three_node result 373ms
-proxy_domain_four_node result 163ms
-no_proxy_domain_four_node result 441ms
-       bigpigeon_pac benchmark
-proxy_domain_two_node result 27ms
-no_proxy_domain_two_node result 23ms
-proxy_domain_three_node result 29ms
-no_proxy_domain_three_node result 24ms
-proxy_domain_four_node result 29ms
-no_proxy_domain_four_node result 24ms
-[root@bigpigeon pac_benchmark]# node benchmark.js 1000000
-       shadowsocks benchmark
-proxy_domain_two_node result 136ms
-no_proxy_domain_two_node result 130ms
-proxy_domain_three_node result 287ms
-no_proxy_domain_three_node result 309ms
-proxy_domain_four_node result 401ms
-no_proxy_domain_four_node result 460ms
-       lantern benchmark
-proxy_domain_two_node result 222ms
-no_proxy_domain_two_node result 2776ms
-proxy_domain_three_node result 258ms
-no_proxy_domain_three_node result 3698ms
-proxy_domain_four_node result 1631ms
-no_proxy_domain_four_node result 4420ms
-       bigpigeon_pac benchmark
-proxy_domain_two_node result 224ms
-no_proxy_domain_two_node result 220ms
-proxy_domain_three_node result 285ms
-no_proxy_domain_three_node result 218ms
-proxy_domain_four_node result 287ms
-no_proxy_domain_four_node result 220ms
+<script type="text/javascript">
+function makechart(id, data) {
+  c3.generate({
+    bindto: id,
+    data: {
+      columns: data,
+      type: 'bar'
+    },
+    axis: {
+      y: {
+        tick: {
+          format: function (d) { return d + "ms"; }
+        },
+        label: 'time'
+      },
+      x: {
+        type: 'category',
+        categories: ['proxy_2_node', 'noproxy_2_node', 'proxy_3_node', 'noproxy_3_node', 'proxy_4_node', 'noproxy_4_node']
+      }
+    },
 
-```
+    bar: {
+      width: {
+          ratio: 0.5 // this makes bar width 50% of length between ticks
+      }
+    }
+  });
+}
+makechart(
+  '#bench-chart-10000', 
+  [
+    ['shadowsocks', 3, 2, 6, 3, 5, 4],
+    ['lantern', 4, 32, 2, 39, 18, 47],
+    ['bigpigeon_pac', 3, 3, 11, 3, 3, 3]
+  ])
+makechart(
+  '#bench-chart-100000', 
+  [
+    ['shadowsocks', 24, 22, 37, 37, 47, 51],
+    ['lantern', 29, 279, 27, 373, 163, 441],
+    ['bigpigeon_pac', 27, 23, 29, 24, 29, 24]
+  ])
+makechart(
+  '#bench-chart-1000000', 
+  [
+    ['shadowsocks', 136, 130, 287, 309, 401, 460],
+    ['lantern', 222, 2776, 258, 3698, 1631, 4420],
+    ['bigpigeon_pac', 224, 220, 285, 218, 287, 220]
+  ])
+</script>
+
