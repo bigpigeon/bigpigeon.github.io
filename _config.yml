@@ -16,6 +16,14 @@ play_bridge: //ec2-52-192-136-101.ap-northeast-1.compute.amazonaws.com:9090/brid
 github_username:  bigpigeon
 permalink: /:year/:month/:day/:title/
 
+# Where things are
+source:       .
+destination:  ./_site
+plugins_dir:  ./_plugins
+layouts_dir:  ./_layouts
+data_dir:     ./_data
+includes_dir: ./_includes
+
 # Build settings
 markdown: redcarpet
 
