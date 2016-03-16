@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>使用docker部署jekyll</title>
+	<meta name="description" content="使用docker部署jekyll">
+	
+	<link rel="canonical" href="http://bigpigeon.github.io/2016/02/06/dockerexample/">
+	<link rel="alternate" type="application/rss+xml" title="bigpigeon" href="http://bigpigeon.github.io/feed.xml" />
+	
+	<!-- <link rel="stylesheet" href="/css/main.css"> -->
+
+	<link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"> -->
+	
+
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	
+	<!-- <script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script> -->
+
+	<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/static/js/index.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/highlight.js/8.4/styles/docco.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/highlight.js/8.4/styles/railscasts.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="//apps.bdimg.com/libs/highlight.js/8.4/styles/monokai.min.css"> -->
+
+	<!-- // <script type="text/javascript" src="//apps.bdimg.com/libs/highlight.js/8.4/languages/dos.min.js"></script> -->
+
+	<!-- theme -->
+
+ 	
+    
+	<script type="text/javascript" src="//apps.bdimg.com/libs/highlight.js/8.4/highlight.min.js"></script>
+
+	<link href="/static/css/c3.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/static/js/d3.min.js"></script>
+	<script type="text/javascript" src="/static/js/c3.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	
+</head>
+
+ <!--  <body data-spy="scroll" data-target="#myAffix"> -->
+  <body>
+
+    <header>
+
+<!-- navbar -->
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">bigpigeon</a>
+      <p class="navbar-text">Back-end Dev Engineer</p>
+      
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+
+        
+          <li>
+        
+          <a href="/"><span class="glyphicon glyphicon-th-large"></span> Blog</a></li>
+
+        
+          
+            
+              <li>
+            
+            <a href="/about/"><span class="glyphicon "></span> About</a></li>
+          
+        
+          
+            
+              <li>
+            
+            <a href="/demo/"><span class="glyphicon "></span> demo</a></li>
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+</header>
+
+
+    <div id="main" class="container main">
+      <div class="row">
+  <div id="myArticle" class="col-sm-9">
+    <div class="post-area post">
+      <header>
+        <h1>使用docker部署jekyll</h1>
+        <h4>使用docker部署jekyll </h4>
+        <p>Feb 6, 2016</p>
+      </header>
+      <hr>
+      <article>
+        <blockquote>
+<p>关于在docker部署jekyll在<a href="http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf">The.Docker.Book</a>中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了</p>
+
+<p>所以我在这记录一下部署过程以免将来再次踩坑</p>
+</blockquote>
+
+<h3 id="首先，为什么要用docker">首先，为什么要用docker</h3>
+
+<blockquote>
+<p>docker提供了基于操作系统的虚拟化技术，可以让你很方便的把应用的环境独立出来并且可以重用</p>
+
+<p>并且 docker提供了一套完善的工具去管理docker推出的进程</p>
+
+<p>所以 docker相当于是supervisor + 容器的组合</p>
+</blockquote>
+
+<h3 id="编辑jekyll的dockerfile和nginx的dockerfile">编辑jekyll的Dockerfile和nginx的Dockerfile</h3>
+
+<hr>
+
+<h4 id="jekyll的目录结构">jekyll的目录结构</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">|-base
+    |-Dockerfile
+|-create
+    |-Dockerfile
+|-push
+    |-Dockerfile
+    |-Rakefile
+    |-key
+       |-id_rsa
+       |-id_rsa.pub
+</code></pre></div>
+<h4 id="jekyll-base目录下的dockerfile">jekyll base目录下的Dockerfile</h4>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">FROM ubuntu:latest
+MAINTAINER bigpigeon0 &lt;bigpigeon0@gmail.com&gt;
+ENV REFRESHED_AT 2016-02-13
+
+RUN apt-get -yqq update
+RUN apt-get -yqq install ruby2.0 ruby2.0-dev ruby-dev make nodejs git
+
+RUN <span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..100<span class="o">}</span>;<span class="se">\</span>
+      <span class="k">do</span> <span class="se">\</span>
+        gem2.0 install --source<span class="o">=</span>http://rubygems.org jekyll;<span class="se">\</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$?</span><span class="s2">"</span> -eq 0 <span class="o">]</span>;<span class="se">\</span>
+          <span class="k">then </span><span class="nb">break</span>;<span class="se">\</span>
+        <span class="k">fi</span>;<span class="se">\</span>
+      <span class="k">done</span>;
+RUN gem2.0 install redcarpet
+RUN gem2.0 install --source<span class="o">=</span>http://rubygems.org rake
+RUN gem2.0 install bundler
+</code></pre></div>
+<ul>
+<li><p>apt-get 增加了 ruby-dev(ruby某些库需要用到ruby-dev) </p></li>
+<li><p>gem2.0 使用源是http的rubugems.org(某些下载文件过大使用https会出现connection reset)</p></li>
+<li><p>耐性等待jekyll的安装非常非常慢可能需要1个小时，而且没提示(想要提示可以用Bundler(gem install bundler)，但不知道为何bundler经常装到一半失败，并且缓存失败。。。)</p></li>
+<li><p>总的来说就是ruby坑爹，gem更坑爹</p></li>
+<li><p>rake的作用是把jekyll生成的网页推到github的master分支上，因为github上的jekyll不支持插件，所以只能本地生产完推上去</p></li>
+</ul>
+
+<hr>
+
+<h4 id="jekyll-create目录下的dockerfile">jekyll create目录下的Dockerfile</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">FROM bigpigeon0/jekyll:latest
+MAINTAINER bigpigeon0 &lt;bigpigeon0@gmail.com&gt;
+
+VOLUME ["/data", "/var/www/html"]
+WORKDIR /data
+
+ENTRYPOINT [ "jekyll", "build", "--destination=/var/www/html" ]
+</code></pre></div>
+<hr>
+
+<h4 id="jekyll-push目录下的dockerfile">jekyll push目录下的Dockerfile</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">FROM bigpigeon0/jekyll:latest
+MAINTAINER bigpigeon0 &lt;bigpigeon0@gmail.com&gt;
+
+RUN mkdir -p /data/rakedata /data/blog
+RUN git config --global user.email bigpigeon0@gmail.com
+RUN git config --global user.name bigpigeon
+
+ADD Rakefile /data/rakedata/
+COPY key/    /root/.ssh/
+
+WORKDIR /data/rakedata
+
+ENTRYPOINT ["rake", "publish"]
+</code></pre></div>
+<hr>
+
+<h4 id="jekyll-push目录下的rakefile">jekyll push目录下的Rakefile</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">require "rubygems"
+require "tmpdir"
+
+require "bundler/setup"
+require "jekyll"
+
+
+# Change your GitHub reponame
+GITHUB_REPONAME = "bigpigeon/bigpigeon.github.io"
+
+
+desc "Generate blog files"
+task :generate do
+  Jekyll::Site.new(Jekyll.configuration({
+    "source"      =&gt; "../blog/.",
+    "destination" =&gt; "_site"
+  })).process
+end
+
+
+desc "Generate and publish blog to master"
+task :publish =&gt; [:generate] do
+  Dir.mktmpdir do |tmp|
+    cp_r "_site/.", tmp
+
+    pwd = Dir.pwd
+    Dir.chdir tmp
+
+    system "git init"
+    system "git add ."
+    message = "Site updated at #{Time.now.utc}"
+    system "git commit -m #{message.inspect}"
+    system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
+    system "git push origin master --force"
+
+    Dir.chdir pwd
+  end
+end
+</code></pre></div>
+<hr>
+
+<h4 id="nginx-image的目录结构">nginx image的目录结构</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">|-Dockerfile
+|-nginx
+    |-static.conf
+    |-nginx.conf
+</code></pre></div>
+<hr>
+
+<h4 id="nginx-image的dockerfile">nginx image的Dockerfile</h4>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">FROM ubuntu:latest
+MAINTAINER bigpigeon &lt;bigpigeon0@gmail.com&gt;
+
+ENV REFRESHED_AT 2016-02-06
+
+RUN apt-get -yqq update
+RUN apt-get install -yqq nginx
+RUN mkdir -p /var/www/html
+
+ADD nginx/nginx.conf /etc/nginx/nginx.conf
+ADD nginx/static.conf /etc/nginx/conf.d/static.conf
+
+VOLUME <span class="o">[</span><span class="s2">"/var/www/html"</span><span class="o">]</span>
+WORKDIR /var/www/html
+
+EXPOSE 80
+
+ENTRYPOINT <span class="o">[</span><span class="s2">"nginx"</span><span class="o">]</span>
+</code></pre></div>
+<hr>
+
+<h4 id="nginx.conf">nginx.conf</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">user www-data;
+worker_processes 4;
+pid /run/nginx.pid;
+daemon off;
+events { }
+http {
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+  gzip on;
+  gzip_disable "msie6";
+  include /etc/nginx/conf.d/*.conf;
+}
+</code></pre></div>
+<hr>
+
+<h4 id="static.conf">static.conf</h4>
+<div class="highlight"><pre><code class="language-" data-lang="">server {
+  listen 0.0.0.0:80;
+  server_name _;
+  root /var/www/html/;
+  index index.html index.htm;
+  access_log /var/log/nginx/default_access.log;
+  error_log /var/log/nginx/default_error.log;
+}
+</code></pre></div>
+<blockquote>
+<p>docker的image就build好了，这里简单讲讲Dockerfile的语法</p>
+
+<p>FROM: Dockerfile的第一行必须是FROM，表示基于那个基础Docker image</p>
+
+<p>ENV: 设置环境变量</p>
+
+<p>MAINTAINER: 告诉docker该image的作者和他的邮箱地址，也是很有必要的</p>
+
+<p>RUN: 用shell执行一条命令，可以写成RUN xxx ... 或者RUN [&quot;xxx&quot;, ...]</p>
+
+<p>CMD: 执行一条命令，当image被运行(推出)时，用法和RUN相识</p>
+
+<p>ENTRYPOINT: 执行一条命令，当image被运行(推出)时，并且可以在运行时对该命令附加参数</p>
+
+<p>WORKDIR: 设置工作目录，相当于bash下的cd dir</p>
+
+<p>USER: 设置在docker build下执行命令的用户</p>
+
+<p>VOLUME: 方便容器之间挂载目录，可以在image被运行时配合--volumes-from使用</p>
+
+<p>ADD: 把文件复制到image中，第一参数可填写网址，但不可访问当前目录以外的路径</p>
+
+<p>COPY: 把文件夹复制到image中</p>
+
+<p>ONBUILD: 在该image作为FROM基本容器再次build时执行</p>
+</blockquote>
+
+<hr>
+
+<h3 id="build-nginx和jekyll的image">build nginx和jekyll的image</h3>
+
+<p># build jekyll base image</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cd Dockerfile存放目录
+sudo docker build -t bigpigeon0/jekyll . 
+</code></pre></div>
+<p># build jekyll create image</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cd Dockerfile存放目录
+sudo docker build -t bigpigeon0/blog_create .
+</code></pre></div>
+<p># build jekyll create image</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cd Dockerfile存放目录
+sudo docker build -t bigpigeon0/blog_push .
+</code></pre></div>
+<p># build nginx image</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cd Dockerfile存放目录
+sudo docker build -t bigpigeon0/nginx .
+</code></pre></div>
+<hr>
+
+<h3 id="运行docker">运行Docker</h3>
+
+<p># 把jekyll的模板下载下来</p>
+<div class="highlight"><pre><code class="language-" data-lang="">mkdir -p /data/work/ &amp;&amp; cd /data/work/
+git clone https://github.com/bigpigeon/bigpigeon.github.io
+</code></pre></div>
+<p># 运行一个博客生成的镜像</p>
+<div class="highlight"><pre><code class="language-" data-lang="">sudo docker run  -v /data/work/bigpigeon.github.io:/data --name blog_create bigpigeon0/blog_create
+</code></pre></div>
+<p># 运行nginx的镜像</p>
+<div class="highlight"><pre><code class="language-" data-lang="">sudo docker run -p 8080:80 -d --name nginx --volumes-from blog_create bigpigeon0/nginx
+</code></pre></div>
+<p># 生成博客提交到github</p>
+
+<ul>
+<li>记得把key/id_rsa.pub中的内容添加到github.com/settings/ssh中</li>
+</ul>
+<div class="highlight"><pre><code class="language-" data-lang="">sudo docker run -t -i -v /data/work/bigpigeon.github.io:/data/blog --name blog_push bigpigeon0/blog_push
+</code></pre></div>
+<p># 更新模板后重新生成网页和提交网页</p>
+<div class="highlight"><pre><code class="language-" data-lang="">docker start blog_create
+docker start -a blog_push
+</code></pre></div>
+<h3 id="测试网站">测试网站</h3>
+
+<blockquote>
+<p>在浏览器输入http://<serveraddr>:8080 查看</p>
+</blockquote>
+
+<h3 id="使用rake更新网站">使用rake更新网站</h3>
+
+<h5 id="the.docker.book有中文版，然而我觉得价格太坑爹，还是不推荐大家买(电子书比实体书还贵)">The.Docker.Book有<a href="http://www.amazon.cn/%E7%AC%AC%E4%B8%80%E6%9C%ACDocker%E4%B9%A6-%E8%A9%B9%E5%A7%86%E6%96%AF%C2%B7%E7%89%B9%E6%81%A9%E5%B8%83%E5%B0%94/dp/B00RBEIFMI/">中文版</a>，然而我觉得价格太坑爹，还是不推荐大家买(电子书比实体书还贵)</h5>
+
+      </article>
+      <hr>
+      
+      
+      <div class="bshare-custom"><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-sharethis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+    </div>
+    <div class="post-area post comment">
+      <!-- 多说评论框 start -->
+      
+      <!-- <div class="ds-thread" data-thread-key="/2016/02/06/dockerexample" data-title="使用docker部署jekyll" data-url="bigpigeon.github.io/2016/02/06/dockerexample/"></div> -->
+      
+      <!-- 多说评论框 end -->
+      <div id="disqus_thread"></div>
+      <script>
+      /**
+      * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+      */
+      <!-- disqus评论框 start -->
+      var disqus_config = function () {
+      //this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/2016/02/06/dockerexample"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+
+      s.src = '//httpbigpigeongithubio.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <!-- disqus评论框 end -->
+    </div>
+  </div>
+
+  <div id="content" class="col-sm-3">
+    <!-- <div id="myAffix" class="shadow-bottom-center hidden-xs" data-spy="affix" data-offset-top="0" data-offset-bottom="-20"> -->
+    <div id="myAffix" class="shadow-bottom-center hidden-xs" >
+      <div class="categories-list-header">
+        Content
+      </div>
+      <div class="content-text"></div>
+    </div>
+  </div>
+</div>
+    </div>
+
+    
+    <div id="top" data-toggle="tooltip" data-placement="left" title="回到顶部">
+      <a href="javascript:;">
+        <div class="arrow"></div>
+        <div class="stick"></div>
+      </a>
+    </div>
+
+    <footer class="">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="mailto:bigpigeon0@gmail.com"><span class="glyphicon glyphicon-envelope"></span> bigpigeon0@gmail.com</a>
+        <span class="point"> · </span>
+        
+          
+          <a href="https://github.com/bigpigeon">
+            <span class="icon">
+              <svg viewBox="0 0 16 16">
+                <path fill="#aaa" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            Github
+            <!-- <span>bigpigeon</span> -->
+          </a>
+          
+          
+          <span class="point"> · </span>
+          <span><a href="/feed.xml">RSS</a></span>
+          <span class="point"> · </span>
+          <span>bigpigeon的博客</span>
+          <span class="point"> · </span>
+          
+          <span>&copy; 2015 bigpigeon</span>
+          <span class="point"> · </span>
+          <span>Designed by <a href="https://github.com/bigpigeon">bigpigeon</a></span>
+          
+          <span class="point"> · </span>
+          <span id="cnzz_stat_icon_1258428566">
+            
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258428566'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1258428566%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+          </span>
+          
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+  <!--script type="text/javascript">
+    var duoshuoQuery = {short_name:"bigpigeon"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script--!>
+<!-- 多说公共JS代码 end -->
+
+<!-- 在新窗口中打开 -->
+  <script type="text/javascript">
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+  </script>
+  </body>
+</html>
