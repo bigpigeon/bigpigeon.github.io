@@ -2,7 +2,7 @@
 layout: post
 title:  "使用docker部署jekyll"
 date:   2016-02-06 14:06:00
-categories: golang 
+categories: 笔记 
 excerpt: 使用docker部署jekyll
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "如何在python上使用postgresql"
 date:   2016-03-07 10:30:00
-categories: pac javascript  
+categories: 笔记 
 excerpt: 简单介绍postgresql部署和psycopy的使用
 ---
 
