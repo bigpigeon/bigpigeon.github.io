@@ -155,3 +155,22 @@ $(document).ready(function () {
 });
 
 
+var background = new Image();
+background.onload = function(){
+    var line_width = 80;
+    for(var j=0; j <= background.height; j+=line_width){
+        for(var i=(j/line_width%2)*line_width; i <= background.width; i+=2*line_width){
+        
+            // Create gradient
+            // var grd=ctx.createRadialGradient(i+50,j+50,5,i+90,j+60,100);
+            // grd.addColorStop(0,"gray");
+            // grd.addColorStop(1,"white");
+
+            // // Fill with gradient
+            // ctx.fillStyle = grd;
+            ctx = canvas.getContext("2d");
+            ctx.fillRect(i,j,line_width,line_width);
+        }
+    }
+}
+
