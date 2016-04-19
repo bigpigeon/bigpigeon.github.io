@@ -1,0 +1,24 @@
+version: '2'
+services:
+  generate:
+    image: bigpigeon0/blog
+    build: docker/jekyll
+    volumes:
+      - .:/data
+    working_dir: /data
+    command: jekyll build --destination=/var/www/html
+  nginx:
+    image: bigpigeon0/blog_ngx
+    build: docker/nginx
+    ports: 
+      - 443:443
+      - 80:80
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/temp
+      - /var/www:/var/www
+    volumes_from:
+      - generate
+    environment:
+      - NGINX_PORT=80
+      - NGINX_PORT_SSL=443
+    command: /bin/bash -c "envsubst < /etc/nginx/temp/default.temp > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
