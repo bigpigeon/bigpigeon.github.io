@@ -1,0 +1,66 @@
++++
+Categories = [
+  "GoLang",
+]
+menu = "main"
+Description = """
+除了引用类型之外，都可以通过赋值的方式复制元素
+"""
+date = "2016-01-16T17:59:00+08:00"
+title = "go clone"
+Tags = [
+  "测试",
+  "golang",
+]
++++
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	//基本数据类型可以用任意方式克隆(int, float, complex, point)
+	type BaseType int
+	numA := BaseType(5)
+	numB := numA
+	var numC = numA
+	fmt.Printf("number\nA:%p\nB:%p\nC:%p\n", &numA, &numB, &numC)
+	//list类型和基本类型一样
+	listA := [3]int{1, 2, 3}
+	listB := listA
+	var listC = listA
+	fmt.Printf("list:\nA:%p\nB:%p\nC:%p\n", &listA, &listB, &listC)
+
+	//struct类型也和基本类型一样
+	type TestData struct {
+		id   int
+		data string
+	}
+	structA := TestData{0, "test"}
+	structB := structA
+	var structC = structA
+	var structD TestData
+	structD = structA
+	fmt.Printf("struct:\nA:%p\nB:%p\nC:%p\nD:%p\n", &structA, &structB, &structC, &structD)
+	//slice是引用类型，必须用copy函数
+	sliceA := []int{1, 2, 3, 4, 5, 6}
+	sliceB := sliceA
+	var sliceC = sliceA
+	sliceD := make([]int, 6)
+	copy(sliceD, sliceA)
+	fmt.Printf("slice:\nA:%p\nB:%p\nC:%p\nD:%p\n", sliceA, sliceB, sliceC, sliceD)
+	//map也是引用类型
+	mapA := map[byte]int{
+		'A': 1,
+		'B': 2,
+		'C': 3,
+	}
+	mapB := mapA
+	mapC := make(map[byte]int, 3)
+	//map目前没有可供使用的copy函数
+	for k, v := range mapA {
+		mapC[k] = v
+	}
+	fmt.Printf("map:\nA:%p\nB:%p\nC:%p\n", mapA, mapB, mapC)
+}

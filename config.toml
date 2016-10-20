@@ -1,0 +1,23 @@
+title = "bigpigeon"
+languageCode = "cn-zh"
+baseurl = "http://192.168.6.209:1313/"
+theme = "hugo-uno"
+author = "bigpigeon"
+
+canonifyurls = true
+copyright = "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License."
+Paginate = 3
+disableRSS = true
+enableRobotsTXT = true
+
+[indexes]
+   category = "categories"
+   tag = "tags"
+[Params]
+  AuthorName = "bigpigeon"
+  github = "bigpigeon"
+  twitter = "bigpigeon0"
+  email = "bigpigeon0@gmail.com"
+  description = ""
+  sandbox = "/sandbox"
+  disqus="httpbigpigeongithubio"

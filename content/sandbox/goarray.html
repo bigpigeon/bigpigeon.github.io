@@ -1,0 +1,111 @@
++++
+Categories = [
+  "GoLang",
+]
+menu = "main"
+Description = """
+slice是可变长度列表，底层指向一个list,
+但底层的长度不够时会从新分配一个size×2的list并拷贝元素。
+所以对slice做append时一定要小心,不要对同一list下的2个slice做append
+"""
+date = "2016-01-16T17:59:00+08:00"
+title = "go array and slice"
+Tags = [
+  "测试",
+  "golang",
+]
++++
+package main
+
+import (
+	"fmt"
+)
+
+//数组的初始化方式
+func arrayInit() {
+	fmt.Println("array init!")
+	a := [4]int{1, 3, 5, 7}
+	b := [...]int{2, 4, 6, 8}
+	c := [...]int{3: 10, 5: 20}
+	d := [...]struct {
+		x uint
+		y uint
+	}{
+		{50, 20},
+		{30, 40},
+	}
+	e := [...][2]int{
+		{1, 3},
+		{5, 7},
+	}
+
+	fmt.Println("a:", a)
+	fmt.Println("b:", b)
+	fmt.Println("c:", c)
+	fmt.Println("d:", d)
+	fmt.Println("e:", e)
+}
+
+func sliceInit() {
+	fmt.Println("slice init!")
+	a := []int{1, 3, 5, 7}
+	b := []int{2, 4, 6, 8}
+	c := []int{3: 10, 5: 20}
+	d := []struct {
+		x uint
+		y uint
+	}{
+		{50, 20},
+		{30, 40},
+	}
+	e := [][]int{
+		{1, 3},
+		{5, 7, 9},
+	}
+	fmt.Println("a:", a, cap(a))
+	fmt.Println("b:", b, cap(b))
+	fmt.Println("c:", c, cap(c))
+	fmt.Println("d:", d, cap(d))
+	fmt.Println("e:", e, cap(e))
+}
+
+func sliceAppend() {
+	fmt.Println("slice append")
+	data := [6]int{0, 1, 2}
+
+	s1 := data[:3]
+	s2 := append(s1, 100, 200, 300)
+	s3 := append(s2, 100, 200, 300)
+
+	fmt.Println("data:", data)
+	fmt.Println("s1:", s1)
+	fmt.Println("s2:", s2)
+	fmt.Println("s3:", s3)
+	//s2还是指向原数组的
+	s2[5] = 1000
+	fmt.Println("data:", data)
+	//因为append s2时超出了数组的容量 ，所以s3是从新分配的一个数组，和原数组没有任何关联
+	s3[5] = 100000
+	fmt.Println("data:", data)
+}
+
+/*
+* 错误的append示范
+* 在子slice中append元素可能会覆盖掉主slice中原本的元素
+ */
+func errorAppend() {
+	fmt.Println("error append example")
+	s1 := []int{1, 2, 3, 4, 5}
+	s2 := s1[:3]
+	fmt.Println("s1:", s1)
+	s2 = append(s2, 0)
+	fmt.Println("s2 append 0")
+	fmt.Println("s1:", s1)
+}
+
+func main() {
+	arrayInit()
+	sliceInit()
+	sliceAppend()
+	errorAppend()
+}

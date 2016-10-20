@@ -1,0 +1,78 @@
++++
+Categories = [
+  "GoLang",
+]
+menu = "main"
+Description = """
+接口可以使代码变得更抽象，增加可读性，规范和标准化功能，
+接口可以看成是模板的代替品
+"""
+date = "2016-01-16T17:59:00+08:00"
+title = "go interface"
+Tags = [
+  "测试",
+  "golang",
+]
++++
+package main
+
+import (
+	"fmt"
+)
+
+// 接口可以让函数更抽象
+type Blunt interface {
+	Beat() string
+}
+
+type Hammer struct {
+}
+
+func (h Hammer) Beat() string {
+	return "duang!!!"
+}
+
+type Wrench struct {
+}
+
+func (w Wrench) Beat() string {
+	return "pang!!!"
+}
+
+func BluntSound(b Blunt) {
+	fmt.Println(b.Beat())
+}
+
+// 也可以为函数增方法
+type Tester interface {
+	Do()
+	PrintPoint()
+}
+
+type FuncClass func()
+
+func (self *FuncClass) PrintPoint() { fmt.Printf("my point:%p\n", self) }
+func (self *FuncClass) Do()         { (*self)() }
+
+var testGroup = []func(){
+	func() {
+		h := Hammer{}
+		w := Wrench{}
+		// 只要类型实现了接口的方法，就可以自动转换
+		BluntSound(h)
+		BluntSound(w)
+	},
+	func() {
+		funcInstance := FuncClass(func() { fmt.Println("Hello, World!") })
+		var t Tester = &funcInstance
+		t.Do()
+		t.PrintPoint()
+	},
+}
+
+func main() {
+	for index, function := range testGroup {
+		fmt.Println("test", index+1)
+		function()
+	}
+}
