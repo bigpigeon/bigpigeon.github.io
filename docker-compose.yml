@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/data
     working_dir: /data
-    command: hugo -b http://127.0.0.1 -d /var/www/html
+    command: hugo -b http://bigpigeon.org -d /var/www/html
   sandbox:
     image: sandbox
     command: sandbox

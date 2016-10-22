@@ -1,6 +1,6 @@
 title = "bigpigeon"
 languageCode = "cn-zh"
-baseurl = "http://192.168.6.209:1313/"
+baseurl = "http://108.61.250.119/"
 theme = "hugo-uno"
 author = "bigpigeon"
 

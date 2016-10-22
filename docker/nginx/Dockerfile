@@ -11,8 +11,8 @@ RUN apt-get -y update  && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/
-RUN wget https://nginx.org/download/nginx-1.10.1.tar.gz
-RUN wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.4.1.tar.gz
+RUN wget https://nginx.org/download/nginx-1.10.1.tar.gz -o /dev/null
+RUN wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.4.1.tar.gz -o /dev/null
 
 RUN tar -xf nginx-1.10.1.tar.gz && tar -xf libressl-2.4.1.tar.gz
 WORKDIR /root/nginx-1.10.1
@@ -36,6 +36,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 #*********************************
 
 ENV DOLLAR='$'
-RUN mkdir -p /etc/nginx/temp /var/www/html
+RUN mkdir -p /etc/nginx/temp /var/www/html /etc/nginx/conf.d
 ADD nginx.conf /etc/nginx/nginx.conf
 
