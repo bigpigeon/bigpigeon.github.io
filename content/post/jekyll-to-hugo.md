@@ -167,7 +167,7 @@ Press Ctrl+C to stop
 为了让我的demo页面和文章页面分离开来，需要用到section这个功能，在上面的模板可以看到**where .Data.Pages "Section" "post"**，这个语句就是取所有页面中section位post的页面，那么问题来了:
 
 1. 如何判断这个页面是属于那个section
-2. 如何为section添加展示页该如何做
+2. 如何为section添加展示页
 
 
 **如何判断这个页面是属于那个section**
@@ -183,7 +183,7 @@ Press Ctrl+C to stop
 这时访问**http://localhost:1313/mysection/first**就可以看到该页面了，这个页面是由layouts/_default/single.html模板渲染的，如果你想自定义渲染的模板可以新增layouts/mysection/single.html作为mysection单页的渲染模板
 
 
-**如何为section添加展示页该如何做**
+**如何为section添加展示页**
 
 在layouts/section/中添加一个html模板，模板名必须和section名一致,比如我们为mysection添加一个展示页
 
@@ -220,6 +220,6 @@ EOF
 
 hugo还有一个summary的功能，可以让你把单页的部分内容放入展示页渲染，添加一个layouts/模板名/summary.html的模板，然后像上面的例子中那样使用**{{ .Render "summary"}}**就可以把容内渲染进展示页中
 
-**关于template如何使用你可以查看[官方文档](https://gohugo.io/templates/overview/)**
+**关于template的使用可以翻阅[官方文档](https://gohugo.io/templates/overview/)**
 
 
