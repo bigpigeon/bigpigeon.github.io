@@ -1,6 +1,5 @@
 title = "bigpigeon"
 languageCode = "cn-zh"
-baseurl = "http://108.61.250.119/"
 theme = "hugo-uno"
 author = "bigpigeon"
 
@@ -19,5 +18,5 @@ enableRobotsTXT = true
   twitter = "bigpigeon0"
   email = "bigpigeon0@gmail.com"
   description = ""
-  sandbox = "/sandbox"
+  lab = "/demo"
   disqus="httpbigpigeongithubio"
