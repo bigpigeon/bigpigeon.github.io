@@ -178,20 +178,20 @@ Press Ctrl+C to stop
 也就是在content中的子文件夹名就是section名，比如我要在网站增加一个名为demo的section
 
 
-    hugo new mysection/first.md
+    hugo new demo/first.md
 
-这时访问**http://localhost:1313/mysection/first**就可以看到该页面了，这个页面是由layouts/_default/single.html模板渲染的，如果你想自定义渲染的模板可以新增layouts/mysection/single.html作为mysection单页的渲染模板
+这时访问**http://localhost:1313/demo/first**就可以看到该页面了，这个页面是由layouts/_default/single.html模板渲染的，如果你想自定义渲染的模板可以新增layouts/demo/single.html作为demo单页的渲染模板
 
 
 **如何为section添加展示页**
 
-在layouts/section/中添加一个html模板，模板名必须和section名一致,比如我们为mysection添加一个展示页
+在layouts/section/中添加一个html模板，模板名必须和section名一致,比如我们为demo添加一个展示页
 
 ```bash
-cat >> layouts/section/mysection.html <<EOF
+cat >> layouts/section/demo.html <<EOF
 {{ partial "head.html" . }}
     <!--拿到当前分页-->
-    {{ $paginator := .Paginate (where .Data.Pages "Section" "mysection") }}
+    {{ $paginator := .Paginate (where .Data.Pages "Section" "demo") }}
     ...
     <!--读取分页内容-->
     {{ range $paginator.Pages }}
@@ -215,7 +215,7 @@ cat >> layouts/section/mysection.html <<EOF
 EOF
 ```
 
-这样访问**http://localhost:1313/mysection**  就可以看到展示页了
+这样访问**http://localhost:1313/demo**  就可以看到展示页了
 
 
 hugo还有一个summary的功能，可以让你把单页的部分内容放入展示页渲染，添加一个layouts/模板名/summary.html的模板，然后像上面的例子中那样使用**{{ .Render "summary"}}**就可以把容内渲染进展示页中
