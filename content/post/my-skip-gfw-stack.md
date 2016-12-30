@@ -61,6 +61,9 @@ export GOROOT=/usr/local/lib/go
 export GOPATH=$GOROOT/packages
 export PATH=$GOPATH/bin:$PATH
 
+# 加载环境变量
+. /etc/profile.d/go.sh
+
 # 安装shadowsocks和kcpun
 go get github.com/xtaci/kcptun/server
 go get github.com/shadowsocks/shadowsocks-go
