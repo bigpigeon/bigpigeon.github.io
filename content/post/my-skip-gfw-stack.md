@@ -81,7 +81,7 @@ vim /etc/shadowsocks.json
   "server": "0.0.0.0",
   "method": "aes-256-cfb",
   "port_password": {
-    "5501": "you password",
+    "5501": "you password"
   },
   "timeout": 300
 }
@@ -93,11 +93,54 @@ vim /etc/shadowsocks.json
 **使用supervisor管理进程**
 
 
+安装supervisor(没有pip自行想办法)
+
+    pip install supervisor
 
 
-把下面内容复制进去到supervisor的配置文件
+配置supervisor.conf
 
 ```
+vim /etc/supervisor.conf
+# 把以下内容复制进去
+; supervisor config file
+
+[unix_http_server]
+file=/var/run/supervisor.sock   ; (the path to the socket file)
+chmod=0700                       ; sockef file mode (default 0700)
+
+[supervisord]
+logfile=/var/log/supervisor/supervisord.log ; (main log file;default $CWD/supervisord.log)
+pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+childlogdir=/var/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
+
+; the below section must remain in the config file for RPC
+; (supervisorctl/web interface) to work, additional interfaces may be
+; added by defining them in separate rpcinterface: sections
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+
+; The [include] section can just contain the "files" setting.  This
+; setting can list multiple files (separated by whitespace or
+; newlines).  It can also contain wildcards.  The filenames are
+; interpreted as relative to this file.  Included files *cannot*
+; include files themselves.
+
+[include]
+files = /etc/supervisor.d/*.ini
+```
+
+配置kcpun和shadowsocks
+
+```
+# 如果没有创建该文件夹
+mkdir /etc/supervisor.d
+
+vim /etc/supervisor.d/proxy.ini
+# 把以下内容复制进去
 [program:shadowsocks]
 directory=/usr/lib/go/packages/bin
 command=shadowsocks-server -c /etc/shadowsocks.json
@@ -124,18 +167,6 @@ stdout_logfile_maxbytes=10MB
 stdout_logfile_backups=2
 redirect_stderr=true
 ```
-
-因为kcpun使用的是udp，所以可以侦听同一个端口号
-
-
-Ubuntu/Debain 的配置文件位置
-
-    /etc/supervisor/conf.d/proxy.conf
-
-CentOS/red hat 的配置文件位置
-
-    /etc/supervisord.d/proxy.ini
-
 
 启动supervisor
 
