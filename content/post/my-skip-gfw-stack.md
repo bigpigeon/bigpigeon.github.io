@@ -14,7 +14,16 @@ title = "我的翻墙技术栈"
 谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。
 
 
-所以为了解决这种弱网络连接不稳定的情况，下面我就来详细介绍我翻墙技术栈, 如何部署[kcpun](https://github.com/xtaci/kcptun)来提升代理服务器的转发速度
+这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。
+
+
+linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题
+
+
+也可以通过其他协议工具比如:[kcptun](https://github.com/xtaci/kcptun)
+
+
+kcptun可以提供双边加速和窗口控制，效果可能比bbr好
 
 
 <!--more-->
@@ -42,7 +51,7 @@ Linux version 3.10.0-327.28.3.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc 
 
 **安装软件**
 
-我推荐使用go版本的kcpun和shadowsocks,这样部署和维护都比较方便
+我推荐使用go版本的kcptun和shadowsocks,这样部署和维护都比较方便(如果使用bbr可以忽略kcptun部分,开启bbr可以看[这里](https://github.com/iMeiji/shadowsocks_install/wiki/%E5%BC%80%E5%90%AFTCP-BBR%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95))
 
 ```
 # 下载并解压go的二进制包
@@ -64,7 +73,7 @@ export PATH=$GOPATH/bin:$PATH
 # 加载环境变量
 . /etc/profile.d/go.sh
 
-# 安装shadowsocks和kcpun
+# 安装shadowsocks和kcptun
 go get github.com/xtaci/kcptun/server
 go get github.com/shadowsocks/shadowsocks-go
 
@@ -81,13 +90,13 @@ vim /etc/shadowsocks.json
   "server": "0.0.0.0",
   "method": "aes-256-cfb",
   "port_password": {
-    "5501": "you password"
+    "5501": "your password"
   },
   "timeout": 300
 }
 ```
 
-[优化shadowsocks服务器](https://shadowsocks.org/en/config/advanced.html)
+[可以通过修改服务端内核参数提升shadowsocks的发包效率](https://shadowsocks.org/en/config/advanced.html)
 
 
 **使用supervisor管理进程**
@@ -133,7 +142,7 @@ serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
 files = /etc/supervisor.d/*.ini
 ```
 
-配置kcpun和shadowsocks
+配置kcptun和shadowsocks
 
 ```
 # 如果没有创建该文件夹
@@ -143,7 +152,7 @@ vim /etc/supervisor.d/proxy.ini
 # 把以下内容复制进去
 [program:shadowsocks]
 directory=/usr/lib/go/packages/bin
-command=shadowsocks-server -c /etc/shadowsocks.json
+command=/usr/lib/go/packages/bin/shadowsocks-server -c /etc/shadowsocks.json
 user=root
 process_name=%(program_name)s
 numprocs=1
@@ -154,15 +163,15 @@ stdout_logfile_maxbytes=10MB
 stdout_logfile_backups=2
 redirect_stderr=true
 
-[program:kcpun]
+[program:kcptun]
 directory=/usr/lib/go/packages/bin
-command=server -t "127.0.0.1:5501" -l ":5501" -mode fast2 --crypt aes-128
+command=/usr/lib/go/packages/bin/server -t "127.0.0.1:5501" -l ":5501" -mode fast2 --crypt aes-128
 user=root
 process_name=%(program_name)s
 numprocs=1
 autostart=true
 autorestart=true
-stdout_logfile=/var/log/kcpun.log
+stdout_logfile=/var/log/kcptun.log
 stdout_logfile_maxbytes=10MB
 stdout_logfile_backups=2
 redirect_stderr=true
@@ -192,7 +201,10 @@ vim /etc/rc.local
 
 ### 客户端配置
 
-**kcpun客户端**
+**kcptun客户端**
+
+使用bbr可以忽略这部分
+
 
 在https://github.com/xtaci/kcptun/releases/tag/v20161222 中下载对应的版本
 
@@ -213,7 +225,7 @@ Mac OS X的[下载页面](https://github.com/shadowsocks/ShadowsocksX-NG/release
 linux桌面版本的[下载页面](https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation)
 
 
-> 编辑config.json,把以下内容复制进去保存,并把这个文件导入shadowsocks
+> 编辑config.json,把以下内容复制进去保存,并把这个文件导入shadowsocks(使用bbr时server和server_port填服务器地址和端口号)
 
 ```json
 {
