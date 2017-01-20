@@ -1,0 +1,66 @@
++++
+Categories = [
+  "GoLang",
+]
+menu = "main"
+Description = """
+开启一个并发任务并在任务中加入定时任务并通过channel收集结果
+"""
+date = "2016-01-16T17:59:00+08:00"
+title = "defer测试"
+Tags = [
+  "测试",
+  "golang",
+]
++++
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func process(id int, result chan string) {
+	// 开启一个定时任务的线程
+	heart := time.Duration(5) // 定时任务间隔
+	done := make(chan bool, 1)
+	defer close(done)
+	go func() {
+		tick := time.NewTicker(heart * time.Second)
+		defer tick.Stop()
+		//		defer fmt.Println("tick stop:", id)
+		for {
+			select {
+			case <-tick.C:
+				fmt.Printf("%d->heart\n", id)
+			case <-done:
+				return
+			}
+		}
+	}()
+	// 处理任务需要的时间
+	wait := rand.Int63() % 20
+	// process something
+	time.Sleep(time.Duration(wait) * time.Second)
+	// 任务完成，把结果通过channel传给
+	result <- fmt.Sprintf("task %d finish in %d", id, wait)
+	return
+}
+
+func main() {
+	pnum := 100
+	// 用来缓存处理结果的channel，队列长度=pnum
+	c := make(chan string, pnum)
+	for i := 0; i < pnum; i++ {
+		// 开启并发
+		go process(i, c)
+	}
+	// 搜集结果
+	for i := 0; i < pnum; i++ {
+		select {
+		case result := <-c:
+			fmt.Println(result)
+		}
+	}
+}
