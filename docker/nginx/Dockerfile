@@ -11,25 +11,27 @@ RUN apt-get -y update  && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/
-RUN wget https://nginx.org/download/nginx-1.10.1.tar.gz -o /dev/null
-RUN wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.4.1.tar.gz -o /dev/null
 
-RUN tar -xf nginx-1.10.1.tar.gz && tar -xf libressl-2.4.1.tar.gz
-WORKDIR /root/nginx-1.10.1
-RUN ./configure \
+ENV NGINX_VERSION=nginx-1.10.1
+ENV SSL_VERSION=libressl-2.4.1
+RUN wget https://nginx.org/download/$NGINX_VERSION.tar.gz -o /dev/null && tar -xf $NGINX_VERSION.tar.gz && \
+    wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$SSL_VERSION.tar.gz -o /dev/null && tar -xf $SSL_VERSION.tar.gz && \
+    cd /root/$NGINX_VERSION && \
+    ./configure \
     --prefix=/usr/local/nginx \
     --sbin-path=/usr/sbin/nginx \
     --conf-path=/etc/nginx/nginx.conf \
     --pid-path=/var/run/nginx.pid \
     --error-log-path=/var/log/nginx/error.log \
     --http-log-path=/var/log/nginx/access.log \
-    --with-openssl=../libressl-2.4.1 \
+    --with-openssl=../$SSL_VERSION \
     --with-http_v2_module \
     --with-http_ssl_module \
     --with-http_realip_module \
     --with-http_stub_status_module \
-    --with-threads
-RUN make && make install
+    --with-threads && \
+    make && make install && \
+    cd /root && rm -rf *
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
@@ -38,4 +40,3 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 ENV DOLLAR='$'
 RUN mkdir -p /etc/nginx/temp /var/www/html /etc/nginx/conf.d
 ADD nginx.conf /etc/nginx/nginx.conf
-
