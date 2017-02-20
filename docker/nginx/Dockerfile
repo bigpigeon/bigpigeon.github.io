@@ -12,8 +12,8 @@ RUN apt-get -y update  && \
 
 WORKDIR /root/
 
-ENV NGINX_VERSION=nginx-1.10.1
-ENV SSL_VERSION=libressl-2.4.1
+ENV NGINX_VERSION=nginx-1.10.3
+ENV SSL_VERSION=libressl-2.5.1
 RUN wget https://nginx.org/download/$NGINX_VERSION.tar.gz -o /dev/null && tar -xf $NGINX_VERSION.tar.gz && \
     wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$SSL_VERSION.tar.gz -o /dev/null && tar -xf $SSL_VERSION.tar.gz && \
     cd /root/$NGINX_VERSION && \
