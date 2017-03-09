@@ -14,11 +14,11 @@ title = "git错误push与回滚"
 
 之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法
 
-
+<!--more-->
 ### 本地处理
 
 
-首先需要把checkout到提交zip文件的前一个分支(假设我的分支名为bate)
+首先需要把checkout到错误分支的前一个分支(假设我的分支名为bate)
 
     git checkout bate^
 
