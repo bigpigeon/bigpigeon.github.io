@@ -9,5 +9,6 @@ services:
     command: hugo -b https://bigpigeon.org
   sandbox:
     image: sandbox
+    build: playground/sandbox
     command: sandbox
     restart: always

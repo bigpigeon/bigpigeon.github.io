@@ -1,3 +1,6 @@
 [submodule "themes/hugo-uno"]
 	path = themes/hugo-uno
 	url = git@github.com:bigpigeon/hugo-uno.git
+[submodule "playground"]
+	path = playground
+	url = https://github.com/golang/playground
