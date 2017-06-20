@@ -221,7 +221,7 @@ if err != nil {
 也就是说，**如果Score如果不是指针字段，它将永远没法设置为0值**
 
 
-这个规则在下面的查询和插入中也会有，在创建struct时一定要注意这些细节
+这个规则在下面的查询，插入和更新中也会有，在创建struct时一定要注意这些细节
 
 #### **查询数据**
 
@@ -346,10 +346,10 @@ db.Where(&Product{Name: "xiaomi6"}).First(&product)
 
 **Update**
 
-使用Update可以进行批量更新，但是无法使用结构体对象更新
+使用Updates可以进行批量更新，空值依然会被忽略
 
 ```golang
-db.Model(&Product{}).Update("Description", "also nothing here")
+db.Model(&Product{}).Updates(&Product{Description: "also nothing here"})
 products := []Product{}
 db.Find(&products)
 for _, p := range products {
@@ -402,7 +402,7 @@ db.Delete(&email)
 
 - 受限于go的struct，在gorm的查询无法查询0值，而使用指针会让结构体变的异常丑陋
 
-- update，条件查询,嵌套查询等操作还是要借助字符串表达式
+- 条件查询,嵌套查询等操作还是要借助字符串表达式
 
 总的来说gorm还是一个不错orm,用来做简单数据的增删改查还是非常方便，在日常请求的逻辑处理基本是够用的
 
