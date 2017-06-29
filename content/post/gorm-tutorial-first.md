@@ -98,6 +98,14 @@ type Product struct {
 	Score       *float64 `gorm:"not null;default:1.0"`
 	Description string   `gorm:"size:255;default:'nothing in here'"`
 }
+
+type GreekAlphabet struct {
+	ID         uint   `gorm:"primary_key"`
+	LatinName  string `gorm:"unique_index"`
+	UpperCode  rune
+	LowerCode  rune
+	IsFrequent bool `gorm:"index"`
+}
 ```
 gorm会go的类型自动转成数据库类型，也可以通过type指定数据库类型
 以下是默认情况下go类型和数据库类型对照(这里用postgres举例)
@@ -185,6 +193,7 @@ CREATE TABLE "emails" ("id" integer primary key autoincrement,"user_id" integer,
 CREATE TABLE "languages" ("id" integer primary key autoincrement,"name" varchar(255),"code" varchar(255) )
 CREATE TABLE "origins" ("id" integer primary key autoincrement,"product_id" integer,"address1" varchar(255) NOT NULL UNIQUE,"address2" varchar(255) UNIQUE )
 CREATE TABLE "products" ("id" integer primary key autoincrement,"created_at" datetime,"updated_at" datetime,"deleted_at" datetime,"name" varchar(255),"sid" integer,"score" real NOT NULL  DEFAULT 1.0,"description" varchar(255) DEFAULT 'nothing in here' )
+CREATE TABLE "greek_alphabets" ("id" integer primary key autoincrement,"latin_name" varchar(255),"upper_code" integer,"lower_code" integer,"is_frequent" bool )
 ```
 
 #### **创建数据**
