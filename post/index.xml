@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on bigpigeon</title>
-    <link>https://bigpigeon.org/post/</link>
+    <link>https://bigpigeon.github.io/post/</link>
     <description>Recent content in Posts on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Fri, 23 Jun 2017 15:16:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>gorm简介[中]</title>
-      <link>https://bigpigeon.org/post/gorm-tutorial-second/</link>
+      <link>https://bigpigeon.github.io/post/gorm-tutorial-second/</link>
       <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
+      <guid>https://bigpigeon.github.io/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
 
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
@@ -46,10 +46,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>谈谈go的relfect</title>
-      <link>https://bigpigeon.org/post/go-reflect-talk/</link>
+      <link>https://bigpigeon.github.io/post/go-reflect-talk/</link>
       <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
+      <guid>https://bigpigeon.github.io/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
 
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
@@ -67,10 +67,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>gorm简介[前]</title>
-      <link>https://bigpigeon.org/post/gorm-tutorial-first/</link>
+      <link>https://bigpigeon.github.io/post/gorm-tutorial-first/</link>
       <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
+      <guid>https://bigpigeon.github.io/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
 
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
@@ -83,10 +83,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>git错误push与回滚</title>
-      <link>https://bigpigeon.org/post/git-push-recover-way/</link>
+      <link>https://bigpigeon.github.io/post/git-push-recover-way/</link>
       <pubDate>Thu, 09 Mar 2017 09:44:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/git-push-recover-way/</guid>
+      <guid>https://bigpigeon.github.io/post/git-push-recover-way/</guid>
       <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
@@ -94,10 +94,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>我的翻墙技术栈</title>
-      <link>https://bigpigeon.org/post/my-skip-gfw-stack/</link>
+      <link>https://bigpigeon.github.io/post/my-skip-gfw-stack/</link>
       <pubDate>Tue, 27 Dec 2016 17:07:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/my-skip-gfw-stack/</guid>
+      <guid>https://bigpigeon.github.io/post/my-skip-gfw-stack/</guid>
       <description>&lt;p&gt;谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。&lt;/p&gt;
 
 &lt;p&gt;这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。&lt;/p&gt;
@@ -113,10 +113,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>从jekyll到hugo，搬运经验总结</title>
-      <link>https://bigpigeon.org/post/jekyll-to-hugo/</link>
+      <link>https://bigpigeon.github.io/post/jekyll-to-hugo/</link>
       <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/jekyll-to-hugo/</guid>
+      <guid>https://bigpigeon.github.io/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
 
 &lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
@@ -126,10 +126,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>Iptables学习笔记</title>
-      <link>https://bigpigeon.org/post/iptables-study/</link>
+      <link>https://bigpigeon.github.io/post/iptables-study/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/iptables-study/</guid>
+      <guid>https://bigpigeon.github.io/post/iptables-study/</guid>
       <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
 
 &lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
@@ -139,10 +139,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>react学习笔记</title>
-      <link>https://bigpigeon.org/post/react-study/</link>
+      <link>https://bigpigeon.github.io/post/react-study/</link>
       <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/react-study/</guid>
+      <guid>https://bigpigeon.github.io/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
 
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
@@ -172,10 +172,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>postgresql类型</title>
-      <link>https://bigpigeon.org/post/postgresql-type/</link>
+      <link>https://bigpigeon.github.io/post/postgresql-type/</link>
       <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/postgresql-type/</guid>
+      <guid>https://bigpigeon.github.io/post/postgresql-type/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
 
@@ -193,10 +193,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>在python上操作postgresql</title>
-      <link>https://bigpigeon.org/post/python-and-postgresql/</link>
+      <link>https://bigpigeon.github.io/post/python-and-postgresql/</link>
       <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/python-and-postgresql/</guid>
+      <guid>https://bigpigeon.github.io/post/python-and-postgresql/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
 
@@ -210,10 +210,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>使用docker部署jekyll</title>
-      <link>https://bigpigeon.org/post/docker-and-jekyll/</link>
+      <link>https://bigpigeon.github.io/post/docker-and-jekyll/</link>
       <pubDate>Sat, 06 Feb 2016 14:06:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/docker-and-jekyll/</guid>
+      <guid>https://bigpigeon.github.io/post/docker-and-jekyll/</guid>
       <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
 
 &lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
@@ -223,10 +223,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>gin框架介绍</title>
-      <link>https://bigpigeon.org/post/gin-framework/</link>
+      <link>https://bigpigeon.github.io/post/gin-framework/</link>
       <pubDate>Thu, 24 Dec 2015 06:25:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gin-framework/</guid>
+      <guid>https://bigpigeon.github.io/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
 
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;
@@ -238,10 +238,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>pac脚本优化</title>
-      <link>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</link>
+      <link>https://bigpigeon.github.io/post/switchy-proxy-pac-optimization/</link>
       <pubDate>Sat, 19 Dec 2015 22:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</guid>
+      <guid>https://bigpigeon.github.io/post/switchy-proxy-pac-optimization/</guid>
       <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
 
 &lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
@@ -266,10 +266,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>jekyll部署总结</title>
-      <link>https://bigpigeon.org/post/jekyll-deploy/</link>
+      <link>https://bigpigeon.github.io/post/jekyll-deploy/</link>
       <pubDate>Wed, 09 Dec 2015 16:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/jekyll-deploy/</guid>
+      <guid>https://bigpigeon.github.io/post/jekyll-deploy/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况&lt;/li&gt;
 &lt;li&gt;把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件&lt;/li&gt;

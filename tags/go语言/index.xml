@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go语言 on bigpigeon</title>
-    <link>https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/</link>
+    <link>https://bigpigeon.github.io/tags/go%E8%AF%AD%E8%A8%80/</link>
     <description>Recent content in Go语言 on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Fri, 23 Jun 2017 15:16:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/tags/go%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>gorm简介[中]</title>
-      <link>https://bigpigeon.org/post/gorm-tutorial-second/</link>
+      <link>https://bigpigeon.github.io/post/gorm-tutorial-second/</link>
       <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
+      <guid>https://bigpigeon.github.io/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
 
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
@@ -46,10 +46,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>谈谈go的relfect</title>
-      <link>https://bigpigeon.org/post/go-reflect-talk/</link>
+      <link>https://bigpigeon.github.io/post/go-reflect-talk/</link>
       <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
+      <guid>https://bigpigeon.github.io/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
 
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
@@ -67,10 +67,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>gorm简介[前]</title>
-      <link>https://bigpigeon.org/post/gorm-tutorial-first/</link>
+      <link>https://bigpigeon.github.io/post/gorm-tutorial-first/</link>
       <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
+      <guid>https://bigpigeon.github.io/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
 
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;

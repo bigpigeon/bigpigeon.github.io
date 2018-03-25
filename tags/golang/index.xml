@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Golang on bigpigeon</title>
-    <link>https://bigpigeon.org/tags/golang/</link>
+    <link>https://bigpigeon.github.io/tags/golang/</link>
     <description>Recent content in Golang on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Fri, 20 Jan 2017 17:59:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>并发测试</title>
-      <link>https://bigpigeon.org/demo/concurrent/</link>
+      <link>https://bigpigeon.github.io/demo/concurrent/</link>
       <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/concurrent/</guid>
+      <guid>https://bigpigeon.github.io/demo/concurrent/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;math/rand&#34; &#34;time&#34; ) func process(id int, result chan string) { // 开启一个定时任务的线程 heart := time.Duration(5) // 定时任务间隔 done := make(chan bool, 1) defer close(done) go func() { tick := time.NewTicker(heart * time.Second) defer tick.Stop() //	defer fmt.Println(&#34;tick stop:&#34;, id) for { select { case heart\n&#34;, id) case </description>
     </item>
     
     <item>
       <title>从jekyll到hugo，搬运经验总结</title>
-      <link>https://bigpigeon.org/post/jekyll-to-hugo/</link>
+      <link>https://bigpigeon.github.io/post/jekyll-to-hugo/</link>
       <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/jekyll-to-hugo/</guid>
+      <guid>https://bigpigeon.github.io/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
 
 &lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
@@ -36,19 +36,19 @@
     
     <item>
       <title>defer测试</title>
-      <link>https://bigpigeon.org/demo/defer/</link>
+      <link>https://bigpigeon.github.io/demo/defer/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/defer/</guid>
+      <guid>https://bigpigeon.github.io/demo/defer/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;sync&#34; &#34;testing&#34; ) //调用顺序 //最早调用的defer会在最后执行 func test0() { defer func() { fmt.Print(&#34;a\n&#34;) }() defer func() { fmt.Print(&#34;b&#34;) }() defer func() { fmt.Print(&#34;c&#34;) }() fmt.Println(&#34;test 0&#34;) } //defer是在函数结束后返回前被执行 //并且lambda闭包传的是值的引用 //也就是说如果返回值在函数定义时被命名，在defer调用的函数中就可以修改返回值 func test1() { doubleSum := func(x, y int) (z int) { //don&#39;t forget add () with return expression fmt.Printf(&#34;start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) defer func() { fmt.Printf(&#34;defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) z = z * 2 }() x = x * 2 y = y * 2 return x + y } fmt.</description>
     </item>
     
     <item>
       <title>go array and slice</title>
-      <link>https://bigpigeon.org/demo/goarray/</link>
+      <link>https://bigpigeon.github.io/demo/goarray/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goarray/</guid>
+      <guid>https://bigpigeon.github.io/demo/goarray/</guid>
       <description>package main
 
 import (
@@ -74,10 +74,10 @@ func arrayInit() {
     
     <item>
       <title>go clone</title>
-      <link>https://bigpigeon.org/demo/goclone/</link>
+      <link>https://bigpigeon.github.io/demo/goclone/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goclone/</guid>
+      <guid>https://bigpigeon.github.io/demo/goclone/</guid>
       <description>package main
 
 import (
@@ -104,10 +104,10 @@ func main() {
     
     <item>
       <title>go hello</title>
-      <link>https://bigpigeon.org/demo/gohelloworld/</link>
+      <link>https://bigpigeon.github.io/demo/gohelloworld/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gohelloworld/</guid>
+      <guid>https://bigpigeon.github.io/demo/gohelloworld/</guid>
       <description>package main
 
 import &#34;fmt&#34;
@@ -121,10 +121,10 @@ func main() {
     
     <item>
       <title>go interface</title>
-      <link>https://bigpigeon.org/demo/gointerface/</link>
+      <link>https://bigpigeon.github.io/demo/gointerface/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gointerface/</guid>
+      <guid>https://bigpigeon.github.io/demo/gointerface/</guid>
       <description>package main
 
 import (
@@ -161,10 +161,10 @@ type Tester interface {
     
     <item>
       <title>go sched</title>
-      <link>https://bigpigeon.org/demo/gosched/</link>
+      <link>https://bigpigeon.github.io/demo/gosched/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gosched/</guid>
+      <guid>https://bigpigeon.github.io/demo/gosched/</guid>
       <description>package main
 
 import (
@@ -196,19 +196,19 @@ func main() {
     
     <item>
       <title>go select</title>
-      <link>https://bigpigeon.org/demo/goselect/</link>
+      <link>https://bigpigeon.github.io/demo/goselect/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goselect/</guid>
+      <guid>https://bigpigeon.github.io/demo/goselect/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;runtime&#34; &#34;sync&#34; &#34;time&#34; ) //测试select 加入default和不加default的区别 func test() { cA, cB := make(chan int), make(chan int) //为防止在go routines跑完前进程退出 wg := sync.WaitGroup{} wg.Add(3) go func() { defer wg.Done() cA </description>
     </item>
     
     <item>
       <title>go struct</title>
-      <link>https://bigpigeon.org/demo/gostruct/</link>
+      <link>https://bigpigeon.github.io/demo/gostruct/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gostruct/</guid>
+      <guid>https://bigpigeon.github.io/demo/gostruct/</guid>
       <description>package main
 
 import (
@@ -232,10 +232,10 @@ var testFuncs = []func(){
     
     <item>
       <title>gin框架介绍</title>
-      <link>https://bigpigeon.org/post/gin-framework/</link>
+      <link>https://bigpigeon.github.io/post/gin-framework/</link>
       <pubDate>Thu, 24 Dec 2015 06:25:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/gin-framework/</guid>
+      <guid>https://bigpigeon.github.io/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
 
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;

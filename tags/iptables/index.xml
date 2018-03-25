@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Iptables on bigpigeon</title>
-    <link>https://bigpigeon.org/tags/iptables/</link>
+    <link>https://bigpigeon.github.io/tags/iptables/</link>
     <description>Recent content in Iptables on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Tue, 28 Jun 2016 16:00:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Iptables学习笔记</title>
-      <link>https://bigpigeon.org/post/iptables-study/</link>
+      <link>https://bigpigeon.github.io/post/iptables-study/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/iptables-study/</guid>
+      <guid>https://bigpigeon.github.io/post/iptables-study/</guid>
       <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
 
 &lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;

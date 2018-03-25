@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Demos on bigpigeon</title>
-    <link>https://bigpigeon.org/demo/</link>
+    <link>https://bigpigeon.github.io/demo/</link>
     <description>Recent content in Demos on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Fri, 20 Jan 2017 17:59:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/demo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/demo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>并发测试</title>
-      <link>https://bigpigeon.org/demo/concurrent/</link>
+      <link>https://bigpigeon.github.io/demo/concurrent/</link>
       <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/concurrent/</guid>
+      <guid>https://bigpigeon.github.io/demo/concurrent/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;math/rand&#34; &#34;time&#34; ) func process(id int, result chan string) { // 开启一个定时任务的线程 heart := time.Duration(5) // 定时任务间隔 done := make(chan bool, 1) defer close(done) go func() { tick := time.NewTicker(heart * time.Second) defer tick.Stop() //	defer fmt.Println(&#34;tick stop:&#34;, id) for { select { case heart\n&#34;, id) case </description>
     </item>
     
     <item>
       <title>defer测试</title>
-      <link>https://bigpigeon.org/demo/defer/</link>
+      <link>https://bigpigeon.github.io/demo/defer/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/defer/</guid>
+      <guid>https://bigpigeon.github.io/demo/defer/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;sync&#34; &#34;testing&#34; ) //调用顺序 //最早调用的defer会在最后执行 func test0() { defer func() { fmt.Print(&#34;a\n&#34;) }() defer func() { fmt.Print(&#34;b&#34;) }() defer func() { fmt.Print(&#34;c&#34;) }() fmt.Println(&#34;test 0&#34;) } //defer是在函数结束后返回前被执行 //并且lambda闭包传的是值的引用 //也就是说如果返回值在函数定义时被命名，在defer调用的函数中就可以修改返回值 func test1() { doubleSum := func(x, y int) (z int) { //don&#39;t forget add () with return expression fmt.Printf(&#34;start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) defer func() { fmt.Printf(&#34;defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) z = z * 2 }() x = x * 2 y = y * 2 return x + y } fmt.</description>
     </item>
     
     <item>
       <title>go array and slice</title>
-      <link>https://bigpigeon.org/demo/goarray/</link>
+      <link>https://bigpigeon.github.io/demo/goarray/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goarray/</guid>
+      <guid>https://bigpigeon.github.io/demo/goarray/</guid>
       <description>package main
 
 import (
@@ -61,10 +61,10 @@ func arrayInit() {
     
     <item>
       <title>go clone</title>
-      <link>https://bigpigeon.org/demo/goclone/</link>
+      <link>https://bigpigeon.github.io/demo/goclone/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goclone/</guid>
+      <guid>https://bigpigeon.github.io/demo/goclone/</guid>
       <description>package main
 
 import (
@@ -91,10 +91,10 @@ func main() {
     
     <item>
       <title>go hello</title>
-      <link>https://bigpigeon.org/demo/gohelloworld/</link>
+      <link>https://bigpigeon.github.io/demo/gohelloworld/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gohelloworld/</guid>
+      <guid>https://bigpigeon.github.io/demo/gohelloworld/</guid>
       <description>package main
 
 import &#34;fmt&#34;
@@ -108,10 +108,10 @@ func main() {
     
     <item>
       <title>go interface</title>
-      <link>https://bigpigeon.org/demo/gointerface/</link>
+      <link>https://bigpigeon.github.io/demo/gointerface/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gointerface/</guid>
+      <guid>https://bigpigeon.github.io/demo/gointerface/</guid>
       <description>package main
 
 import (
@@ -148,10 +148,10 @@ type Tester interface {
     
     <item>
       <title>go sched</title>
-      <link>https://bigpigeon.org/demo/gosched/</link>
+      <link>https://bigpigeon.github.io/demo/gosched/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gosched/</guid>
+      <guid>https://bigpigeon.github.io/demo/gosched/</guid>
       <description>package main
 
 import (
@@ -183,19 +183,19 @@ func main() {
     
     <item>
       <title>go select</title>
-      <link>https://bigpigeon.org/demo/goselect/</link>
+      <link>https://bigpigeon.github.io/demo/goselect/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/goselect/</guid>
+      <guid>https://bigpigeon.github.io/demo/goselect/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;runtime&#34; &#34;sync&#34; &#34;time&#34; ) //测试select 加入default和不加default的区别 func test() { cA, cB := make(chan int), make(chan int) //为防止在go routines跑完前进程退出 wg := sync.WaitGroup{} wg.Add(3) go func() { defer wg.Done() cA </description>
     </item>
     
     <item>
       <title>go struct</title>
-      <link>https://bigpigeon.org/demo/gostruct/</link>
+      <link>https://bigpigeon.github.io/demo/gostruct/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/demo/gostruct/</guid>
+      <guid>https://bigpigeon.github.io/demo/gostruct/</guid>
       <description>package main
 
 import (

@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Postgresql on bigpigeon</title>
-    <link>https://bigpigeon.org/tags/postgresql/</link>
+    <link>https://bigpigeon.github.io/tags/postgresql/</link>
     <description>Recent content in Postgresql on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Sun, 13 Mar 2016 10:30:00 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.org/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.github.io/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>postgresql类型</title>
-      <link>https://bigpigeon.org/post/postgresql-type/</link>
+      <link>https://bigpigeon.github.io/post/postgresql-type/</link>
       <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/postgresql-type/</guid>
+      <guid>https://bigpigeon.github.io/post/postgresql-type/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
 
@@ -35,10 +35,10 @@
     
     <item>
       <title>在python上操作postgresql</title>
-      <link>https://bigpigeon.org/post/python-and-postgresql/</link>
+      <link>https://bigpigeon.github.io/post/python-and-postgresql/</link>
       <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/post/python-and-postgresql/</guid>
+      <guid>https://bigpigeon.github.io/post/python-and-postgresql/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
 
