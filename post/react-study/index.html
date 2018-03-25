@@ -1,0 +1,485 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> react学习笔记 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>react学习笔记</h2>
+          <span class="post-date">Thu, Apr 21, 2016</span>
+          <h3 id="jsx">JSX</h3>
+
+<p>React可以使用的是独有的JSX语法,包围它的<code>&lt;script&gt;</code>标签type值为text/babel</p>
+
+<p>那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:</p>
+
+<pre><code>var a = &lt;div class=&quot;green&quot;&gt;my color is green&lt;/div&gt;
+</code></pre>
+
+<p>在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用</p>
+
+<p>也可以使用react.createElement创建element</p>
+
+<pre><code class="language-javascript">var app = React.createElement(
+    &quot;div&quot;, //标签名或组件对象
+    {class:&quot;green&quot;}, //元素属性集
+    &quot;my color is green&quot; //子元素
+);
+</code></pre>
+
+<p>createElement的更多信息<a href="https://facebook.github.io/react/docs/top-level-api.html#react.createelement">看这里</a></p>
+
+<h2 id="hugomore42"></h2>
+
+<p>于是乎，我们可以自由组合js和xml了，比如</p>
+
+<pre><code class="language-javascript">var names = ['Alice', 'Emily', 'Kate'];
+&lt;div&gt;
+  {
+    names.map(function (name) {
+      return React.createElement(
+         &quot;div&quot;, {key: names.id + name},
+         &quot;hello &quot; + name
+      )
+    })
+  }
+&lt;/div&gt;
+</code></pre>
+
+<p>当React遇到&lt;时就会用xml解析,遇到{时就用js解析</p>
+
+<h3 id="render">render</h3>
+
+<p>刚才创建的element怎么运用到html中呢,这里就需要用到react的ReactDOM.render函数</p>
+
+<ul>
+<li>把a元素加入到id为example的元素中</li>
+<li>a可以是一个html标签，也可以是组件对象</li>
+</ul>
+
+<pre><code class="language-javascript">ReactDOM.render(
+	a, //标签名或组件对象
+	document.getElementById('example')
+);
+</code></pre>
+
+<h3 id="组件">组件</h3>
+
+<p>组件就像是一个会动的element,它有自己的方法和状态,并且可以通过一些内置函数控制element的行为.</p>
+
+<p>可以拿它和c++的类做类比, 赋予的值就是类名,this.props中的就是类的初始化参数,<Message name="pigeon"/>就是实例化一个类</p>
+
+<p>先来看看如何创建和使用一个组件</p>
+
+<pre><code class="language-javascript">var Message = React.createClass({
+  render: function() {
+    return &lt;div&gt;Hello {this.props.name}&lt;/div&gt;;
+  }
+});
+
+ReactDom.render(
+  &lt;Message name=&quot;pigeon&quot;/&gt;,
+  document.getElementById('example')
+)
+</code></pre>
+
+<p><strong>propTypes方法可以强制指定属性类型</strong></p>
+
+<p>下面该例子将会在浏览器画一个矩形,并且指定x和y属性的类型必须为数字</p>
+
+<pre><code class="language-javascript">var Box = React.createClass({
+    propTypes: {
+      x: React.PropTypes.number.isRequired,
+      y: React.PropTypes.number.isRequired,
+    },
+    render: function() {
+      return &lt;svg&gt;&lt;rect width={this.props.x} height={this.props.y} /&gt;&lt;/svg&gt;
+    }
+});
+ReactDOM.render(
+    &lt;Box x={100} y={100}/&gt;,
+    document.body
+)
+
+</code></pre>
+
+<p><strong>getDefaultProps可以为属性设置默认值</strong></p>
+
+<p>下面圆形中的边会变成为绿色</p>
+
+<pre><code class="language-javascript">var Circle = React.createClass({
+    getDefaultProps : function() {
+        return {
+            stroke: &quot;green&quot;,
+            fill: &quot;yellow&quot;
+        }
+    },
+    render: function() {
+        return (
+        &lt;svg&gt;
+        &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r={this.props.r} stroke={this.props.stroke} strokeWidth=&quot;4&quot; fill={this.props.fill} /&gt;
+        &lt;/svg&gt;);
+    }
+
+});
+ReactDOM.render(
+    &lt;Circle r={50} fill=&quot;red&quot;/&gt;,
+    document.getElementById(&quot;example&quot;)
+)
+</code></pre>
+
+<p><strong>获取真实的DOM节点</strong></p>
+
+<p>组件并不是真实的DOM,
+有时候需要获取真实DOM就必须用到ref属性</p>
+
+<pre><code class="language-javascript">var MyComponent = React.createClass({
+  handleClick: function() {
+    this.refs.myTextInput.focus();
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;input type=&quot;text&quot; ref=&quot;myTextInput&quot; /&gt;
+        &lt;input type=&quot;button&quot; value=&quot;Focus the text input&quot; onClick={this.handleClick} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+ReactDOM.render(
+  &lt;MyComponent /&gt;,
+  document.getElementById('example')
+);
+</code></pre>
+
+<p><strong>状态</strong></p>
+
+<p>组件拥有状态，状态和属性的区别在于，属性表示那些不变的值，而状态会和用户交互</p>
+
+<pre><code class="language-javascript">var Circle = React.createClass({
+    getInitialState: function() {
+        return {fill: &quot;pink&quot;}
+    },
+    handleClick: function(event) {
+        if(this.state.fill === &quot;pink&quot;) {
+            this.setState({fill: &quot;blue&quot;});
+        } else {
+            this.setState({fill: &quot;pink&quot;});
+        }
+    },
+    getDefaultProps : function() {
+        return {
+            stroke: &quot;green&quot;,
+        }
+    },
+    render: function() {
+        return (
+            &lt;svg&gt;
+                &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r={this.props.r} stroke={this.props.stroke} fill={this.state.fill} strokeWidth=&quot;4&quot;  onClick={this.handleClick} /&gt;
+            &lt;/svg&gt;
+        );
+    }
+});
+ReactDOM.render(
+    &lt;Circle r={50} /&gt;,
+    document.getElementById(&quot;example&quot;)
+);
+</code></pre>
+
+<p><strong>表单</strong></p>
+
+<p>用户填入表单的数据react的组件是无法通过this.props读取的，必须通过onChange回调函数等方式:</p>
+
+<pre><code class="language-javascript">var MySelect = React.createClass({
+    getInitialState: function(){
+      return {
+          select: &quot;KFC&quot;
+      }
+    },
+    change: function (event) {
+        console.log(&quot;chang once &quot;+ event.target.value);
+        this.setState({select: event.target.value});
+
+    },
+    render: function() {
+        var select_value = this.state.select;
+        return (
+        &lt;div&gt;
+          &lt;select id=&quot;lang&quot; onChange={this.change} defaultValue={select_value}&gt;
+            &lt;option value=&quot;KFC&quot;&gt;KFC&lt;/option&gt;
+            &lt;option value=&quot;mcdonald&quot;&gt;mcdonald&lt;/option&gt;
+          &lt;/select&gt;
+          &lt;p&gt;supper: {select_value}&lt;/p&gt;
+        &lt;/div&gt;
+    )}
+});
+ReactDOM.render(
+    &lt;MySelect /&gt;,
+    document.getElementById(&quot;example&quot;)
+)
+</code></pre>
+
+<p><strong>生命周期</strong></p>
+
+<p>组件有个生命周期的概念，生命周期分为3部分</p>
+
+<pre><code>Mounting：已插入真实 DOM
+Updating：正在被重新渲染
+Unmounting：已移出真实 DOM
+</code></pre>
+
+<p>与之对应的N个函数</p>
+
+<pre><code>getInitialState() 初始化state函数
+componentWillMount() 当组件将被挂载
+componentDidMount() 当组件挂载之后
+componentWillReceiveProps(object nextProps) 当挂载的组件接收新的属性时
+shouldComponentUpdate(object nextProps, object nextState): boolean  组件是否更新的callback,返回false表示不更新
+componentWillUpdate(object nextProps, object nextState) 组件更新之前
+componentDidUpdate(object prevProps, object prevState) 组件更新之后
+componentWillUnmount() 组件卸载之前
+</code></pre>
+
+<p><strong>一个异步请求</strong></p>
+
+<p>在请求未收到前页面会一直处于loading状态,我们通过让组件挂载后调用componentDidMount方法来异步获取github api上的数据</p>
+
+<p>在ajax请求完成前一直显示等待信息,ajax请求到达后通过this.setState去触发页面的重新渲染</p>
+
+<pre><code class="language-javascript">var MyList = React.createClass({
+    getInitialState: function() {
+        return {
+            loading: true,
+            data: null,
+            error: null
+        }
+    },
+    componentDidMount: function(){
+        this.props.promise.done(
+            msg =&gt; {this.setState({loading: false, data:msg});}
+        ).fail(
+            (jqXHR, textStatus) =&gt; {this.setState({loading: false, error: textStatus });}
+        )
+    },
+    render: function () {
+        if (this.state.loading) {
+            return &lt;span&gt;loading...&lt;/span&gt;;
+        }
+        else if (this.state.error !== null) {
+            return &lt;span&gt;Error: {this.state.error}&lt;/span&gt;;
+        }
+        else {
+            var repos = this.state.data.items;
+            var repoList = repos.map(function (repo){
+                return (
+                    &lt;li&gt;
+                        &lt;a href={repo.html_url}&gt;{repo.name}&lt;/a&gt;
+                        ({repo.stargazers_count} stars)
+                        &lt;br/&gt;
+                        {repo.description}
+                    &lt;/li&gt;
+                )
+            });
+            return (
+                &lt;main&gt;
+                    &lt;h1&gt;Most Popular JavaScript Projects in Github&lt;/h1&gt;
+                    &lt;ol&gt;{repoList}&lt;/ol&gt;
+                &lt;/main&gt;
+            );
+        }
+    }
+});
+ReactDOM.render(
+    &lt;MyList promise={$.getJSON(&quot;https://api.github.com/search/repositories?q=golang&amp;sort=stars&quot;)}/&gt;,
+    document.body
+);
+</code></pre>
+
+<h3 id="好了-总结一下">好了,总结一下</h3>
+
+<p>react想要把元素挂载到真实DOM上必须用<strong>ReactDOM.render</strong></p>
+
+<p>该函数第一参数是想要挂载的组件或html标签</p>
+
+<p>第二参数则是被挂载的html标签对象</p>
+
+<p><strong>react的基本函数</strong></p>
+
+<pre><code>createElement 创建一个html的标签
+createClass 创建一个React的组件
+</code></pre>
+
+<p>React的组件和html标签可以互相任意嵌套</p>
+
+<p><strong>creactClass中有各种各样的内置函数</strong></p>
+
+<pre><code>render 在组件被挂载或者更新时调用
+getDefaultProps 设置组件默认属性值
+getInitialState 设置组件默认状态值
+组件生命周期 Mounting, Updating, Unmounting 发生变化前后回调的一些函数
+</code></pre>
+
+<p>React的组件无法获取用户的交互信息,必须通过回调函数来通知组件.</p>
+
+<p>比如按钮点击,表单信息的修改,</p>
+
+<p>如果React的组件也想触发事件必须先通过this.ref获取真实的DOM,虚拟DOM是无法触发事件的</p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=react%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0-https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f&title=react%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2freact-study%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

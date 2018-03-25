@@ -1,0 +1,314 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> gorm简介[中] &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>gorm简介[中]</h2>
+          <span class="post-date">Fri, Jun 23, 2017</span>
+          <p>上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块</p>
+
+<h3 id="scopes简介">scopes简介</h3>
+
+<p>scopes是需要一个自定义的函数<strong>func(db *gorm.DB) *gorm.DB</strong>作为参数，这样就可以在不破坏链式语法的情况下自定义操作了</p>
+
+<p>比如我要查询GreekAlphabet表中LatinName是&rdquo;Alpha&rdquo;或 &ldquo;Omega&rdquo;的条目可以这样</p>
+
+<pre><code class="language-golang">chars := []GreekAlphabet{}
+db.Model(&amp;GreekAlphabet{}).Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;}).Find(&amp;chars)
+</code></pre>
+
+<p>因为查询多个字段的值只能用 <strong>Where(&ldquo;field in (?)&rdquo;, fields)</strong> 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作</p>
+
+<pre><code class="language-golang">firstAndLast := func(db *gorm.DB) *gorm.DB {
+  return db.Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;})
+}
+chars := []GreekAlphabet{}
+db.Model(&amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;chars).Error
+</code></pre>
+
+<p>这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询</p>
+
+<p></p>
+
+<h3 id="使用offset制作一个灵活的where-in查询">使用offset制作一个灵活的Where in查询</h3>
+
+<p>首先要构建2个offset的map，用来查询offset对应的字段名(Name)和表字段名(DBName),我把它们放入OffsetSelector变量中</p>
+
+<pre><code class="language-golang">var OffsetSelector = struct {
+	NameMap   map[reflect.Type]map[uintptr]string
+	DBNameMap map[reflect.Type]map[uintptr]string
+}{
+	NameMap:   map[reflect.Type]map[uintptr]string{},
+	DBNameMap: map[reflect.Type]map[uintptr]string{},
+}
+</code></pre>
+
+<p>然后将Product和GreekAlphabet放入FieldSelector变量中</p>
+
+<pre><code class="language-golang">var FieldSelector struct {
+	Product       Product
+	GreekAlphabet GreekAlphabet
+}
+</code></pre>
+
+<p>然后构造OffsetSelector中的NameMap和DBNameMap</p>
+
+<pre><code class="language-golang">// 把FieldSelector解析为reflect.Value这样可以用for循环获取其中的字段
+fieldSelectVal := reflect.ValueOf(&amp;FieldSelector).Elem()
+for i := 0; i &lt; fieldSelectVal.NumField(); i++ {
+  fieldVal := fieldSelectVal.Field(i)
+  // 通过gorm.scope来解析字段名(Name)和表字段名(DBName)容易很多
+  scope := &amp;gorm.Scope{Value: fieldVal.Interface()}
+  // 获取表结构体的reflect.Type
+  table := scope.GetModelStruct().ModelType
+  // 获取表结构体中所有字段（这里的字段是gorm.Field而不是relfect.Field）
+  gormFields := scope.Fields()
+  OffsetSelector.NameMap[table] = map[uintptr]string{}
+  OffsetSelector.DBNameMap[table] = map[uintptr]string{}
+  // 循环拿取表结构体中每一个字段然后把对应的offset和字段名/表字段名分别映射到NameMap/DBNameMap对应的table映射中
+  for j := 0; j &lt; len(gormFields); j++ {
+    subfield := gormFields[j]
+    offset := subfield.StructField.Struct.Offset
+
+    OffsetSelector.NameMap[table][offset] = subfield.Name
+    OffsetSelector.DBNameMap[table][offset] = subfield.DBName
+  }
+}
+</code></pre>
+
+<p>然后我们就可以创建一个通过字段的offset来查询Where In函数了</p>
+
+<pre><code class="language-golang">WhereIn := func(fieldOffset uintptr, set interface{}) func(db *gorm.DB) *gorm.DB {
+  return func(db *gorm.DB) *gorm.DB {
+    val := db.Value
+    structType := reflect.TypeOf(val)
+    // 获取非list或指针的reflect.Type
+    for structType.Kind() == reflect.Slice || structType.Kind() == reflect.Ptr {
+      structType = structType.Elem()
+    }
+    // Where的查询语句中用的是表字段名
+    dbname, ok := OffsetSelector.DBNameMap[structType][fieldOffset]
+    if ok == false {
+      db.AddError(errors.New(&quot;offset is invalid&quot;))
+    }
+    query := fmt.Sprintf(&quot;%s in (?)&quot;, dbname)
+    return db.Where(query, set)
+  }
+}
+frequentNames := []string{&quot;Alpha&quot;, &quot;Beta&quot;, &quot;Gamma&quot;, &quot;Delta&quot;, &quot;Pi&quot;, &quot;Lambda&quot;}
+//获取GreekAlphabet.LatinName的offset,记住Offsetof中的参数是表达式，所以不能传参,比如xx := GreekAlphabet{}.LatinName;unsafe.Offsetof(xx)这样是不行的
+latinNameOffset := unsafe.Offsetof(GreekAlphabet{}.LatinName)
+db.Model(&amp;GreekAlphabet{}).Scopes(WhereIn(latinNameOffset, frequentNames)).Updates(&amp;GreekAlphabet{IsFrequent: true})
+
+frequents := []GreekAlphabet{}
+// 查看所有IsFrequent=true的集合
+db.Where(&amp;GreekAlphabet{IsFrequent: true}).Find(&amp;frequents)
+t.Logf(&quot;%10s\t%s\t%s\t%s&quot;, &quot;name&quot;, &quot;upper&quot;, &quot;lower&quot;, &quot;frequent&quot;)
+for _, c := range frequents {
+  t.Logf(&quot;%10s\t%c\t%c\t%v&quot;, c.LatinName, c.UpperCode, c.LowerCode, c.IsFrequent)
+}
+</code></pre>
+
+<h3 id="使用offset制作一个灵活的field-preload">使用Offset制作一个灵活的Field Preload</h3>
+
+<p>上篇已经讲过利用Preload可以获取嵌套的获取外键关联的字段比如这样</p>
+
+<pre><code class="language-golang">var product Product
+db.Preload(&quot;Origin&quot;).Where(&amp;Product{Name: &quot;xiaomi6&quot;}).First(&amp;product)
+</code></pre>
+
+<p>但是Preload函数需要提供一个字段名字符串作为参数，所以我们这里通过构造一个利用Offset来查询外键关联字段</p>
+
+<p>使用刚才已经创建的OffsetSelector.NameMap就可以获取offset对应的字段名了</p>
+
+<pre><code class="language-golang">FieldPreload := func(offset uintptr) func(db *gorm.DB) *gorm.DB {
+  return func(db *gorm.DB) *gorm.DB {
+    val := db.Value
+    structType := reflect.TypeOf(val)
+    // 获取非list或指针的reflect.Type
+    for structType.Kind() == reflect.Slice || structType.Kind() == reflect.Ptr {
+      structType = structType.Elem()
+    }
+    name, ok := OffsetSelector.NameMap[structType][offset]
+    if ok == false {
+      db.AddError(errors.New(&quot;offset is invalid&quot;))
+    }
+    t.Log(OffsetSelector.NameMap[structType])
+    return db.Preload(name)
+  }
+}
+var product Product
+fieldOffset := unsafe.Offsetof(product.Origin)
+originPreload := FieldPreload(fieldOffset)
+db.Model(&amp;Product{}).Where(&amp;Product{Name: &quot;xiaomi6&quot;}).Scopes(originPreload).First(&amp;product)
+// 查看查询结构是否正确
+t.Logf(&quot;this product name '%s', the address is '%v'&quot;, product.Name, product.Origin.Address1)
+</code></pre>
+
+<h3 id="结尾"><strong>结尾</strong></h3>
+
+<p>上面举了2个使用Scopes的使用例子，用来帮助大家在使用gorm时如何更好的保持一致性原则</p>
+
+<p>不过如果有人通过gorm修改了默认表名/默认字符串名创建方式上面的方法就会失效，因为我这边为了易读性就没有用更复杂的写法了</p>
+
+<p>下篇将会解析gorm下的各个数据结构，可能需要很长时间来整理资料</p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=gorm%e7%ae%80%e4%bb%8b%5b%e4%b8%ad%5d-https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f&title=gorm%e7%ae%80%e4%bb%8b%5b%e4%b8%ad%5d" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-second%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

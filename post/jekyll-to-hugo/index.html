@@ -1,0 +1,375 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 从jekyll到hugo，搬运经验总结 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>从jekyll到hugo，搬运经验总结</h2>
+          <span class="post-date">Wed, Oct 12, 2016</span>
+          <p>因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.</p>
+
+<p>hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。</p>
+
+<p></p>
+
+<h3 id="如何安装">如何安装</h3>
+
+<p>先下载<a href="https://golang.org/dl/">go</a>，然后配置GOPATH环境变量，通过<strong>go get</strong>命令下载的包都会放到GOPATH中，在GOPATH中的包也可以被其他包import</p>
+
+<p>然后配置PATH,这样通过go安装的命令可以被直接执行</p>
+
+<pre><code>export PATH=$GOPATH/bin:$PATH
+</code></pre>
+
+<p>安装<a href="https://github.com/spf13/hugo">hugo</a></p>
+
+<pre><code>go get -v github.com/spf13/hugo
+</code></pre>
+
+<p>如果下载超时可以尝试挂代理，设置http_proxy和https_proxy就可以使用http(s)代理,如果是socket代理，建议用<a href="http://www.delegate.org/delegate/">delegate</a>转成http(s)代理</p>
+
+<h3 id="创建第一个博客">创建第一个博客</h3>
+
+<p>hugo可以通过下面的命令快速构建一个hugo的文件结构</p>
+
+<pre><code class="language-bash">$ hugo new site firstblog
+Congratulations! Your new Hugo site is created in &quot;/data/work/firstblog&quot;.
+
+Just a few more steps and you’re ready to go:
+
+1. Download a theme into the same-named folder.
+   Choose a theme from https://themes.gohugo.io/, or
+   create your own with the &quot;hugo new theme &lt;THEMENAME&gt;&quot; command.
+2. Perhaps you want to add some content. You can add single files
+   with &quot;hugo new &lt;SECTIONNAME&gt;/&lt;FILENAME&gt;.&lt;FORMAT&gt;&quot;.
+3. Start the built-in live server via &quot;hugo server&quot;.
+
+Visit https://gohugo.io/ for quickstart guide and full documentation.
+</code></pre>
+
+<p>查看文件结构</p>
+
+<pre><code class="language-bash">$ tree firstblog
+firstblog/
+├── archetypes
+├── config.toml
+├── content
+├── data
+├── layouts
+├── static
+└── themes
+
+6 directories, 1 file
+</code></pre>
+
+<p>下面来看看各个文件夹的作用</p>
+
+<ul>
+<li><p><strong>archetypes</strong>: 允许自定义post front matter(就是见面开头+++那部分)，并且会在hugo new 时给默认值</p></li>
+
+<li><p><strong>config.toml</strong>: 主配置文件，hugo也支持也可以使用yaml和json格式，不过默认以config.toml为主配置文件</p></li>
+
+<li><p><strong>content</strong>: 博客的文章，关于，demo等内容都放在这个目录下，使用<strong>hugo new</strong>命令创建的文件会存放在这个目录下，你可以定义不同的子目录作为sections,文章的默认sections是post</p></li>
+
+<li><p><strong>data</strong>: 这个目录存放一个用于生成网站的数据，你可以使用YAML,JSON或者TOML格式</p></li>
+
+<li><p><strong>layouts</strong>: 用来存放html模板，这些模板将决定你网页的布局，更详细的内容可以查看<a href="https://gohugo.io/templates/overview/">templates</a>章节</p></li>
+
+<li><p><strong>static</strong>: 存放网站静态文件的目录，在网站生成后会将该目录的文件放到网站的根目录下，不要和content下的文件有重名</p></li>
+
+<li><p><strong>themes</strong>: 存放主题，建议用主题来决定网站的风格样式，网站只存放内容</p></li>
+</ul>
+
+<p>然后按照提示我们去<a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a> 找一个主题，并把它下载到
+themes目录中</p>
+
+<pre><code class="language-bash">$ cd firstblog/themes
+$ git clone https://github.com/fredrikloch/hugo-uno.git
+</code></pre>
+
+<p>修改config.toml</p>
+
+<pre><code class="language-config">$ cd firstblog
+firstblog/$ cat config.toml
+baseurl = &quot;http://replace-this-with-your-hugo-site.com/&quot;
+title = &quot;My blog&quot;
+languageCode = &quot;en-us&quot;
+theme = &quot;hugo-uno&quot;
+</code></pre>
+
+<p>创建一篇新的文章</p>
+
+<pre><code class="language-bash">$ cd firstblog
+$ hugo new post/start.md
+/data/work/firstblog/content/post/start.md created
+</code></pre>
+
+<p>在content文件夹中找到你刚刚创建的markdown文件然后编辑，编辑好后就可以通过<strong>hugo server</strong>运行了，然后在本地访问<a href="http://localhost:1313/">http://localhost:1313/</a> 就可以看到你的网站了</p>
+
+<pre><code class="language-bash">$ cd firstblog
+$ hugo server
+Started building sites ...
+Built site for language en:
+0 draft content
+0 future content
+0 expired content
+1 pages created
+0 non-page files copied
+0 paginator pages created
+2 categories created
+2 tags created
+total in 34 ms
+Watching for changes in /data/work/firstblog/{data,content,layouts,static,themes}
+Serving pages from memory
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+</code></pre>
+
+<h3 id="常见问题">常见问题</h3>
+
+<h4 id="分页问题"><strong>分页问题</strong></h4>
+
+<p>在模板中使用.Paginate，该页面就会被自动分页
+比如:</p>
+
+<pre><code class="language-html">    &lt;!--拿到当前分页--&gt;
+    {{ $paginator := .Paginate (where .Data.Pages &quot;Section&quot; &quot;post&quot;) }}
+    ...
+    &lt;!--读取分页内容--&gt;
+    {{ range $paginator.Pages }}
+
+        {{ .Render &quot;summary&quot;}}
+    ...
+    {{ end }}
+    ...
+    &lt;!--增加翻页按钮--&gt;
+    {{ if $paginator.HasPrev}}
+    &lt;a href=&quot;{{ $paginator.Prev.URL }}&quot;&gt;上一页&lt;/a&gt;
+    {{ else }}
+    &lt;a&gt;&lt;/a&gt;
+    {{ end }}
+    &lt;a href=&quot;{{ .Site.BaseURL }}/post/&quot;&gt;归档&lt;/a&gt;
+    {{ if $paginator.HasNext }}
+    &lt;a href=&quot;{{ $paginator.Next.URL }}&quot;&gt;下一页&lt;/a&gt;
+    {{ else }}
+    &lt;a&gt;&lt;/a&gt;
+    {{ end }}
+</code></pre>
+
+<p>默认分页的对象数是10，可以通过在config中定义Paginate去改变分页数</p>
+
+<h4 id="额外的页面"><strong>额外的页面</strong></h4>
+
+<p>为了让我的demo页面和文章页面分离开来，需要用到section这个功能，在上面的模板可以看到<strong>where .Data.Pages &ldquo;Section&rdquo; &ldquo;post&rdquo;</strong>，这个语句就是取所有页面中section位post的页面，那么问题来了:</p>
+
+<ol>
+<li>如何判断这个页面是属于那个section</li>
+<li>如何为section添加展示页</li>
+</ol>
+
+<p><strong>如何判断这个页面是属于那个section</strong></p>
+
+<p>比如我们一开始的是用<strong>hugo new post/start.md</strong>创建页面的section就是post</p>
+
+<p>也就是在content中的子文件夹名就是section名，比如我要在网站增加一个名为demo的section</p>
+
+<pre><code>hugo new demo/first.md
+</code></pre>
+
+<p>这时访问<strong><a href="http://localhost:1313/demo/first">http://localhost:1313/demo/first</a></strong>就可以看到该页面了，这个页面是由layouts/_default/single.html模板渲染的，如果你想自定义渲染的模板可以新增layouts/demo/single.html作为demo单页的渲染模板</p>
+
+<p><strong>如何为section添加展示页</strong></p>
+
+<p>在layouts/section/中添加一个html模板，模板名必须和section名一致,比如我们为demo添加一个展示页</p>
+
+<pre><code class="language-bash">cat &gt;&gt; layouts/section/demo.html &lt;&lt;EOF
+{{ partial &quot;head.html&quot; . }}
+    &lt;!--拿到当前分页--&gt;
+    {{ $paginator := .Paginate (where .Data.Pages &quot;Section&quot; &quot;demo&quot;) }}
+    ...
+    &lt;!--读取分页内容--&gt;
+    {{ range $paginator.Pages }}
+
+        {{ .Render &quot;summary&quot;}}
+    ...
+    {{ end }}
+    ...
+    &lt;!--增加翻页按钮--&gt;
+    {{ if $paginator.HasPrev}}
+    &lt;a href=&quot;{{ $paginator.Prev.URL }}&quot;&gt;上一页&lt;/a&gt;
+    {{ else }}
+    &lt;a&gt;&lt;/a&gt;
+    {{ end }}
+    &lt;a href=&quot;{{ .Site.BaseURL }}/post/&quot;&gt;归档&lt;/a&gt;
+    {{ if $paginator.HasNext }}
+    &lt;a href=&quot;{{ $paginator.Next.URL }}&quot;&gt;下一页&lt;/a&gt;
+    {{ else }}
+    &lt;a&gt;&lt;/a&gt;
+    {{ end }}
+EOF
+</code></pre>
+
+<p>这样访问<strong><a href="http://localhost:1313/demo">http://localhost:1313/demo</a></strong>  就可以看到展示页了</p>
+
+<p>hugo还有一个summary的功能，可以让你把单页的部分内容放入展示页渲染，添加一个layouts/模板名/summary.html的模板，然后像上面的例子中那样使用<strong>{{ .Render &ldquo;summary&rdquo;}}</strong>就可以把容内渲染进展示页中</p>
+
+<p><strong>关于template的使用可以翻阅<a href="https://gohugo.io/templates/overview/">官方文档</a></strong></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e4%bb%8ejekyll%e5%88%b0hugo%ef%bc%8c%e6%90%ac%e8%bf%90%e7%bb%8f%e9%aa%8c%e6%80%bb%e7%bb%93-https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f&title=%e4%bb%8ejekyll%e5%88%b0hugo%ef%bc%8c%e6%90%ac%e8%bf%90%e7%bb%8f%e9%aa%8c%e6%80%bb%e7%bb%93" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fjekyll-to-hugo%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

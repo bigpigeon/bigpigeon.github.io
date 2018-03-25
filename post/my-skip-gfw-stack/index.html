@@ -1,0 +1,464 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 我的翻墙技术栈 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>我的翻墙技术栈</h2>
+          <span class="post-date">Tue, Dec 27, 2016</span>
+          <p>谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。</p>
+
+<p>这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。</p>
+
+<p>linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题</p>
+
+<p>也可以通过其他协议工具比如:<a href="https://github.com/xtaci/kcptun">kcptun</a></p>
+
+<p>kcptun可以提供双边加速和窗口控制，效果可能比bbr好</p>
+
+<p></p>
+
+<h3 id="服务端">服务端</h3>
+
+<p><strong>机器</strong></p>
+
+<p>一定要买一台国外的机器(不然翻个毛墙啊),节点推荐日本的(因为地理位置比较近)</p>
+
+<p>我这里用的是<a href="https://www.vultr.com/">vultr</a>的vps节点是选的日本机房,用这个<a href="http://www.vultr.com/?ref=7049331-3B">优惠码</a>注册可以获取20$抵用现金，推荐</p>
+
+<p><strong>操作系统</strong></p>
+
+<p>red hat/centos或者debain/ubuntu 均可</p>
+
+<p>这是我的操作系统版本</p>
+
+<pre><code class="language-bash">cat /proc/version
+Linux version 3.10.0-327.28.3.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC) ) #1 SMP Thu Aug 18 19:05:49 UTC 2016
+</code></pre>
+
+<p><strong>安装软件</strong></p>
+
+<p>我推荐使用go版本的kcptun和shadowsocks,这样部署和维护都比较方便(如果使用bbr可以忽略kcptun部分,开启bbr可以看<a href="https://github.com/iMeiji/shadowsocks_install/wiki/%E5%BC%80%E5%90%AFTCP-BBR%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95">这里</a>)</p>
+
+<pre><code># 下载并解压go的二进制包
+wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
+tar -xf go1.7.4.linux-amd64.tar.gz
+# 把文件移到库文件夹并创建连接
+mv go /usr/local/lib/
+ln -s /usr/local/lib/go/bin/* /usr/local/bin/
+# 增加go的第三方安装包文件并把go的环境变量加入profile
+mkdir /usr/local/lib/go/packages
+
+
+vim /etc/profile.d/go.sh
+# 把一下内容复制进去
+export GOROOT=/usr/local/lib/go
+export GOPATH=$GOROOT/packages
+export PATH=$GOPATH/bin:$PATH
+
+# 加载环境变量
+. /etc/profile.d/go.sh
+
+# 安装shadowsocks和kcptun
+go get github.com/xtaci/kcptun/server
+go get github.com/shadowsocks/shadowsocks-go
+
+</code></pre>
+
+<p><strong>配置shadowsocks</strong></p>
+
+<p>shadowsocks配置文件格式是json</p>
+
+<pre><code>vim /etc/shadowsocks.json
+# 把下面的json数据复制进去
+{
+  &quot;server&quot;: &quot;0.0.0.0&quot;,
+  &quot;method&quot;: &quot;aes-256-cfb&quot;,
+  &quot;port_password&quot;: {
+    &quot;5501&quot;: &quot;your password&quot;
+  },
+  &quot;timeout&quot;: 300
+}
+</code></pre>
+
+<p><a href="https://shadowsocks.org/en/config/advanced.html">可以通过修改服务端内核参数提升shadowsocks的发包效率</a></p>
+
+<p><strong>使用supervisor管理进程</strong></p>
+
+<p>安装supervisor(没有pip自行想办法)</p>
+
+<pre><code>pip install supervisor
+</code></pre>
+
+<p>配置supervisor.conf</p>
+
+<pre><code>vim /etc/supervisor.conf
+# 把以下内容复制进去
+; supervisor config file
+
+[unix_http_server]
+file=/var/run/supervisor.sock   ; (the path to the socket file)
+chmod=0700                       ; sockef file mode (default 0700)
+
+[supervisord]
+logfile=/var/log/supervisor/supervisord.log ; (main log file;default $CWD/supervisord.log)
+pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+childlogdir=/var/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
+
+; the below section must remain in the config file for RPC
+; (supervisorctl/web interface) to work, additional interfaces may be
+; added by defining them in separate rpcinterface: sections
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+
+; The [include] section can just contain the &quot;files&quot; setting.  This
+; setting can list multiple files (separated by whitespace or
+; newlines).  It can also contain wildcards.  The filenames are
+; interpreted as relative to this file.  Included files *cannot*
+; include files themselves.
+
+[include]
+files = /etc/supervisor.d/*.ini
+</code></pre>
+
+<p>配置kcptun和shadowsocks</p>
+
+<pre><code># 如果没有创建该文件夹
+mkdir /etc/supervisor.d
+
+vim /etc/supervisor.d/proxy.ini
+# 把以下内容复制进去
+[program:shadowsocks]
+directory=/usr/lib/go/packages/bin
+command=/usr/lib/go/packages/bin/shadowsocks-server -c /etc/shadowsocks.json
+user=root
+process_name=%(program_name)s
+numprocs=1
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/shadowsocks.log
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=2
+redirect_stderr=true
+
+[program:kcptun]
+directory=/usr/lib/go/packages/bin
+command=/usr/lib/go/packages/bin/server -t &quot;127.0.0.1:5501&quot; -l &quot;:5501&quot; -mode fast2 --crypt aes-128
+user=root
+process_name=%(program_name)s
+numprocs=1
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/kcptun.log
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=2
+redirect_stderr=true
+</code></pre>
+
+<p>启动supervisor</p>
+
+<pre><code>supervisord -c /etc/supervisor.conf
+</code></pre>
+
+<p><strong>iptables的filter表配置</strong></p>
+
+<p>如果你的服务器有配iptables，那可能要增加一下规则</p>
+
+<pre><code>iptables -I INPUT -p udp -m udp --dport 5501 -j ACCEPT
+</code></pre>
+
+<p>把新的配置加入开机启动</p>
+
+<pre><code>iptables-save &gt; /etc/iptables.rule
+
+vim /etc/rc.local
+# 在新的一行中添加以下内容
+/sbin/iptables-restore &lt; /etc/iptables.rule
+
+</code></pre>
+
+<h3 id="客户端配置">客户端配置</h3>
+
+<p><strong>kcptun客户端</strong></p>
+
+<p>使用bbr可以忽略这部分</p>
+
+<p>在<a href="https://github.com/xtaci/kcptun/releases/tag/v20161222">https://github.com/xtaci/kcptun/releases/tag/v20161222</a> 中下载对应的版本</p>
+
+<p>启动客户端</p>
+
+<pre><code>client_darwin_amd64 -r &quot;服务器IP地址:5501&quot; -l &quot;:8388&quot; -mode fast2 --crypt aes-128
+</code></pre>
+
+<p><strong>shadowsocks客户端</strong></p>
+
+<p>windows的<a href="https://github.com/shadowsocks/shadowsocks-windows/releases">下载页面</a></p>
+
+<p>Mac OS X的<a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases">下载页面</a></p>
+
+<p>linux桌面版本的<a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation">下载页面</a></p>
+
+<blockquote>
+<p>编辑config.json,把以下内容复制进去保存,并把这个文件导入shadowsocks(使用bbr时server和server_port填服务器地址和端口号)</p>
+</blockquote>
+
+<pre><code class="language-json">{
+    &quot;configs&quot;: [
+        {
+            &quot;method&quot;: &quot;aes-256-cfb&quot;,
+            &quot;password&quot;: &quot;your password&quot;,
+            &quot;remarks&quot;: &quot;public_vultr&quot;,
+            &quot;server&quot;: &quot;127.0.0.1&quot;,
+            &quot;server_port&quot;: 8388
+        }
+    ],
+    &quot;localPort&quot;: 1080,
+    &quot;shareOverLan&quot;: false
+}
+</code></pre>
+
+<p><strong>使用SwitchyOmega为chrome代理</strong></p>
+
+<p>在chrome商店或者<a href="https://github.com/FelisCatus/SwitchyOmega/releases">这里</a>下载SwitchyOmega</p>
+
+<p>下载的插件拖入chorme即可安装</p>
+
+<p>在下载SwitchyOmega设置中增加一个pac profile,并在pac script中加入以下内容</p>
+
+<pre><code class="language-javascript">var domains = [
+    &quot;google.com&quot;,
+    &quot;facebook.com&quot;,
+    &quot;twitter.com&quot;,
+    &quot;google.co.jp&quot;,
+    &quot;gmail.com&quot;,
+    &quot;golang.org&quot;,
+    &quot;github.com&quot;,
+    &quot;s3.amazonaws.com&quot;,
+    &quot;twimg.com&quot;,
+    &quot;wikipedia.org&quot;,
+    &quot;youtube.com&quot;,
+    &quot;gstatic.com&quot;,
+    &quot;stackoverflow.com&quot;,
+    &quot;shadowsocks.org&quot;
+
+];
+var domain_dict = {};
+for(var i = 0; i &lt; domains.length; i++){
+    if(domains[i].endsWith(&quot;.&quot;)){
+        domains[i] = domains[i].slice(0, -1)
+    }
+    var url_list = domains[i].split('.');
+
+    var domain_node = domain_dict;
+    for(var j = url_list.length; j &gt; 0; j--){
+        var node_name = url_list[j-1];
+        if (!domain_node.hasOwnProperty(node_name)){
+            if (j === 1){
+                domain_node[node_name] = true;
+                break;
+            } else {
+                domain_node[node_name] = {};
+            }
+        } else if(domain_node[node_name] === true) {
+            break;
+        }
+        domain_node = domain_node[node_name];
+    }
+}
+
+var proxy = &quot;SOCKS5 127.0.0.1:1080; SOCKS 127.0.0.1:1080; DIRECT&quot;;
+
+var direct = 'DIRECT;';
+
+function FindProxyForURL(url, host) {
+    if( host == &quot;localhost&quot; ||
+        host == &quot;127.0.0.1&quot;) {
+        return direct;
+    }
+    var host_list = host.split('.')
+    var domain_node = domain_dict
+    for(var i = host_list.length; i &gt; 0; i--){
+        var node_name = host_list[i-1]
+        if (domain_node.hasOwnProperty(node_name)){
+            if(domain_node[node_name] === true){
+                return proxy;
+            } else {
+                domain_node = domain_node[node_name]
+            }
+
+        }
+        else {
+            return direct;
+        }
+    }
+    return direct;
+}
+</code></pre>
+
+<p>pac用的是javascript语法，需要代理的域名只要加入domains即可</p>
+
+<p>父域名会自动匹配所有子域名,比如domains中加入google.com 那www.google.com map.google.com的内容都会被代理</p>
+
+<p>关于这份pac的更多内容可以看<a href="https://bigpigeon.org/post/switchy-proxy-pac-optimization">这里</a></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e6%88%91%e7%9a%84%e7%bf%bb%e5%a2%99%e6%8a%80%e6%9c%af%e6%a0%88-https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f&title=%e6%88%91%e7%9a%84%e7%bf%bb%e5%a2%99%e6%8a%80%e6%9c%af%e6%a0%88" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fmy-skip-gfw-stack%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

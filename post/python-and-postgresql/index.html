@@ -1,0 +1,432 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 在python上操作postgresql &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>在python上操作postgresql</h2>
+          <span class="post-date">Mon, Mar 7, 2016</span>
+          <ul>
+<li><p>本文使用的是postgresql 9.3 基于docker ubuntu</p></li>
+
+<li><p>首先postgresql的安装,这里我使用了自己build一个Dockerfile</p></li>
+
+<li><p>我的Dockerfile:</p></li>
+</ul>
+
+<p></p>
+
+<pre><code class="language-bash">FROM ubuntu:latest
+MAINTAINER bigpigeon &lt;3283273530@qq.com&gt;
+
+RUN apt-get -yqq update
+RUN apt-get install -y postgresql-9.3
+
+USER postgres
+RUN touch /var/lib/postgresql/.psql_history
+RUN /etc/init.d/postgresql start &amp;&amp;\
+    psql --command &quot;ALTER USER postgres WITH SUPERUSER PASSWORD '123456';&quot; &amp;&amp;\
+    createdb -O postgres postgres
+RUN echo &quot;host all  all    0.0.0.0/0  md5&quot; &gt;&gt; /etc/postgresql/9.3/main/pg_hba.conf
+RUN echo &quot;listen_addresses='*'&quot; &gt;&gt; /etc/postgresql/9.3/main/postgresql.conf
+
+VOLUME  [&quot;/etc/postgresql&quot;, &quot;/var/log/postgresql&quot;, &quot;/var/lib/postgresql&quot;]
+CMD [&quot;/usr/lib/postgresql/9.3/bin/postgres&quot;, &quot;-D&quot;, &quot;/var/lib/postgresql/9.3/main&quot;, &quot;-c&quot;, &quot;config_file=/etc/postgresql/9.3/main/postgresql.conf&quot;]
+
+EXPOSE 5432
+</code></pre>
+
+<ul>
+<li><p>因为postgresql不能用root启动，所以我们要改用postgres帐户，该帐户是在postgresql安装时自动创建的</p></li>
+
+<li><p>build docker</p></li>
+</ul>
+
+<pre><code class="language-bash">docker build -t postgres:own .
+</code></pre>
+
+<ul>
+<li>跑一个docker 进程</li>
+</ul>
+
+<pre><code class="language-bash">docker run --name postgres -d -p 15432:5432 postgres:own
+</code></pre>
+
+<ul>
+<li>进入该进程</li>
+</ul>
+
+<pre><code class="language-bash">docker exec -i -t postgres /bin/bash
+</code></pre>
+
+<ul>
+<li>之后来查看一下postgres启动的进程和端口</li>
+</ul>
+
+<pre><code class="language-bash">//在docker中比较环境干净，所以没必要用grep筛选
+# ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+postgres     1  0.0  2.0 244920 20576 ?        Ss   06:05   0:00 /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/pos
+postgres     9  0.0  0.3 244920  3456 ?        Ss   06:05   0:00 postgres: checkpointer process
+postgres    10  0.0  0.4 244920  4608 ?        Ss   06:05   0:00 postgres: writer process
+postgres    11  0.0  0.3 244920  3456 ?        Ss   06:05   0:00 postgres: wal writer process
+postgres    12  0.0  0.5 245672  5904 ?        Ss   06:05   0:00 postgres: autovacuum launcher process
+postgres    13  0.0  0.3 100596  3396 ?        Ss   06:05   0:00 postgres: stats collector process
+postgres    14  0.0  0.3  18228  3228 ?        Ss   06:09   0:00 /bin/bash
+postgres    22  0.0  0.2  15572  2084 ?        R+   06:14   0:00 ps aux
+# netstat -an
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+tcp        0      0 127.0.0.1:5432          0.0.0.0:*               LISTEN
+tcp6       0      0 ::1:5432                :::*                    LISTEN
+udp6       0      0 ::1:59218               ::1:59218               ESTABLISHED
+Active UNIX domain sockets (servers and established)
+Proto RefCnt Flags       Type       State         I-Node   Path
+unix  2      [ ACC ]     STREAM     LISTENING     26950    /var/run/postgresql/.s.PGSQL.5432
+</code></pre>
+
+<h3 id="连接控制台">连接控制台</h3>
+
+<ul>
+<li>用psql来连接postgresql服务端(记得第一时间改密码)</li>
+</ul>
+
+<pre><code class="language-bash">$ psql -U postgres -h 127.0.0.1 -p 15432
+=# \password postgres
+=# \q
+</code></pre>
+
+<ul>
+<li>-U 指定登录用户 -d 指定数据库 -h -p 指定登录的主机和端口，更详细的参数可用&ndash;help查询</li>
+</ul>
+
+<h3 id="通过postgresql控制台创建用户">通过postgresql控制台创建用户</h3>
+
+<pre><code class="language-bash">$ psql -U postgres -h 127.0.0.1 -p 15432
+=# \password postgres
+=# CREATE USER dbuser WITH PASSWORD 'password';
+=# CREATE DATABASE exampledb OWNER dbuser;
+=# GRANT ALL PRIVILEGES ON DATABASE exampledb to dbuser;
+=# \q
+</code></pre>
+
+<h3 id="数据库命令">数据库命令</h3>
+
+<pre><code class="language-bash"># psql -U dbuser -d exampledb -h 127.0.0.1 -p 15432
+// \password [username]: 修改[某用户]密码,只有超级用户才可以改其他人的密码
+=&gt; \password
+Enter new password:
+Enter it again:
+
+// \encoding [ENCODING]: 显示[修改]客户端的编码
+=&gt; \encoding
+UTF8
+
+// \h [NAME]: 查看 所有[某条] SQL命令的解释，比如\h select。
+=&gt; \h select
+Command:     SELECT
+Description: retrieve rows from a table or view
+Syntax:
+[ WITH [ RECURSIVE ] with_query [, ...] ]
+...
+// \l [PATTERN]: 列出所有[某条] 数据库
+=&gt; \l
+                             List of databases
+   Name    |  Owner   | Encoding  | Collate | Ctype |   Access privileges
+-----------+----------+-----------+---------+-------+-----------------------
+ exampledb | dbuser   | SQL_ASCII | C       | C     | =Tc/dbuser           +
+           |          |           |         |       | dbuser=CTc/dbuser
+ postgres  | postgres | SQL_ASCII | C       | C     |
+ template0 | postgres | SQL_ASCII | C       | C     | =c/postgres          +
+           |          |           |         |       | postgres=CTc/postgres
+ template1 | postgres | SQL_ASCII | C       | C     | =c/postgres          +
+           |          |           |         |       | postgres=CTc/postgres
+(4 rows)
+
+// \c [database_name]：连接其他数据库。
+=&gt; \c postgres
+SSL connection (cipher: DHE-RSA-AES256-GCM-SHA384, bits: 256)
+You are now connected to database &quot;postgres&quot; as user &quot;dbuser&quot;.
+
+// \d [table_name]：列出所有[某一张]表格的结构。
+// 因为目前还没建表，所以只有一句告警
+=&gt; \d
+No relations found.
+// \du[+] [PATTERN]：列出所有[某]用户。
+=&gt; \du
+                             List of roles
+ Role name |                   Attributes                   | Member of
+-----------+------------------------------------------------+-----------
+ dbuser    |                                                | {}
+ postgres  | Superuser, Create role, Create DB, Replication | {}
+
+// \conninfo：列出当前数据库和连接的信息。
+=&gt; \conninfo
+You are connected to database &quot;postgres&quot; as user &quot;dbuser&quot; on host &quot;127.0.0.1&quot; at port &quot;15432&quot;.
+SSL connection (cipher: DHE-RSA-AES256-GCM-SHA384, bits: 256)
+
+// 更多命令可以通过\?查看
+=&gt; \?
+...
+</code></pre>
+
+<h3 id="数据库操作">数据库操作</h3>
+
+<ul>
+<li>语法和mysql相似,可通过\h去查看</li>
+<li>下面我将操作数据库语法去建表，插数据等操作</li>
+</ul>
+
+<pre><code class="language-sql">=&gt; CREATE TABLE user_person(name VARCHAR(20), entry DATE);
+CREATE TABLE
+=&gt; INSERT INTO user_person(name, entry) VALUES('jia', '2016-2-28');
+INSERT 0 1
+=&gt; ALTER TABLE user_person ADD job VARCHAR(100);
+ALTER TABLE
+=&gt; INSERT INTO user_person(name, entry) VALUES('jib', '2016-2-29');
+INSERT 0 1
+=&gt; UPDATE user_person set job = 'backend develop' WHERE name = 'jia';
+UPDATE 1
+=&gt; UPDATE user_person set job = 'frontend develop' WHERE name = 'jib';
+UPDATE 1
+=&gt; ALTER TABLE user_person ALTER COLUMN job SET NOT NULL ;
+ALTER TABLE
+=&gt; INSERT INTO user_person(name, entry) VALUES('jic', '2016-3-1');
+ERROR:  null value in column &quot;job&quot; violates not-null constraint
+DETAIL:  Failing row contains (jic, 2016-03-01, null).
+=&gt; SELECT * FROM user_person;
+ name |   entry    |       job
+------+------------+------------------
+ jia  | 2016-02-28 | backend develop
+ jib  | 2016-02-29 | frontend develop
+(2 rows)
+</code></pre>
+
+<h3 id="如何在python上操作postgresql">如何在python上操作postgresql</h3>
+
+<ul>
+<li><a href="https://wiki.postgresql.org/wiki/Python">官网wiki</a> 给出了6种python 版本的客户端</li>
+<li>我这里用的是<a href="http://initd.org/psycopg/docs/">Psycopg2</a>因为它是这6个客户端中唯二使用LGPL许可证的，并且最近还有更新维护</li>
+</ul>
+
+<h4 id="第一部分-安装">第一部分 安装</h4>
+
+<p><strong>ubuntu:</strong></p>
+
+<p>只需要apt-get install python-psycopg2就ok</p>
+
+<p><strong>windows:</strong></p>
+
+<p>pip install psycopg2</p>
+
+<p>官网建议用easy_install 但这种安装方法在import是会提示缺少DLL</p>
+
+<h4 id="第二部分-操作数据库">第二部分 操作数据库</h4>
+
+<pre><code class="language-python">&gt;&gt;&gt; import psycopg2
+&gt;&gt;&gt; import datetime
+
+# 连接数据库
+&gt;&gt;&gt; conn = psycopg2.connect(
+    host=&quot;192.168.56.102&quot;,
+    port=&quot;15432&quot;,
+    password='passwd',
+    dbname=&quot;exampledb&quot;,
+    user=&quot;dbuser&quot;
+)
+# 创建一个游标去执行数据库操作
+&gt;&gt;&gt; cur = conn.cursor()
+
+# 插入一条数据到user_person表
+&gt;&gt;&gt; cur.execute(
+    &quot;INSERT INTO user_person(name, entry, job) VALUES (%s, %s, %s)&quot;,
+    (&quot;jic&quot;, datetime.date(2016, 3, 1), &quot;full-stack develop&quot;)
+)
+
+# 执行查询语句
+&gt;&gt;&gt; cur.execute(&quot;SELECT * FROM user_person;&quot;)
+
+# 把查询的结果取出来
+&gt;&gt;&gt; cur.fetchall()
+[('jia', datetime.date(2016, 2, 28), 'backend develop'), ('jib', datetime.date(2016, 2, 29), 'frontend develop'), ('jic', datetime.date(2016, 3, 1), 'full-stack develop')]
+
+# 确保所有命令执行完成
+&gt;&gt;&gt; conn.commit()
+
+# 关闭游标和数据库连接
+&gt;&gt;&gt; cur.close()
+&gt;&gt;&gt; conn.close()
+</code></pre>
+
+<ul>
+<li>上面就是一次完整的数据库操作流程,这里有几点需要注意:
+
+<ul>
+<li>execute的 VALUES 后面必须使用(%s,&hellip;)的格式</li>
+<li>VALUES后面的占位符支持 (%(name)s,&hellip;) 参数则为{&lsquo;name&rsquo;: value,&hellip;}这种格式,这样可以保证不用在输入重复的参数</li>
+<li>占位符必须是 %s，不能是%d 或%f</li>
+<li>参数的数据结构必须是list或tuple</li>
+</ul></li>
+</ul>
+
+<p>Python类型和SQL类型对照
+<a href="http://initd.org/psycopg/docs/usage.html#adaptation-of-python-values-to-sql-types">http://initd.org/psycopg/docs/usage.html#adaptation-of-python-values-to-sql-types</a></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e5%9c%a8python%e4%b8%8a%e6%93%8d%e4%bd%9cpostgresql-https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f&title=%e5%9c%a8python%e4%b8%8a%e6%93%8d%e4%bd%9cpostgresql" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fpython-and-postgresql%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> defer测试 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+<body>
+  <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+  <script type="text/javascript" src="https://bigpigeon.org/js/golib/play.js"></script>
+<script type="text/javascript" src="https://bigpigeon.org/js/golib/playground.js"></script>
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+      <div class="sandbox-single">
+        <h2>defer测试</h2>
+        <span class="sandbox-date">Sat, Jan 16, 2016</span>
+        <hr/>
+        <div class="playground">
+          <article class="page-content">
+              <div class="code-container">
+                <pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"sync"
+	"testing"
+)
+
+//调用顺序
+//最早调用的defer会在最后执行
+func test0() {
+	defer func() {
+		fmt.Print("a\n")
+	}()
+	defer func() {
+		fmt.Print("b")
+	}()
+	defer func() {
+		fmt.Print("c")
+	}()
+	fmt.Println("test 0")
+}
+
+//defer是在函数结束后返回前被执行
+//并且lambda闭包传的是值的引用
+//也就是说如果返回值在函数定义时被命名，在defer调用的函数中就可以修改返回值
+func test1() {
+	doubleSum := func(x, y int) (z int) { //don't forget add () with return expression
+		fmt.Printf("start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n", &x, x, &y, y, &z, z)
+		defer func() {
+			fmt.Printf("defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n", &x, x, &y, y, &z, z)
+			z = z * 2
+		}()
+		x = x * 2
+		y = y * 2
+		return x + y
+	}
+	fmt.Println("test 1")
+	x, y := 10, 20
+	z := doubleSum(x, y)
+	fmt.Printf("x=%d,y=%d,z=%d\n", x, y, z)
+
+}
+
+// defer是在调用时传参，而不是在执行时传参
+func test2() {
+	otherDoubleSum := func(x, y int) (z int) { //don't forget add () with return expression
+		defer func(ret int) {
+			fmt.Printf("defer:x=%d,y=%d,z=%d\n", x, y, ret)
+			ret = ret
+		}(z) // 这个时候z的值是0而不是x+y
+		x = x * 2
+		y = y * 2
+		return x + y
+	}
+	fmt.Println("test 2")
+	x, y := 10, 20
+	z := otherDoubleSum(10, 20)
+	fmt.Printf("x=%d,y=%d,z=%d\n", x, y, z)
+}
+
+// 可以在defer的函数中捕获panic
+func test3() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("panic: %s\n", err)
+		}
+	}()
+	fmt.Println("test 3")
+	panic("panic test!")
+}
+
+// 延迟调用中引发的错误，可被后续延迟调用捕获, 但仅仅最后一个panic会被捕获
+func test4() {
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("recover: %s\n", err)
+		}
+	}()
+	defer func() {
+		panic("defer panic")
+	}()
+	fmt.Println("test 4")
+	panic("panic test!")
+}
+
+// defer的性能测试，开销不小
+var lock sync.Mutex
+
+func TestLock() {
+	lock.Lock()
+	lock.Unlock()
+}
+
+func TestDeferLock() {
+	lock.Lock()
+	defer lock.Unlock()
+}
+
+func BenchmarkTest(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		TestLock()
+	}
+}
+
+func BenchmarkTestDefer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		TestDeferLock()
+	}
+}
+
+func main() {
+	test0()
+	test1()
+	test2()
+	test3()
+	test4()
+	// 性能测试跑的时间太长无法在play中
+	//	fmt.Println(testing.Benchmark(BenchmarkTest))
+	//	fmt.Println(testing.Benchmark(BenchmarkTestDefer))
+}
+</code></pre>
+              </div>
+          </article>
+        </div>
+      </div>
+      <script>
+        (function(){
+            initPlayground(new HTTPTransport());
+        }())
+      </script>
+
+      <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=defer%e6%b5%8b%e8%af%95-https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f&title=defer%e6%b5%8b%e8%af%95" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fdemo%2fdefer%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+      
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  </div>
+
+</body>
+<footer class="footer"></footer>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+</html>

@@ -1,0 +1,527 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> gin框架介绍 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>gin框架介绍</h2>
+          <span class="post-date">Thu, Dec 24, 2015</span>
+          <h3 id="为何用gin">为何用gin</h3>
+
+<p>它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够</p>
+
+<p>而因为它的简单我们也能很好的在它上面增加功能或再开发</p>
+
+<p></p>
+
+<h3 id="gin的特性">gin的特性</h3>
+
+<p>支持中间层</p>
+
+<pre><code>一个请求过来经过 global middleware,group middleware 最后到该path的middleware处理
+我们可以把处理函数放入global/middleware/group middleware的中
+</code></pre>
+
+<p>基于Radix tree</p>
+
+<p>灾难恢复</p>
+
+<pre><code>处理请求崩溃后会在Recover函数中恢复然后返回500
+</code></pre>
+
+<p>更多特性请看<a href="https://gin-gonic.github.io/gin/">官网</a></p>
+
+<h3 id="基本用法">基本用法</h3>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func pingPath(c *gin.Context) {
+	c.String(200, &quot;pong&quot;)
+}
+
+func main() {
+    r := gin.Default()
+	r.GET(&quot;ping&quot;, pingPath)
+	r.Run(&quot;:80&quot;)
+}
+</code></pre>
+
+<h3 id="上面的代码是什么意思呢">上面的代码是什么意思呢？</h3>
+
+<h4 id="先看看gin-default的源码">先看看gin.Default的源码</h4>
+
+<pre><code class="language-go">func Default() *Engine {
+	engine := New()
+	engine.Use(Recovery(), Logger())
+	return engine
+}
+</code></pre>
+
+<ul>
+<li>New()是用默认参数构造一个engine</li>
+<li>engine.Use(&hellip;)把Recovery() 和Logger()生成的函数增加值全局handler列</li>
+<li>engine.Use要在所有handle的middleware绑定之前使用，否则某些绑定的path会不生效(在group的middleware之后加是可以的)</li>
+</ul>
+
+<h4 id="然后我们来看看recovery干了什么">然后我们来看看Recovery干了什么</h4>
+
+<pre><code class="language-go">// Recovery returns a middleware that recovers from any panics and writes a 500 if there was one.
+func Recovery() HandlerFunc {
+	return RecoveryWithWriter(DefaultWriter)
+}
+
+func RecoveryWithWriter(out io.Writer) HandlerFunc {
+	var logger *log.Logger
+	if out != nil {
+		logger = log.New(out, &quot;&quot;, log.LstdFlags)
+	}
+	return func(c *Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				if logger != nil {
+					stack := stack(3)
+					logger.Printf(&quot;Panic recovery -&gt; %s\n%s\n&quot;, err, stack)
+				}
+				c.AbortWithStatus(500)
+			}
+		}()
+		c.Next()
+	}
+}
+</code></pre>
+
+<ul>
+<li>关于recover的使用可以看<a href="http://blog.golang.org/defer-panic-and-recover">http://blog.golang.org/defer-panic-and-recover</a></li>
+<li>defer的函数会在函数结束后返回前调用</li>
+<li>c.Next()就是调用下一个handler 就和Nodejs中的http库差不多</li>
+<li>大致流程就是 FuncBody -&gt; c.Next -&gt; defer func (一个灾难恢复就这样简单的实现了)</li>
+</ul>
+
+<h4 id="再然后来看看logger">再然后来看看Logger</h4>
+
+<pre><code class="language-go">// Instances a Logger middleware that will write the logs to gin.DefaultWriter
+// By default gin.DefaultWriter = os.Stdout
+func Logger() HandlerFunc {
+	return LoggerWithWriter(DefaultWriter)
+}
+
+// Instance a Logger middleware with the specified writter buffer.
+// Example: os.Stdout, a file opened in write mode, a socket...
+func LoggerWithWriter(out io.Writer) HandlerFunc {
+	return func(c *Context) {
+		// Start timer
+		start := time.Now()
+		path := c.Request.URL.Path
+
+		// Process request
+		c.Next()
+
+		// Stop timer
+		end := time.Now()
+		latency := end.Sub(start)
+
+		clientIP := c.ClientIP()
+		method := c.Request.Method
+		statusCode := c.Writer.Status()
+		statusColor := colorForStatus(statusCode)
+		methodColor := colorForMethod(method)
+		comment := c.Errors.ByType(ErrorTypePrivate).String()
+
+		fmt.Fprintf(out, &quot;[GIN] %v |%s %3d %s| %13v | %s |%s  %s %-7s %s\n%s&quot;,
+			end.Format(&quot;2006/01/02 - 15:04:05&quot;),
+			statusColor, statusCode, reset,
+			latency,
+			clientIP,
+			methodColor, reset, method,
+			path,
+			comment,
+		)
+	}
+}
+</code></pre>
+
+<ul>
+<li>大致就是输出请求头的数据和处理请求所花费的时间</li>
+<li>但听说获取系统时间会有阻塞</li>
+</ul>
+
+<h4 id="再来看看r-get之后发生了什么">再来看看r.GET之后发生了什么</h4>
+
+<pre><code class="language-go">// routergroup file
+func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+	return group.handle(&quot;GET&quot;, relativePath, handlers)
+}
+
+func (group *RouterGroup) handle(httpMethod, relativePath string, handlers HandlersChain) IRoutes {
+	absolutePath := group.calculateAbsolutePath(relativePath)
+	handlers = group.combineHandlers(handlers)
+	group.engine.addRoute(httpMethod, absolutePath, handlers)
+	return group.returnObj()
+}
+</code></pre>
+
+<ul>
+<li>这里的类是RouterGroup但上面gin.Default()返回的却是是Engine</li>
+</ul>
+
+<h4 id="于是我们看看engine的定义">于是我们看看Engine的定义</h4>
+
+<pre><code class="language-go">// Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
+// Create an instance of Engine, by using New() or Default()
+Engine struct {
+	RouterGroup
+	HTMLRender  render.HTMLRender
+	allNoRoute  HandlersChain
+	allNoMethod HandlersChain
+	noRoute     HandlersChain
+	noMethod    HandlersChain
+	pool        sync.Pool
+	trees       methodTrees
+	//忽略一些太长的数据
+	...
+
+}
+</code></pre>
+
+<ul>
+<li>Engine 是继承于RouteGroup的</li>
+<li>其实可以把Engine当成是RouteGroup节点，Group是可以嵌套的</li>
+</ul>
+
+<h4 id="最后看一下handler函数的context参数">最后看一下handler函数的Context参数</h4>
+
+<pre><code class="language-go">// Context is the most important part of gin. It allows us to pass variables between middleware,
+// manage the flow, validate the JSON of a request and render a JSON response for example.
+type Context struct {
+	writermem responseWriter
+	Request   *http.Request
+	Writer    ResponseWriter
+
+	Params   Params
+	handlers HandlersChain
+	index    int8
+
+	engine   *Engine
+	Keys     map[string]interface{}
+	Errors   errorMsgs
+	Accepted []string
+}
+
+// Next should be used only inside middleware.
+// It executes the pending handlers in the chain inside the calling handler.
+// See example in github.
+func (c *Context) Next() {
+	c.index++
+	s := int8(len(c.handlers))
+	for ; c.index &lt; s; c.index++ {
+		c.handlers[c.index](c)
+	}
+}
+
+</code></pre>
+
+<ul>
+<li><p>这里只展示了Context的定义和Next函数的实现,<a href="https://github.com/gin-gonic/gin/blob/master/context.go">详细看源码</a></p></li>
+
+<li><p>gin的运作原理大概就是这样了,之后讲gin的一些example和<a href="https://github.com/gin-gonic/gin">gin的github page</a>上的一样</p></li>
+</ul>
+
+<h3 id="包含参数的路径">包含参数的路径</h3>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+import &quot;net/http&quot;
+
+func main() {
+	r := gin.Default()
+	// 这种写法只会匹配/user/pigeon ,/user/ 和/user就不会被匹配
+	r.GET(&quot;/user/:name&quot;, func(c *gin.Context) {
+		name := c.Param(&quot;name&quot;)
+		c.String(http.StatusOK, &quot;Hello %s&quot;, name)
+	})
+	//这种写法会匹配 /user/pigeon/ 和/user/pigeon/enter 或 /user/pigeon/to/doing/something
+	r.GET(&quot;/user/:name/*action&quot;, func(c *gin.Context) {
+		name := c.Param(&quot;name&quot;)
+		action := c.Param(&quot;action&quot;)
+		message := name + &quot; is &quot; + action
+		c.String(http.StatusOK, message)
+	})
+	r.Run(&quot;:80&quot;)
+}
+
+</code></pre>
+
+<h3 id="query字符串参数">Query字符串参数</h3>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func main() {
+    router := gin.Default()
+	// 注:Query函数获取的值都必定是字符串
+    router.GET(&quot;/welcome&quot;, func(c *gin.Context) {
+        firstname := c.DefaultQuery(&quot;firstname&quot;, &quot;Guest&quot;)
+        lastname := c.Query(&quot;lastname&quot;) // shortcut for c.Request.URL.Query().Get(&quot;lastname&quot;)
+
+        c.String(http.StatusOK, &quot;Hello %s %s&quot;, firstname, lastname)
+    })
+    router.Run(&quot;:80&quot;)
+}
+</code></pre>
+
+<ul>
+<li>请尝试用如下请求路径来请求:  /welcome?firstname=Jane&amp;lastname=Doe</li>
+<li>然后查看请求结果</li>
+</ul>
+
+<h3 id="model-binding-and-validation">Model binding and validation</h3>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+import &quot;net/http&quot;
+
+// Binding from JSON
+type Login struct {
+    User     string `form:&quot;user&quot; json:&quot;user&quot; binding:&quot;required&quot;`
+    Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
+}
+
+func main() {
+    router := gin.Default()
+
+    // 该例子将绑定一个拥有 user 和 password 键的JSON数据
+    router.POST(&quot;/loginJSON&quot;, func(c *gin.Context) {
+        var json Login
+        if c.BindJSON(&amp;json) == nil {
+            if json.User == &quot;manu&quot; &amp;&amp; json.Password == &quot;123&quot; {
+                c.JSON(http.StatusOK, gin.H{&quot;status&quot;: &quot;you are logged in&quot;})
+            } else {
+                c.JSON(http.StatusUnauthorized, gin.H{&quot;status&quot;: &quot;unauthorized&quot;})
+            }
+        }
+    })
+
+    // Example for binding a HTML form (user=manu&amp;password=123)
+    router.POST(&quot;/loginForm&quot;, func(c *gin.Context) {
+        var form Login
+        // 用http头中Content-Type 的值去判定数据类型
+        if c.Bind(&amp;form) == nil {
+            if form.User == &quot;manu&quot; &amp;&amp; form.Password == &quot;123&quot; {
+                c.JSON(http.StatusOK, gin.H{&quot;status&quot;: &quot;you are logged in&quot;})
+            } else {
+                c.JSON(http.StatusUnauthorized, gin.H{&quot;status&quot;: &quot;unauthorized&quot;})
+            }
+        }
+    })
+
+    router.Run(&quot;:80&quot;)
+}
+</code></pre>
+
+<h3 id="在中间层中使用goroute">在中间层中使用goroute</h3>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+import &quot;time&quot;
+import &quot;log&quot;
+
+func main() {
+    r := gin.Default()
+
+    r.GET(&quot;/long_async&quot;, func(c *gin.Context) {
+        // create copy to be used inside the goroutine
+        c_cp := c.Copy()
+        go func() {
+            // simulate a long task with time.Sleep(). 5 seconds
+            time.Sleep(5 * time.Second)
+
+            // note than you are using the copied context &quot;c_cp&quot;, IMPORTANT
+            log.Println(&quot;Done! in path &quot; + c_cp.Request.URL.Path)
+        }()
+    })
+
+
+    r.GET(&quot;/long_sync&quot;, func(c *gin.Context) {
+        // simulate a long task with time.Sleep(). 5 seconds
+        time.Sleep(5 * time.Second)
+
+        // since we are NOT using a goroutine, we do not have to copy the context
+        log.Println(&quot;Done! in path &quot; + c.Request.URL.Path)
+    })
+
+    r.Run(&quot;:80&quot;)
+}
+</code></pre>
+
+<ul>
+<li>goroute 中请使用只读的Context,用Context.Copy可以返回一个只读的Context</li>
+</ul>
+
+<hr />
+
+<p><strong>更多gin的信息可看这<a href="https://gin-gonic.github.io/gin/">https://gin-gonic.github.io/gin/</a></strong></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=gin%e6%a1%86%e6%9e%b6%e4%bb%8b%e7%bb%8d-https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f&title=gin%e6%a1%86%e6%9e%b6%e4%bb%8b%e7%bb%8d" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

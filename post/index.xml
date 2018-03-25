@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on bigpigeon</title>
+    <link>https://bigpigeon.org/post/</link>
+    <description>Recent content in Posts on bigpigeon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn-zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 23 Jun 2017 15:16:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bigpigeon.org/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gorm简介[中]</title>
+      <link>https://bigpigeon.org/post/gorm-tutorial-second/</link>
+      <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
+      <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
+
+&lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
+
+&lt;p&gt;scopes是需要一个自定义的函数&lt;strong&gt;func(db *gorm.DB) *gorm.DB&lt;/strong&gt;作为参数，这样就可以在不破坏链式语法的情况下自定义操作了&lt;/p&gt;
+
+&lt;p&gt;比如我要查询GreekAlphabet表中LatinName是&amp;rdquo;Alpha&amp;rdquo;或 &amp;ldquo;Omega&amp;rdquo;的条目可以这样&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;chars := []GreekAlphabet{}
+db.Model(&amp;amp;GreekAlphabet{}).Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;}).Find(&amp;amp;chars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为查询多个字段的值只能用 &lt;strong&gt;Where(&amp;ldquo;field in (?)&amp;rdquo;, fields)&lt;/strong&gt; 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;firstAndLast := func(db *gorm.DB) *gorm.DB {
+  return db.Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;})
+}
+chars := []GreekAlphabet{}
+db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Error
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>谈谈go的relfect</title>
+      <link>https://bigpigeon.org/post/go-reflect-talk/</link>
+      <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
+      <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
+
+&lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
+
+&lt;p&gt;reflect.Type.Field模块可以获得&lt;strong&gt;struct&lt;/strong&gt;或者&lt;strong&gt;interface&lt;/strong&gt;中的字段名，字段类型，字段的tag等信息&lt;/p&gt;
+
+&lt;p&gt;reflect.ValueOf可以获得一个对象的值信息，比如它是指针还是实体，值的类型和interface类型下的值，它返回一个reflect.Value&lt;/p&gt;
+
+&lt;p&gt;我这里简单谈谈reflect的用法和哪些能做到哪些不能做到&lt;/p&gt;
+
+&lt;p&gt;Ps:以下所有代码都包含在这个&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/reflect_demo&#34;&gt;测试项目&lt;/a&gt;中&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gorm简介[前]</title>
+      <link>https://bigpigeon.org/post/gorm-tutorial-first/</link>
+      <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
+      <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
+
+&lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
+
+&lt;p&gt;所以需要一个工具来管理数据库语句的组装和操作&lt;/p&gt;
+
+&lt;p&gt;gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>git错误push与回滚</title>
+      <link>https://bigpigeon.org/post/git-push-recover-way/</link>
+      <pubDate>Thu, 09 Mar 2017 09:44:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/git-push-recover-way/</guid>
+      <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>我的翻墙技术栈</title>
+      <link>https://bigpigeon.org/post/my-skip-gfw-stack/</link>
+      <pubDate>Tue, 27 Dec 2016 17:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/my-skip-gfw-stack/</guid>
+      <description>&lt;p&gt;谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。&lt;/p&gt;
+
+&lt;p&gt;这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。&lt;/p&gt;
+
+&lt;p&gt;linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题&lt;/p&gt;
+
+&lt;p&gt;也可以通过其他协议工具比如:&lt;a href=&#34;https://github.com/xtaci/kcptun&#34;&gt;kcptun&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;kcptun可以提供双边加速和窗口控制，效果可能比bbr好&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从jekyll到hugo，搬运经验总结</title>
+      <link>https://bigpigeon.org/post/jekyll-to-hugo/</link>
+      <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/jekyll-to-hugo/</guid>
+      <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
+
+&lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Iptables学习笔记</title>
+      <link>https://bigpigeon.org/post/iptables-study/</link>
+      <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/iptables-study/</guid>
+      <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
+
+&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
+
+&lt;p&gt;但后来我接触linux运维越来越多才发现，iptables虽然缺点一大堆，但它胜在功能非常强大，并且可以满足大多数网络管理上的需求，在没有更好的代替品出现前iptables绝对是必不可少的工具。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>react学习笔记</title>
+      <link>https://bigpigeon.org/post/react-study/</link>
+      <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/react-study/</guid>
+      <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
+
+&lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
+
+&lt;p&gt;那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var a = &amp;lt;div class=&amp;quot;green&amp;quot;&amp;gt;my color is green&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用&lt;/p&gt;
+
+&lt;p&gt;也可以使用react.createElement创建element&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var app = React.createElement(
+    &amp;quot;div&amp;quot;, //标签名或组件对象
+    {class:&amp;quot;green&amp;quot;}, //元素属性集
+    &amp;quot;my color is green&amp;quot; //子元素
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;createElement的更多信息&lt;a href=&#34;https://facebook.github.io/react/docs/top-level-api.html#react.createelement&#34;&gt;看这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
+
+&lt;p&gt;于是乎，我们可以自由组合js和xml了，比如&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>postgresql类型</title>
+      <link>https://bigpigeon.org/post/postgresql-type/</link>
+      <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/postgresql-type/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;但是繁多的类型也导致了postgresql的学习成本和复杂度的问题&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;这里我来做个笔记简单讲讲postgresql的数据类型有哪些和如何用好这些类型&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;PS:以下内容都基于postgresql 9.3&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;TODO:有些类型的例子和介绍还没写完，以后再补上&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在python上操作postgresql</title>
+      <link>https://bigpigeon.org/post/python-and-postgresql/</link>
+      <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/python-and-postgresql/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;首先postgresql的安装,这里我使用了自己build一个Dockerfile&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;我的Dockerfile:&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用docker部署jekyll</title>
+      <link>https://bigpigeon.org/post/docker-and-jekyll/</link>
+      <pubDate>Sat, 06 Feb 2016 14:06:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/docker-and-jekyll/</guid>
+      <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
+
+&lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gin框架介绍</title>
+      <link>https://bigpigeon.org/post/gin-framework/</link>
+      <pubDate>Thu, 24 Dec 2015 06:25:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/gin-framework/</guid>
+      <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
+
+&lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;
+
+&lt;p&gt;而因为它的简单我们也能很好的在它上面增加功能或再开发&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>pac脚本优化</title>
+      <link>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</link>
+      <pubDate>Sat, 19 Dec 2015 22:00:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</guid>
+      <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
+
+&lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;lantern
+
+&lt;ul&gt;
+&lt;li&gt;把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;shadowsocks
+
+&lt;ul&gt;
+&lt;li&gt;把domain做成一个{domain:1,&amp;hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&amp;rsquo;.&amp;lsquo;和之前的内容 继续做domains.hasOwnProperty判断&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
+
+于是我自己实现一个pac优化FindProxyForURL匹配速度&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>jekyll部署总结</title>
+      <link>https://bigpigeon.org/post/jekyll-deploy/</link>
+      <pubDate>Wed, 09 Dec 2015 16:00:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/jekyll-deploy/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况&lt;/li&gt;
+&lt;li&gt;把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件&lt;/li&gt;
+&lt;li&gt;这个博客的模板我是fork &lt;a href=&#34;https://github.com/Gaohaoyang&#34;&gt;浩阳 Gaohaoyang&lt;/a&gt; 的 &lt;a href=&#34;https://github.com/Gaohaoyang/gaohaoyang.github.io&#34;&gt;博客模板&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;其实我还是希望设计一个有特色点的博客，但毕竟我前端技能很烂，只能先用别人的了.</description>
+    </item>
+    
+  </channel>
+</rss>

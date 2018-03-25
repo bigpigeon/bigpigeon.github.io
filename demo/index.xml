@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Demos on bigpigeon</title>
+    <link>https://bigpigeon.org/demo/</link>
+    <description>Recent content in Demos on bigpigeon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn-zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 20 Jan 2017 17:59:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bigpigeon.org/demo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>并发测试</title>
+      <link>https://bigpigeon.org/demo/concurrent/</link>
+      <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/concurrent/</guid>
+      <description>package main import ( &#34;fmt&#34; &#34;math/rand&#34; &#34;time&#34; ) func process(id int, result chan string) { // 开启一个定时任务的线程 heart := time.Duration(5) // 定时任务间隔 done := make(chan bool, 1) defer close(done) go func() { tick := time.NewTicker(heart * time.Second) defer tick.Stop() //	defer fmt.Println(&#34;tick stop:&#34;, id) for { select { case heart\n&#34;, id) case </description>
+    </item>
+    
+    <item>
+      <title>defer测试</title>
+      <link>https://bigpigeon.org/demo/defer/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/defer/</guid>
+      <description>package main import ( &#34;fmt&#34; &#34;sync&#34; &#34;testing&#34; ) //调用顺序 //最早调用的defer会在最后执行 func test0() { defer func() { fmt.Print(&#34;a\n&#34;) }() defer func() { fmt.Print(&#34;b&#34;) }() defer func() { fmt.Print(&#34;c&#34;) }() fmt.Println(&#34;test 0&#34;) } //defer是在函数结束后返回前被执行 //并且lambda闭包传的是值的引用 //也就是说如果返回值在函数定义时被命名，在defer调用的函数中就可以修改返回值 func test1() { doubleSum := func(x, y int) (z int) { //don&#39;t forget add () with return expression fmt.Printf(&#34;start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) defer func() { fmt.Printf(&#34;defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) z = z * 2 }() x = x * 2 y = y * 2 return x + y } fmt.</description>
+    </item>
+    
+    <item>
+      <title>go array and slice</title>
+      <link>https://bigpigeon.org/demo/goarray/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/goarray/</guid>
+      <description>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+//数组的初始化方式
+func arrayInit() {
+	fmt.Println(&#34;array init!&#34;)
+	a := [4]int{1, 3, 5, 7}
+	b := [...]int{2, 4, 6, 8}
+	c := [...]int{3: 10, 5: 20}
+	d := [...]struct {
+		x uint
+		y uint
+	}{
+		{50, 20},
+		{30, 40},
+	}
+	e := [...][2]int{
+		{1, 3},</description>
+    </item>
+    
+    <item>
+      <title>go clone</title>
+      <link>https://bigpigeon.org/demo/goclone/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/goclone/</guid>
+      <description>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	//基本数据类型可以用任意方式克隆(int, float, complex, point)
+	type BaseType int
+	numA := BaseType(5)
+	numB := numA
+	var numC = numA
+	fmt.Printf(&#34;number\nA:%p\nB:%p\nC:%p\n&#34;, &amp;numA, &amp;numB, &amp;numC)
+	//list类型和基本类型一样
+	listA := [3]int{1, 2, 3}
+	listB := listA
+	var listC = listA
+	fmt.Printf(&#34;list:\nA:%p\nB:%p\nC:%p\n&#34;, &amp;listA, &amp;listB, &amp;listC)
+
+	//struct类型也和基本类型一样
+	type TestData struct {
+		id   int</description>
+    </item>
+    
+    <item>
+      <title>go hello</title>
+      <link>https://bigpigeon.org/demo/gohelloworld/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/gohelloworld/</guid>
+      <description>package main
+
+import &#34;fmt&#34;
+import &#34;runtime&#34;
+
+func main() {
+	fmt.Println(&#34;Hello, playground&#34;)
+	fmt.Println(runtime.GOMAXPROCS(0))
+}</description>
+    </item>
+    
+    <item>
+      <title>go interface</title>
+      <link>https://bigpigeon.org/demo/gointerface/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/gointerface/</guid>
+      <description>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+// 接口可以让函数更抽象
+type Blunt interface {
+	Beat() string
+}
+
+type Hammer struct {
+}
+
+func (h Hammer) Beat() string {
+	return &#34;duang!!!&#34;
+}
+
+type Wrench struct {
+}
+
+func (w Wrench) Beat() string {
+	return &#34;pang!!!&#34;
+}
+
+func BluntSound(b Blunt) {
+	fmt.Println(b.Beat())
+}
+
+// 也可以为函数增方法
+type Tester interface {
+	Do()</description>
+    </item>
+    
+    <item>
+      <title>go sched</title>
+      <link>https://bigpigeon.org/demo/gosched/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/gosched/</guid>
+      <description>package main
+
+import (
+	&#34;fmt&#34;
+	&#34;io/ioutil&#34;
+	&#34;runtime&#34;
+	&#34;sync&#34;
+	&#34;time&#34;
+)
+
+func main() {
+	runtime.GOMAXPROCS(1) // 如果是多核就不一定能看到调度的效果了
+	wg := new(sync.WaitGroup)
+	wg.Add(4)
+
+	go func() {
+		defer wg.Done()
+		fmt.Println(&#34;start func alpha&#34;)
+		runtime.Gosched()
+		fmt.Println(&#34;done func alpha&#34;)
+
+	}()
+
+	//IO操作可能会导致go routiner 让出线程(strings或bytes的NewReader不会)
+	go func() {
+		defer wg.Done()
+		fmt.</description>
+    </item>
+    
+    <item>
+      <title>go select</title>
+      <link>https://bigpigeon.org/demo/goselect/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/goselect/</guid>
+      <description>package main import ( &#34;fmt&#34; &#34;runtime&#34; &#34;sync&#34; &#34;time&#34; ) //测试select 加入default和不加default的区别 func test() { cA, cB := make(chan int), make(chan int) //为防止在go routines跑完前进程退出 wg := sync.WaitGroup{} wg.Add(3) go func() { defer wg.Done() cA </description>
+    </item>
+    
+    <item>
+      <title>go struct</title>
+      <link>https://bigpigeon.org/demo/gostruct/</link>
+      <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/demo/gostruct/</guid>
+      <description>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+var testFuncs = []func(){
+	//map取值返回的是值而非引用
+	func() {
+		passwd := map[int]struct {
+			name     string
+			password int
+		}{
+			1: {&#34;user1&#34;, 10},
+			2: {&#34;user2&#34;, 20},
+		}
+		u1 := passwd[1]
+		u1.password = 123
+		fmt.Printf(&#34;user1: %v,%v\n&#34;, passwd[1], u1)</description>
+    </item>
+    
+  </channel>
+</rss>

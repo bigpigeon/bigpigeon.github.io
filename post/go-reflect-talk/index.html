@@ -1,0 +1,452 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 谈谈go的relfect &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>谈谈go的relfect</h2>
+          <span class="post-date">Tue, Jun 6, 2017</span>
+          <p>go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象</p>
+
+<p>reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type</p>
+
+<p>reflect.Type.Field模块可以获得<strong>struct</strong>或者<strong>interface</strong>中的字段名，字段类型，字段的tag等信息</p>
+
+<p>reflect.ValueOf可以获得一个对象的值信息，比如它是指针还是实体，值的类型和interface类型下的值，它返回一个reflect.Value</p>
+
+<p>我这里简单谈谈reflect的用法和哪些能做到哪些不能做到</p>
+
+<p>Ps:以下所有代码都包含在这个<a href="https://github.com/bigpigeon/Test/tree/master/go/reflect_demo">测试项目</a>中</p>
+
+<p></p>
+
+<h3 id="简介">简介</h3>
+
+<p>reflect库有3个重要的类型，Type,Value和StructField,分别对应对象类型，对象值，字段对象</p>
+
+<p>Type和Value可以通过TypeOf(obj)和ValueOf(obj)的方法来获取obj的类型属性和值属性</p>
+
+<p>当Type的类型为Struct时可以通过Field，FieldByIndex，FieldByName模块等到里面的StructField</p>
+
+<p>而Value下的Field，FieldByIndex，FieldByName只是获取字段对应的Value</p>
+
+<h3 id="普通字段的取值">普通字段的取值</h3>
+
+<p>int类型，其他比如float,uint和complex都是这种，就不举例了</p>
+
+<p>t是*testing.T，因为是在Test函数里面跑，所以用t.Logf来打印日志</p>
+
+<pre><code class="language-golang">var a int = 20
+aVal := reflect.ValueOf(a)
+aType := reflect.TypeOf(a)
+t.Logf(&quot;variable a Value is %v&quot;, aVal.Interface())
+t.Logf(&quot;variable a Type is %s&quot;, aType.String())
+</code></pre>
+
+<p>String类型</p>
+
+<pre><code class="language-golang">var a string = &quot;abcd1234&quot;
+aVal := reflect.ValueOf(a)
+aType := reflect.TypeOf(a)
+t.Logf(&quot;variable a Value is %v&quot;, aVal.Interface())
+t.Logf(&quot;variable a Type is %s&quot;, aType.String())
+t.Logf(&quot;variable a length is %d, last character is %c&quot;, aVal.Len(), aVal.Index(aVal.Len()-1))
+</code></pre>
+
+<p>list类型</p>
+
+<pre><code class="language-golang">var a []int = []int{1, 2, 3, 4, 5}
+// 当使用append遇到list的空间不足时会重分配n*2的空间，这里只是为了让cap和length不同才这么做
+a = append(a, 6)
+aVal := reflect.ValueOf(a)
+aType := reflect.TypeOf(a)
+t.Logf(&quot;variable a Value is %v&quot;, aVal.Interface())
+t.Logf(&quot;variable a Type is %s&quot;, aType.String())
+t.Logf(&quot;variable a length is %d,cap is %d, last int is %d&quot;, aVal.Len(), aVal.Cap(), aVal.Index(aVal.Len()-1))
+</code></pre>
+
+<p>map类型</p>
+
+<pre><code class="language-golang">var a map[int]string = map[int]string{1: &quot;a&quot;, 2: &quot;b&quot;, 3: &quot;c&quot;}
+aVal := reflect.ValueOf(a)
+aType := reflect.TypeOf(a)
+OneVal := reflect.ValueOf(1)
+t.Logf(&quot;variable a Value is %v&quot;, aVal.Interface())
+t.Logf(&quot;variable a Type is %s&quot;, aType.String())
+t.Logf(&quot;variable a length is %d,one index value is %s&quot;, aVal.Len(), aVal.MapIndex(OneVal))
+</code></pre>
+
+<p>修改对象的值</p>
+
+<pre><code class="language-golang">var a int32 = 10
+// 要改变reflect的中的值必须是一个指针的Elem()下的reflect.Value
+aVal := reflect.ValueOf(a)
+aPointVal := reflect.ValueOf(&amp;a)
+t.Logf(&quot;variable a set status %v&quot;, aVal.CanSet())
+t.Logf(&quot;variable a in point set status %v&quot;, aPointVal.Elem().CanSet())
+// 不用担心因为SetInt传入的是一个int64而设置负数会导致不正确，在这个函数中会根据int具体类型而做转换
+aPointVal.Elem().SetInt(-20)
+t.Logf(&quot;variable a changed value %d&quot;, aPointVal.Elem().Interface())
+// Slice中元素都可以修改
+var b []int = []int{1, 2, 3, 4}
+bVal := reflect.ValueOf(b)
+t.Logf(&quot;slice b first element set status %v&quot;, bVal.Index(0).CanSet())
+// Map中元素都不能直接修改
+var c map[int]int = map[int]int{1: 2, 2: 4, 3: 6}
+cVal := reflect.ValueOf(c)
+oneValue := reflect.ValueOf(1)
+fourValue := reflect.ValueOf(4)
+
+t.Logf(&quot;map c the 1 key l element set status %v&quot;, cVal.MapIndex(oneValue).CanSet())
+// 不过可以使用SetMapIndex修改Val的值
+cVal.SetMapIndex(oneValue, oneValue)
+t.Logf(&quot;map c the value with 1 key is %d&quot;, cVal.MapIndex(oneValue))
+// 也可以对不存在的key设值
+cVal.SetMapIndex(fourValue, oneValue)
+t.Logf(&quot;now map c is %v&quot;, cVal)
+</code></pre>
+
+<h3 id="结构体字段的取值">结构体字段的取值</h3>
+
+<p>创建几个相关联的结构体和模块</p>
+
+<pre><code class="language-golang">type Application struct {
+	Name        string `json:&quot;name&quot;`
+	Description string `json:&quot;description&quot;`
+	packageData []byte `json:&quot;-&quot;`
+}
+type MoneyType int
+
+const (
+	MoneyTypeUS = MoneyType(iota)
+	MoneyTypeCN
+)
+
+type Money struct {
+	MoneyType MoneyType `json:&quot;money_type&quot; xml:&quot;MoneyType&quot;`
+	Number    float64   `json:&quot;number&quot;`
+}
+
+type MacApplication struct {
+	Application `json:&quot;application&quot;`
+	AppleStore  string `json:&quot;apple_store&quot;`
+	Favorite    int    `json:&quot;favorite&quot;`
+	Money       Money  `json:&quot;money&quot;`
+}
+
+func (app Application) GetData() []byte {
+	return app.packageData
+}
+</code></pre>
+
+<p>并创建对应的对象</p>
+
+<pre><code class="language-golang">app := MacApplication{
+  Application: Application{
+    Name:        &quot;sandbox tower defence&quot;,
+    Description: &quot;a rpg td game&quot;,
+    packageData: []byte{},
+  },
+  AppleStore: &quot;https://itunes.apple.com/us/app/example&quot;,
+  Favorite:   0,
+  Money: Money{
+    MoneyType: MoneyTypeUS,
+    Number:    0,
+  },
+}
+</code></pre>
+
+<p>通过<strong>reflect.Type下的Field(i)模块函数</strong> 来获取结构体的第i个字段的StructField信息</p>
+
+<p>获得StructField可以获取字段的名字，标签和偏移量和索引信息</p>
+
+<pre><code class="language-golang">structVal := reflect.TypeOf(app)
+for i := 0; i &lt; structVal.NumField(); i++ {
+			field := structVal.Field(i)
+      // 如果是匿名字段,字段名等于类型名
+      t.Logf(&quot;%s, this field is a %s and kind is %v&quot;, field.Name, field.Type, field.Type.Kind())
+
+}
+</code></pre>
+
+<p>通过StructField.Anonymous判断是否匿名字段，StructField.Type.Kind() == reflect.Struct判断是否结构体，用这种方式来递归读取struct中的结构体信息</p>
+
+<p>下面这个函数带有一个回调，递归读取structType的字段， 并把它下面的每一个field都交给f去处理</p>
+
+<pre><code class="language-golang">var RecursionGetField func(string, reflect.Type, func(field *reflect.StructField))
+RecursionGetField = func(prefix string, structType reflect.Type, f func(field *reflect.StructField)) {
+  for i := 0; i &lt; structType.NumField(); i++ {
+    field := structType.Field(i)
+    field.Name = prefix + &quot;.&quot; + field.Name
+    f(&amp;field)
+    if field.Type.Kind() == reflect.Struct {
+      // 匿名结构体字段中的字段当成当前结构体的
+      if field.Anonymous == true {
+        RecursionGetField(prefix, field.Type, f)
+      } else {
+        RecursionGetField(field.Name, field.Type, f)
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>通过StructField.Tag获取标签相关信息</p>
+
+<pre><code class="language-golang">structVal := reflect.TypeOf(app)
+for i := 0; i &lt; structVal.NumField(); i++ {
+     field := structVal.Field(i)
+     t.Logf(&quot;this field %s,tag is '%s' json field '%s'&quot;, field.Name, field.Tag, field.Tag.Get(&quot;json&quot;))
+}
+</code></pre>
+
+<h3 id="应用实现">应用实现</h3>
+
+<p>通过获取Field Name和Type Name来组装创建表的sql语句</p>
+
+<pre><code class="language-golang">// 这里只是做简单取类型和字段名,不涉及主键和附加属性的处理
+// tableFields[table name][field name][field kind name]
+tableFields := map[string]map[string]string{}
+tables := []string{}
+sqlTypeMap := map[reflect.Kind]string{
+  reflect.Int:     &quot;integer&quot;,
+  reflect.String:  &quot;varchar(255)&quot;,
+  reflect.Float64: &quot;real&quot;,
+}
+structType := reflect.TypeOf(MacApplication{})
+var GetTableField func(string, reflect.Type)
+
+GetTableField = func(tName string, structType reflect.Type) {
+
+  if tableFields[tName] == nil {
+    tableFields[tName] = map[string]string{}
+  }
+  for i := 0; i &lt; structType.NumField(); i++ {
+    field := structType.Field(i)
+    if field.Type.Kind() == reflect.Struct {
+      if field.Anonymous == true {
+        GetTableField(tName, field.Type)
+      } else {
+        GetTableField(field.Type.Name(), field.Type)
+      }
+    } else {
+      tableFields[tName][field.Name] = sqlTypeMap[field.Type.Kind()]
+    }
+  }
+}
+GetTableField(structType.Name(), structType)
+// 通过tableFields表组装sql到tables中
+for tName, fields := range tableFields {
+  fNameTypeList := []string{}
+  for fName, fType := range fields {
+    fNameTypeList = append(fNameTypeList, fmt.Sprintf(`&quot;%s&quot; %s`, fName, fType))
+  }
+  tables = append(tables, fmt.Sprintf(`CREATE TABLE &quot;%s&quot;(%s)`, tName, strings.Join(fNameTypeList, &quot;,&quot;)))
+}
+for _, tab := range tables {
+  t.Log(tab)
+}
+</code></pre>
+
+<p>根据字段值的指针猜字段名，需要提供对象的指针和对象字段的指针，然后通过偏移量计算出StructField</p>
+
+<pre><code class="language-golang">structType := reflect.TypeOf(MacApplication{})
+offsetmap := map[uintptr]reflect.StructField{}
+
+for i := 0; i &lt; structType.NumField(); i++ {
+  field := structType.Field(i)
+  offsetmap[field.Offset] = field
+}
+
+{
+  realFieldName := &quot;Application&quot;
+  structVal := reflect.ValueOf(&amp;app)
+  ApplicationVal := reflect.ValueOf(&amp;app.Application)
+  offset := ApplicationVal.Elem().UnsafeAddr() - structVal.Elem().UnsafeAddr()
+  assert.Equal(t, realFieldName, offsetmap[offset].Name)
+  t.Logf(&quot;I guess this field is %s, real field is %s&quot;, offsetmap[offset].Name, realFieldName)
+}
+{
+  realFieldName := &quot;AppleStore&quot;
+  structVal := reflect.ValueOf(&amp;app)
+  AppleStoreVal := reflect.ValueOf(&amp;app.AppleStore)
+  offset := AppleStoreVal.Elem().UnsafeAddr() - structVal.Elem().UnsafeAddr()
+  assert.Equal(t, realFieldName, offsetmap[offset].Name)
+  t.Logf(&quot;I guess this field is %s, real field is %s&quot;, offsetmap[offset].Name, realFieldName)
+}
+</code></pre>
+
+<p>类型比对</p>
+
+<pre><code class="language-golang">a := MoneyTypeCN
+b := 2
+aType := reflect.TypeOf(a)
+bType := reflect.TypeOf(b)
+// 虽然他们的种类一样但类型不一样(kind翻译为种类是为了不和Type混淆)
+t.Logf(&quot;a kind is %v, b kind is %v&quot;, aType.Kind(), bType.Kind())
+t.Logf(&quot;a Type is %v, b Type is %v&quot;, aType.String(), bType.String())
+// 也可以通过转为interface直接比较类型
+_, aIsInt := reflect.New(aType).Interface().(int)
+t.Logf(&quot;a is int?%v&quot;, aIsInt)
+_, bIsMoneyType := reflect.New(bType).Interface().(MoneyType)
+t.Logf(&quot;b is MoneyType?%v&quot;, bIsMoneyType)
+</code></pre>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e8%b0%88%e8%b0%88go%e7%9a%84relfect-https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f&title=%e8%b0%88%e8%b0%88go%e7%9a%84relfect" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-reflect-talk%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

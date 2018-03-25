@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> Demos &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+      <link href="https://bigpigeon.org/demo/index.xml" rel="alternate" type="application/rss+xml" title="bigpigeon" />
+      <link href="https://bigpigeon.org/demo/index.xml" rel="feed" type="application/rss+xml" title="bigpigeon" />
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+<body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      
+        <div class="content-wrapper__inner">
+            <section id="main">
+                <div class="sandbox-section">
+                  <div>
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/concurrent/">并发测试 </a> </h4>
+<div class="post-meta">Fri, Jan 20, 2017 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>开启一个并发任务并在任务中加入定时任务并通过channel收集结果
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/concurrent/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/defer/">defer测试 </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 2 Min </div>
+</header>
+<div class="summary">
+  <span>被defer调用的函数会在当前函数结束后返回前被执行,
+这个测试的目的就是为了测试defer在各个特殊情况下的表现
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/defer/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/goarray/">go array and slice </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 2 Min </div>
+</header>
+<div class="summary">
+  <span>slice是可变长度列表，底层指向一个list,
+但底层的长度不够时会从新分配一个size×2的list并拷贝元素。
+所以对slice做append时一定要小心,不要对同一list下的2个slice做append
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/goarray/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/goclone/">go clone </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>除了引用类型之外，都可以通过赋值的方式复制元素
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/goclone/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/gohelloworld/">go hello </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/gohelloworld/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/gointerface/">go interface </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>接口可以使代码变得更抽象，增加可读性，规范和标准化功能，
+接口可以看成是模板的代替品
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/gointerface/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/gosched/">go sched </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>go在等待操作时会自动让出线程，也可以通过runtime.Gosched主动让出当前线程
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/gosched/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/goselect/">go select </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>select可以把channel接收集结在一起,不过要注意default的运用，加default和不加default区别很大
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/goselect/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                        <article class="sandbox">
+<header>
+<h4><a href="https://bigpigeon.org/demo/gostruct/">go struct </a> </h4>
+<div class="post-meta">Sat, Jan 16, 2016 - Read in 1 Min </div>
+</header>
+<div class="summary">
+  <span>一些关于结构体和map的小知识
+</span>
+</div>
+<footer>
+<a href='https://bigpigeon.org/demo/gostruct/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+                    
+                  </div>
+                </div>
+                </br>
+                <h4 class="space-between">
+                    
+                    <a></a>
+                    
+                    <a></a>
+                    
+                    <a></a>
+                    
+                </h4>
+                <h4>
+
+                </h4>
+            </section>
+        </div>
+
+    </div>
+    <footer class="footer"></footer>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
