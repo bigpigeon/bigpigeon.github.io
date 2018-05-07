@@ -7,10 +7,66 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 23 Jun 2017 15:16:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 05 May 2018 10:07:00 +0800</lastBuildDate>
     
 	<atom:link href="https://bigpigeon.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用go/ast来解析go文件</title>
+      <link>https://bigpigeon.github.io/post/go-ast-parser-file/</link>
+      <pubDate>Sat, 05 May 2018 10:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.github.io/post/go-ast-parser-file/</guid>
+      <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
+
+&lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;package main
+
+import (
+	&amp;quot;go/ast&amp;quot;
+	&amp;quot;go/parser&amp;quot;
+	&amp;quot;go/token&amp;quot;
+)
+
+func main() {
+	src := `
+package main
+
+// 该声明为GenDecl TOK=token.IMPORT
+import &amp;quot;fmt&amp;quot;
+
+// 该声明为GenDecl TOK=token.TYPE
+type Product struct {
+	Name string
+}
+
+// 该声明为GenDecl TOK=token.VAR
+var product Product
+
+// 该声明为FunDecl
+func main() { //test1
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;) //test2
+	a := []int{1,2,3}
+	a[1],a[2] = 5,6
+}
+`
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &amp;quot;&amp;quot;, src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 打印ast节点
+	ast.Print(fset, f)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>gorm简介[中]</title>

@@ -1,0 +1,715 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 使用go/ast来解析go文件 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.github.io/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.github.io/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.github.io/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.github.io/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.github.io/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.github.io/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.github.io/css/highlight/docco.css">
+    <script src="https://bigpigeon.github.io/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.github.io/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.github.io#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.github.io/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.github.io/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.github.io/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>使用go/ast来解析go文件</h2>
+          <span class="post-date">Sat, May 5, 2018</span>
+          <p>go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具</p>
+
+<p>下面我们来看看如何ast树的结构</p>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;go/ast&quot;
+	&quot;go/parser&quot;
+	&quot;go/token&quot;
+)
+
+func main() {
+	src := `
+package main
+
+// 该声明为GenDecl TOK=token.IMPORT
+import &quot;fmt&quot;
+
+// 该声明为GenDecl TOK=token.TYPE
+type Product struct {
+	Name string
+}
+
+// 该声明为GenDecl TOK=token.VAR
+var product Product
+
+// 该声明为FunDecl
+func main() { //test1
+	fmt.Println(&quot;Hello, World!&quot;) //test2
+	a := []int{1,2,3}
+	a[1],a[2] = 5,6
+}
+`
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &quot;&quot;, src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 打印ast节点
+	ast.Print(fset, f)
+}
+
+</code></pre>
+
+<p></p>
+
+<p><details>
+<summary>
+然后我们可以巨量的打印信息
+</summary></p>
+
+<pre><code> 0  *ast.File {
+ 1  .  Package: 2:1
+ 2  .  Name: *ast.Ident {
+ 3  .  .  NamePos: 2:9
+ 4  .  .  Name: &quot;main&quot;
+ 5  .  }
+ 6  .  Decls: []ast.Decl (len = 4) {
+ 7  .  .  0: *ast.GenDecl {
+ 8  .  .  .  TokPos: 5:1
+ 9  .  .  .  Tok: import
+10  .  .  .  Lparen: -
+11  .  .  .  Specs: []ast.Spec (len = 1) {
+12  .  .  .  .  0: *ast.ImportSpec {
+13  .  .  .  .  .  Path: *ast.BasicLit {
+14  .  .  .  .  .  .  ValuePos: 5:8
+15  .  .  .  .  .  .  Kind: STRING
+16  .  .  .  .  .  .  Value: &quot;\&quot;fmt\&quot;&quot;
+17  .  .  .  .  .  }
+18  .  .  .  .  .  EndPos: -
+19  .  .  .  .  }
+20  .  .  .  }
+21  .  .  .  Rparen: -
+22  .  .  }
+23  .  .  1: *ast.GenDecl {
+24  .  .  .  TokPos: 8:1
+25  .  .  .  Tok: type
+26  .  .  .  Lparen: -
+27  .  .  .  Specs: []ast.Spec (len = 1) {
+28  .  .  .  .  0: *ast.TypeSpec {
+29  .  .  .  .  .  Name: *ast.Ident {
+30  .  .  .  .  .  .  NamePos: 8:6
+31  .  .  .  .  .  .  Name: &quot;Product&quot;
+32  .  .  .  .  .  .  Obj: *ast.Object {
+33  .  .  .  .  .  .  .  Kind: type
+34  .  .  .  .  .  .  .  Name: &quot;Product&quot;
+35  .  .  .  .  .  .  .  Decl: *(obj @ 28)
+36  .  .  .  .  .  .  }
+37  .  .  .  .  .  }
+38  .  .  .  .  .  Assign: -
+39  .  .  .  .  .  Type: *ast.StructType {
+40  .  .  .  .  .  .  Struct: 8:14
+41  .  .  .  .  .  .  Fields: *ast.FieldList {
+42  .  .  .  .  .  .  .  Opening: 8:21
+43  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
+44  .  .  .  .  .  .  .  .  0: *ast.Field {
+45  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+46  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+47  .  .  .  .  .  .  .  .  .  .  .  NamePos: 9:2
+48  .  .  .  .  .  .  .  .  .  .  .  Name: &quot;Name&quot;
+49  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+50  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+51  .  .  .  .  .  .  .  .  .  .  .  .  Name: &quot;Name&quot;
+52  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 44)
+53  .  .  .  .  .  .  .  .  .  .  .  }
+54  .  .  .  .  .  .  .  .  .  .  }
+55  .  .  .  .  .  .  .  .  .  }
+56  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+57  .  .  .  .  .  .  .  .  .  .  NamePos: 9:7
+58  .  .  .  .  .  .  .  .  .  .  Name: &quot;string&quot;
+59  .  .  .  .  .  .  .  .  .  }
+60  .  .  .  .  .  .  .  .  }
+61  .  .  .  .  .  .  .  }
+62  .  .  .  .  .  .  .  Closing: 10:1
+63  .  .  .  .  .  .  }
+64  .  .  .  .  .  .  Incomplete: false
+65  .  .  .  .  .  }
+66  .  .  .  .  }
+67  .  .  .  }
+68  .  .  .  Rparen: -
+69  .  .  }
+70  .  .  2: *ast.GenDecl {
+71  .  .  .  TokPos: 13:1
+72  .  .  .  Tok: var
+73  .  .  .  Lparen: -
+74  .  .  .  Specs: []ast.Spec (len = 1) {
+75  .  .  .  .  0: *ast.ValueSpec {
+76  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+77  .  .  .  .  .  .  0: *ast.Ident {
+78  .  .  .  .  .  .  .  NamePos: 13:5
+79  .  .  .  .  .  .  .  Name: &quot;product&quot;
+80  .  .  .  .  .  .  .  Obj: *ast.Object {
+81  .  .  .  .  .  .  .  .  Kind: var
+82  .  .  .  .  .  .  .  .  Name: &quot;product&quot;
+83  .  .  .  .  .  .  .  .  Decl: *(obj @ 75)
+84  .  .  .  .  .  .  .  .  Data: 0
+85  .  .  .  .  .  .  .  }
+86  .  .  .  .  .  .  }
+87  .  .  .  .  .  }
+88  .  .  .  .  .  Type: *ast.Ident {
+89  .  .  .  .  .  .  NamePos: 13:13
+90  .  .  .  .  .  .  Name: &quot;Product&quot;
+91  .  .  .  .  .  .  Obj: *(obj @ 32)
+92  .  .  .  .  .  }
+93  .  .  .  .  }
+94  .  .  .  }
+95  .  .  .  Rparen: -
+96  .  .  }
+97  .  .  3: *ast.FuncDecl {
+98  .  .  .  Name: *ast.Ident {
+99  .  .  .  .  NamePos: 16:6
+100  .  .  .  .  Name: &quot;main&quot;
+101  .  .  .  .  Obj: *ast.Object {
+102  .  .  .  .  .  Kind: func
+103  .  .  .  .  .  Name: &quot;main&quot;
+104  .  .  .  .  .  Decl: *(obj @ 97)
+105  .  .  .  .  }
+106  .  .  .  }
+107  .  .  .  Type: *ast.FuncType {
+108  .  .  .  .  Func: 16:1
+109  .  .  .  .  Params: *ast.FieldList {
+110  .  .  .  .  .  Opening: 16:10
+111  .  .  .  .  .  Closing: 16:11
+112  .  .  .  .  }
+113  .  .  .  }
+114  .  .  .  Body: *ast.BlockStmt {
+115  .  .  .  .  Lbrace: 16:13
+116  .  .  .  .  List: []ast.Stmt (len = 1) {
+117  .  .  .  .  .  0: *ast.ExprStmt {
+118  .  .  .  .  .  .  X: *ast.CallExpr {
+119  .  .  .  .  .  .  .  Fun: *ast.SelectorExpr {
+120  .  .  .  .  .  .  .  .  X: *ast.Ident {
+121  .  .  .  .  .  .  .  .  .  NamePos: 17:2
+122  .  .  .  .  .  .  .  .  .  Name: &quot;fmt&quot;
+123  .  .  .  .  .  .  .  .  }
+124  .  .  .  .  .  .  .  .  Sel: *ast.Ident {
+125  .  .  .  .  .  .  .  .  .  NamePos: 17:6
+126  .  .  .  .  .  .  .  .  .  Name: &quot;Println&quot;
+127  .  .  .  .  .  .  .  .  }
+128  .  .  .  .  .  .  .  }
+129  .  .  .  .  .  .  .  Lparen: 17:13
+130  .  .  .  .  .  .  .  Args: []ast.Expr (len = 1) {
+131  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+132  .  .  .  .  .  .  .  .  .  ValuePos: 17:14
+133  .  .  .  .  .  .  .  .  .  Kind: STRING
+134  .  .  .  .  .  .  .  .  .  Value: &quot;\&quot;Hello, World!\&quot;&quot;
+135  .  .  .  .  .  .  .  .  }
+136  .  .  .  .  .  .  .  }
+137  .  .  .  .  .  .  .  Ellipsis: -
+138  .  .  .  .  .  .  .  Rparen: 17:29
+139  .  .  .  .  .  .  }
+140  .  .  .  .  .  }
+141  .  .  .  .  }
+142  .  .  .  .  Rbrace: 18:1
+143  .  .  .  }
+144  .  .  }
+145  .  }
+146  .  Scope: *ast.Scope {
+147  .  .  Objects: map[string]*ast.Object (len = 3) {
+148  .  .  .  &quot;Product&quot;: *(obj @ 32)
+149  .  .  .  &quot;product&quot;: *(obj @ 80)
+150  .  .  .  &quot;main&quot;: *(obj @ 101)
+151  .  .  }
+152  .  }
+153  .  Imports: []*ast.ImportSpec (len = 1) {
+154  .  .  0: *(obj @ 12)
+155  .  }
+156  .  Unresolved: []*ast.Ident (len = 2) {
+157  .  .  0: *(obj @ 56)
+158  .  .  1: *(obj @ 120)
+159  .  }
+160  }
+
+</code></pre>
+
+<p></details></p>
+
+<p>从ast树中我们可以看到go/ast的逻辑结构</p>
+
+<p>因为ast的信息繁多且复杂，这里只列举比较重要的几点，有兴趣的可以自行浏览go/ast中的源码</p>
+
+<p>在ast.Files中最重要的部分就是Decls，这里面保存了该文件的全局声明(go中的声明既定义)，而Decl接口中有3种类型</p>
+
+<pre><code>BadDecl: 有语法错误的声明
+GenDecl: 通用声明，import/type/const/var都属于这种声明
+FuncDecl: 函数和method的定义属于这种声明
+</code></pre>
+
+<p>而GenDecl的TokPos决定它Specs中的元素类型</p>
+
+<pre><code>token.IMPORT *ImportSpec 
+token.CONST  *ValueSpec
+token.TYPE   *TypeSpec
+token.VAR    *ValueSpec
+</code></pre>
+
+<p>FuncDecl，位置，参数和返回值的信息保存FuncDecl.Type中，而函数定义部分保存在FuncDecl.Body中，我们来看看FuncDecl.Body的定义</p>
+
+<pre><code>// A BlockStmt node represents a braced statement list.
+BlockStmt struct {
+	Lbrace token.Pos // position of &quot;{&quot;
+	List   []Stmt
+	Rbrace token.Pos // position of &quot;}&quot;
+}
+</code></pre>
+
+<p>FuncDecl.Body是*ast.BlockStmt类型，在文件中所有{code&hellip;}块都属于*ast.BlockStmt，包括if condition {&hellip;}，switch condition {&hellip;}等</p>
+
+<p>*ast.BlockStmt中的List元素是ast.Stmt接口，有别于全局声明的ast.Decl,函数中支持的语法更多，所以ast.Stmt接口有更多类型,并且Stmt有一个ast.DeclStmt的实现，也就是说，Stmt支持所有Decl表达式</p>
+
+<p>在代码中obj := expr 和 var obj = expr等价，但在ast中这2个表达式分别属于AssignStmt和DeclStmt(GenDecl(token.VAR)),来看看他们的定义</p>
+
+<pre><code>// An AssignStmt node represents an assignment or
+// a short variable declaration.
+//
+AssignStmt struct {
+	Lhs    []Expr
+	TokPos token.Pos   // position of Tok
+	Tok    token.Token // assignment token, DEFINE
+	Rhs    []Expr
+}
+
+// A ValueSpec node represents a constant or variable declaration
+// (ConstSpec or VarSpec production).
+//
+ValueSpec struct {
+	Doc     *CommentGroup // associated documentation; or nil
+	Names   []*Ident      // value names (len(Names) &gt; 0)
+	Type    Expr          // value type; or nil
+	Values  []Expr        // initial values; or nil
+	Comment *CommentGroup // line comments; or nil
+}
+</code></pre>
+
+<p>可以看到他们的子元素通常都是一个Expr，而Expr就是一个表达式，如果用文章来类比的话，Decl相当于段落，Stmt相当于是段落中的句子，而Expr就是句子中的一个词或者分句,而在ast中，Decl构成文件的最外层部分，里面由FuncDecl和GenDecl填充，而我们99%的代码都是FuncDecl的Body中的Stmt,而几乎所有变量和调用和值就是Expr,这样是不是好理解多了</p>
+
+<h5 id="注-可以看到assignstmt的lhs是expr类型而valuespec的names确可以是ident类型-这是因为所有-的赋值操作也是用assignstmt来表达-所以lhs的元素还有可能是一个-ast-selectorexpr或-ast-indexexpr">注:可以看到AssignStmt的Lhs是Expr类型而ValueSpec的Names确可以是Ident类型，这是因为所有=的赋值操作也是用AssignStmt来表达，所以Lhs的元素还有可能是一个*ast.SelectorExpr或*ast.IndexExpr</h5>
+
+<p>汇总一下Stmt和Expr的实现</p>
+
+<p><details>
+<summary>
+Stmt实现
+</summary></p>
+
+<table>
+<thead>
+<tr>
+<th>Stmt类型</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BadStmt</td>
+<td>错误的语句</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>DeclStmt</td>
+<td>继承Decl</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>EmptyStmt</td>
+<td>空语句</td>
+<td>;;</td>
+</tr>
+
+<tr>
+<td>LabeledStmt</td>
+<td>定义标签用让goto/break/continue可跳到此处</td>
+<td>MainLoop:</td>
+</tr>
+
+<tr>
+<td>ExprStmt</td>
+<td>纯表达式，一些不取函数返回值的调用都属于这部分</td>
+<td>a.Call()</td>
+</tr>
+
+<tr>
+<td>SendStmt</td>
+<td>channel的&lt;-传值语句</td>
+<td>a &lt;- b</td>
+</tr>
+
+<tr>
+<td>IncDecStmt</td>
+<td>自增/自减语句</td>
+<td>a++ or a&ndash;</td>
+</tr>
+
+<tr>
+<td>AssignStmt</td>
+<td>赋值语句</td>
+<td>a := 2 or a = 2</td>
+</tr>
+
+<tr>
+<td>GoStmt</td>
+<td>go协程语句</td>
+<td>go myfunc()</td>
+</tr>
+
+<tr>
+<td>DeferStmt</td>
+<td>defer语句</td>
+<td>defer myfunc()</td>
+</tr>
+
+<tr>
+<td>ReturnStmt</td>
+<td>函数返回</td>
+<td>return xxx</td>
+</tr>
+
+<tr>
+<td>BranchStmt</td>
+<td>循环控制</td>
+<td>break [branch]/continue [branch]/goto branch/fallthrough</td>
+</tr>
+
+<tr>
+<td>BlockStmt</td>
+<td>块语句</td>
+<td>{stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>IfStmt</td>
+<td>if语句包含BlockStmt</td>
+<td>if condition {stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>CaseClause</td>
+<td>case语句包含stmt</td>
+<td>case expr1,expr2: stmt&hellip;</td>
+</tr>
+
+<tr>
+<td>SwitchStmt</td>
+<td>switch语句包含BlockStmt</td>
+<td>switch expr {stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>TypeSwitchStmt</td>
+<td>类型转换的switch</td>
+<td>switch x.(type){stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>CommClause</td>
+<td>select中的case语句</td>
+<td>case a &lt;-b: stmt&hellip;</td>
+</tr>
+
+<tr>
+<td>SelectStmt</td>
+<td>select语句</td>
+<td>select expr{stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>ForStmt</td>
+<td>for 语句</td>
+<td>for assign;condition;stmt {stmt&hellip;}</td>
+</tr>
+
+<tr>
+<td>RangeStmt</td>
+<td>for &hellip; range语句</td>
+<td>for k,v :=range kayVal{stmt&hellip;}</td>
+</tr>
+</tbody>
+</table>
+
+<p></details></p>
+
+<p><details>
+<summary>
+Expr实现
+</summary></p>
+
+<table>
+<thead>
+<tr>
+<th>Expr类型</th>
+<th>说明</th>
+<th>场景</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BadExpr</td>
+<td>错误表达式</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>Ident</td>
+<td>标示符，最基本的表达式</td>
+<td>a := myfunc()中的a是ident</td>
+</tr>
+
+<tr>
+<td>Ellipsis</td>
+<td>可变长度参数</td>
+<td>myfunc(args&hellip;)中的args</td>
+</tr>
+
+<tr>
+<td>BasicLit</td>
+<td>literal常量</td>
+<td>a := 22 中的22</td>
+</tr>
+
+<tr>
+<td>FuncLit</td>
+<td>函数literal常量</td>
+<td>var fun = func(){}中的fun</td>
+</tr>
+
+<tr>
+<td>ParenExpr</td>
+<td>括号表达式</td>
+<td>a + (b*c)中的(b*c)</td>
+</tr>
+
+<tr>
+<td>SelectorExpr</td>
+<td>选择表达式</td>
+<td>a.Method()中的a.Method</td>
+</tr>
+
+<tr>
+<td>IndexExpr</td>
+<td>索引表达式</td>
+<td>a[2] or a[&ldquo;a&rdquo;]</td>
+</tr>
+
+<tr>
+<td>SliceExpr</td>
+<td>切片表达式</td>
+<td>a[1:2] or a[1:2:1]</td>
+</tr>
+
+<tr>
+<td>TypeAssertExpr</td>
+<td>类型转换表达式</td>
+<td>b := a.(int)中的 a.(int)</td>
+</tr>
+
+<tr>
+<td>CallExpr</td>
+<td>函数调用表达式</td>
+<td>a.Call()</td>
+</tr>
+
+<tr>
+<td>StarExpr</td>
+<td>星表达式，去地址中的值或者定义指针变量</td>
+<td>*pa = 2 or var pa *int</td>
+</tr>
+
+<tr>
+<td>UnaryExpr</td>
+<td>和星表达式相反，去地址符</td>
+<td>return &amp;a中的&amp;a</td>
+</tr>
+
+<tr>
+<td>BinaryExpr</td>
+<td>条件表达式</td>
+<td>if a &gt; b {}中的 a &gt; b，是的这个是expr不是stmt</td>
+</tr>
+
+<tr>
+<td>KeyValueExpr</td>
+<td>初始化map赋值时会用到</td>
+<td>m := map[int]string{1:&ldquo;a&rdquo;, 2: &ldquo;b&rdquo;}</td>
+</tr>
+</tbody>
+</table>
+
+<p></details></p>
+
+<h5 id="ps-我个人认为stmt和expr直接的定义是模糊的-一些expr当成stmt也是没有问题的">PS: 我个人认为stmt和expr直接的定义是模糊的，一些expr当成stmt也是没有问题的</h5>
+
+<p>好了，ast的类型部分基本介绍完了，我们可以开始解析源码做一些生成器或者type check工具了吗？</p>
+
+<p>并不，因为无论parser.ParserFile或parser.ParserDir都是对单个go文件做解析的，go文件之间没有关联，而且也不会解析import的包，为了对go代码进行更准确解析需要用到另一个库go/types,不过这些我会留到下一章再讲</p>
+
+<h3 id="ref">Ref</h3>
+
+<p><a href="https://golang.org/pkg/go/ast">go/ast</a></p>
+
+<p><a href="https://github.com/golang/example/tree/master/gotypes">go/types</a></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6-https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f&title=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-parser-file%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

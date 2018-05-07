@@ -7,8 +7,564 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 23 Jun 2017 15:16:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 05 May 2018 10:07:00 +0800</lastBuildDate>
     <atom:link href="https://bigpigeon.github.io/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用go/ast来解析go文件</title>
+      <link>https://bigpigeon.github.io/post/go-ast-parser-file/</link>
+      <pubDate>Sat, 05 May 2018 10:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.github.io/post/go-ast-parser-file/</guid>
+      <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
+
+&lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;package main
+
+import (
+	&amp;quot;go/ast&amp;quot;
+	&amp;quot;go/parser&amp;quot;
+	&amp;quot;go/token&amp;quot;
+)
+
+func main() {
+	src := `
+package main
+
+// 该声明为GenDecl TOK=token.IMPORT
+import &amp;quot;fmt&amp;quot;
+
+// 该声明为GenDecl TOK=token.TYPE
+type Product struct {
+	Name string
+}
+
+// 该声明为GenDecl TOK=token.VAR
+var product Product
+
+// 该声明为FunDecl
+func main() { //test1
+	fmt.Println(&amp;quot;Hello, World!&amp;quot;) //test2
+	a := []int{1,2,3}
+	a[1],a[2] = 5,6
+}
+`
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &amp;quot;&amp;quot;, src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 打印ast节点
+	ast.Print(fset, f)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;details&gt;
+&lt;summary&gt;
+然后我们可以巨量的打印信息
+&lt;/summary&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; 0  *ast.File {
+ 1  .  Package: 2:1
+ 2  .  Name: *ast.Ident {
+ 3  .  .  NamePos: 2:9
+ 4  .  .  Name: &amp;quot;main&amp;quot;
+ 5  .  }
+ 6  .  Decls: []ast.Decl (len = 4) {
+ 7  .  .  0: *ast.GenDecl {
+ 8  .  .  .  TokPos: 5:1
+ 9  .  .  .  Tok: import
+10  .  .  .  Lparen: -
+11  .  .  .  Specs: []ast.Spec (len = 1) {
+12  .  .  .  .  0: *ast.ImportSpec {
+13  .  .  .  .  .  Path: *ast.BasicLit {
+14  .  .  .  .  .  .  ValuePos: 5:8
+15  .  .  .  .  .  .  Kind: STRING
+16  .  .  .  .  .  .  Value: &amp;quot;\&amp;quot;fmt\&amp;quot;&amp;quot;
+17  .  .  .  .  .  }
+18  .  .  .  .  .  EndPos: -
+19  .  .  .  .  }
+20  .  .  .  }
+21  .  .  .  Rparen: -
+22  .  .  }
+23  .  .  1: *ast.GenDecl {
+24  .  .  .  TokPos: 8:1
+25  .  .  .  Tok: type
+26  .  .  .  Lparen: -
+27  .  .  .  Specs: []ast.Spec (len = 1) {
+28  .  .  .  .  0: *ast.TypeSpec {
+29  .  .  .  .  .  Name: *ast.Ident {
+30  .  .  .  .  .  .  NamePos: 8:6
+31  .  .  .  .  .  .  Name: &amp;quot;Product&amp;quot;
+32  .  .  .  .  .  .  Obj: *ast.Object {
+33  .  .  .  .  .  .  .  Kind: type
+34  .  .  .  .  .  .  .  Name: &amp;quot;Product&amp;quot;
+35  .  .  .  .  .  .  .  Decl: *(obj @ 28)
+36  .  .  .  .  .  .  }
+37  .  .  .  .  .  }
+38  .  .  .  .  .  Assign: -
+39  .  .  .  .  .  Type: *ast.StructType {
+40  .  .  .  .  .  .  Struct: 8:14
+41  .  .  .  .  .  .  Fields: *ast.FieldList {
+42  .  .  .  .  .  .  .  Opening: 8:21
+43  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
+44  .  .  .  .  .  .  .  .  0: *ast.Field {
+45  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+46  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+47  .  .  .  .  .  .  .  .  .  .  .  NamePos: 9:2
+48  .  .  .  .  .  .  .  .  .  .  .  Name: &amp;quot;Name&amp;quot;
+49  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+50  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+51  .  .  .  .  .  .  .  .  .  .  .  .  Name: &amp;quot;Name&amp;quot;
+52  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 44)
+53  .  .  .  .  .  .  .  .  .  .  .  }
+54  .  .  .  .  .  .  .  .  .  .  }
+55  .  .  .  .  .  .  .  .  .  }
+56  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+57  .  .  .  .  .  .  .  .  .  .  NamePos: 9:7
+58  .  .  .  .  .  .  .  .  .  .  Name: &amp;quot;string&amp;quot;
+59  .  .  .  .  .  .  .  .  .  }
+60  .  .  .  .  .  .  .  .  }
+61  .  .  .  .  .  .  .  }
+62  .  .  .  .  .  .  .  Closing: 10:1
+63  .  .  .  .  .  .  }
+64  .  .  .  .  .  .  Incomplete: false
+65  .  .  .  .  .  }
+66  .  .  .  .  }
+67  .  .  .  }
+68  .  .  .  Rparen: -
+69  .  .  }
+70  .  .  2: *ast.GenDecl {
+71  .  .  .  TokPos: 13:1
+72  .  .  .  Tok: var
+73  .  .  .  Lparen: -
+74  .  .  .  Specs: []ast.Spec (len = 1) {
+75  .  .  .  .  0: *ast.ValueSpec {
+76  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+77  .  .  .  .  .  .  0: *ast.Ident {
+78  .  .  .  .  .  .  .  NamePos: 13:5
+79  .  .  .  .  .  .  .  Name: &amp;quot;product&amp;quot;
+80  .  .  .  .  .  .  .  Obj: *ast.Object {
+81  .  .  .  .  .  .  .  .  Kind: var
+82  .  .  .  .  .  .  .  .  Name: &amp;quot;product&amp;quot;
+83  .  .  .  .  .  .  .  .  Decl: *(obj @ 75)
+84  .  .  .  .  .  .  .  .  Data: 0
+85  .  .  .  .  .  .  .  }
+86  .  .  .  .  .  .  }
+87  .  .  .  .  .  }
+88  .  .  .  .  .  Type: *ast.Ident {
+89  .  .  .  .  .  .  NamePos: 13:13
+90  .  .  .  .  .  .  Name: &amp;quot;Product&amp;quot;
+91  .  .  .  .  .  .  Obj: *(obj @ 32)
+92  .  .  .  .  .  }
+93  .  .  .  .  }
+94  .  .  .  }
+95  .  .  .  Rparen: -
+96  .  .  }
+97  .  .  3: *ast.FuncDecl {
+98  .  .  .  Name: *ast.Ident {
+99  .  .  .  .  NamePos: 16:6
+100  .  .  .  .  Name: &amp;quot;main&amp;quot;
+101  .  .  .  .  Obj: *ast.Object {
+102  .  .  .  .  .  Kind: func
+103  .  .  .  .  .  Name: &amp;quot;main&amp;quot;
+104  .  .  .  .  .  Decl: *(obj @ 97)
+105  .  .  .  .  }
+106  .  .  .  }
+107  .  .  .  Type: *ast.FuncType {
+108  .  .  .  .  Func: 16:1
+109  .  .  .  .  Params: *ast.FieldList {
+110  .  .  .  .  .  Opening: 16:10
+111  .  .  .  .  .  Closing: 16:11
+112  .  .  .  .  }
+113  .  .  .  }
+114  .  .  .  Body: *ast.BlockStmt {
+115  .  .  .  .  Lbrace: 16:13
+116  .  .  .  .  List: []ast.Stmt (len = 1) {
+117  .  .  .  .  .  0: *ast.ExprStmt {
+118  .  .  .  .  .  .  X: *ast.CallExpr {
+119  .  .  .  .  .  .  .  Fun: *ast.SelectorExpr {
+120  .  .  .  .  .  .  .  .  X: *ast.Ident {
+121  .  .  .  .  .  .  .  .  .  NamePos: 17:2
+122  .  .  .  .  .  .  .  .  .  Name: &amp;quot;fmt&amp;quot;
+123  .  .  .  .  .  .  .  .  }
+124  .  .  .  .  .  .  .  .  Sel: *ast.Ident {
+125  .  .  .  .  .  .  .  .  .  NamePos: 17:6
+126  .  .  .  .  .  .  .  .  .  Name: &amp;quot;Println&amp;quot;
+127  .  .  .  .  .  .  .  .  }
+128  .  .  .  .  .  .  .  }
+129  .  .  .  .  .  .  .  Lparen: 17:13
+130  .  .  .  .  .  .  .  Args: []ast.Expr (len = 1) {
+131  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+132  .  .  .  .  .  .  .  .  .  ValuePos: 17:14
+133  .  .  .  .  .  .  .  .  .  Kind: STRING
+134  .  .  .  .  .  .  .  .  .  Value: &amp;quot;\&amp;quot;Hello, World!\&amp;quot;&amp;quot;
+135  .  .  .  .  .  .  .  .  }
+136  .  .  .  .  .  .  .  }
+137  .  .  .  .  .  .  .  Ellipsis: -
+138  .  .  .  .  .  .  .  Rparen: 17:29
+139  .  .  .  .  .  .  }
+140  .  .  .  .  .  }
+141  .  .  .  .  }
+142  .  .  .  .  Rbrace: 18:1
+143  .  .  .  }
+144  .  .  }
+145  .  }
+146  .  Scope: *ast.Scope {
+147  .  .  Objects: map[string]*ast.Object (len = 3) {
+148  .  .  .  &amp;quot;Product&amp;quot;: *(obj @ 32)
+149  .  .  .  &amp;quot;product&amp;quot;: *(obj @ 80)
+150  .  .  .  &amp;quot;main&amp;quot;: *(obj @ 101)
+151  .  .  }
+152  .  }
+153  .  Imports: []*ast.ImportSpec (len = 1) {
+154  .  .  0: *(obj @ 12)
+155  .  }
+156  .  Unresolved: []*ast.Ident (len = 2) {
+157  .  .  0: *(obj @ 56)
+158  .  .  1: *(obj @ 120)
+159  .  }
+160  }
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/details&gt;&lt;/p&gt;
+
+&lt;p&gt;从ast树中我们可以看到go/ast的逻辑结构&lt;/p&gt;
+
+&lt;p&gt;因为ast的信息繁多且复杂，这里只列举比较重要的几点，有兴趣的可以自行浏览go/ast中的源码&lt;/p&gt;
+
+&lt;p&gt;在ast.Files中最重要的部分就是Decls，这里面保存了该文件的全局声明(go中的声明既定义)，而Decl接口中有3种类型&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;BadDecl: 有语法错误的声明
+GenDecl: 通用声明，import/type/const/var都属于这种声明
+FuncDecl: 函数和method的定义属于这种声明
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而GenDecl的TokPos决定它Specs中的元素类型&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;token.IMPORT *ImportSpec 
+token.CONST  *ValueSpec
+token.TYPE   *TypeSpec
+token.VAR    *ValueSpec
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FuncDecl，位置，参数和返回值的信息保存FuncDecl.Type中，而函数定义部分保存在FuncDecl.Body中，我们来看看FuncDecl.Body的定义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// A BlockStmt node represents a braced statement list.
+BlockStmt struct {
+	Lbrace token.Pos // position of &amp;quot;{&amp;quot;
+	List   []Stmt
+	Rbrace token.Pos // position of &amp;quot;}&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FuncDecl.Body是*ast.BlockStmt类型，在文件中所有{code&amp;hellip;}块都属于*ast.BlockStmt，包括if condition {&amp;hellip;}，switch condition {&amp;hellip;}等&lt;/p&gt;
+
+&lt;p&gt;*ast.BlockStmt中的List元素是ast.Stmt接口，有别于全局声明的ast.Decl,函数中支持的语法更多，所以ast.Stmt接口有更多类型,并且Stmt有一个ast.DeclStmt的实现，也就是说，Stmt支持所有Decl表达式&lt;/p&gt;
+
+&lt;p&gt;在代码中obj := expr 和 var obj = expr等价，但在ast中这2个表达式分别属于AssignStmt和DeclStmt(GenDecl(token.VAR)),来看看他们的定义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// An AssignStmt node represents an assignment or
+// a short variable declaration.
+//
+AssignStmt struct {
+	Lhs    []Expr
+	TokPos token.Pos   // position of Tok
+	Tok    token.Token // assignment token, DEFINE
+	Rhs    []Expr
+}
+
+// A ValueSpec node represents a constant or variable declaration
+// (ConstSpec or VarSpec production).
+//
+ValueSpec struct {
+	Doc     *CommentGroup // associated documentation; or nil
+	Names   []*Ident      // value names (len(Names) &amp;gt; 0)
+	Type    Expr          // value type; or nil
+	Values  []Expr        // initial values; or nil
+	Comment *CommentGroup // line comments; or nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到他们的子元素通常都是一个Expr，而Expr就是一个表达式，如果用文章来类比的话，Decl相当于段落，Stmt相当于是段落中的句子，而Expr就是句子中的一个词或者分句,而在ast中，Decl构成文件的最外层部分，里面由FuncDecl和GenDecl填充，而我们99%的代码都是FuncDecl的Body中的Stmt,而几乎所有变量和调用和值就是Expr,这样是不是好理解多了&lt;/p&gt;
+
+&lt;h5 id=&#34;注-可以看到assignstmt的lhs是expr类型而valuespec的names确可以是ident类型-这是因为所有-的赋值操作也是用assignstmt来表达-所以lhs的元素还有可能是一个-ast-selectorexpr或-ast-indexexpr&#34;&gt;注:可以看到AssignStmt的Lhs是Expr类型而ValueSpec的Names确可以是Ident类型，这是因为所有=的赋值操作也是用AssignStmt来表达，所以Lhs的元素还有可能是一个*ast.SelectorExpr或*ast.IndexExpr&lt;/h5&gt;
+
+&lt;p&gt;汇总一下Stmt和Expr的实现&lt;/p&gt;
+
+&lt;p&gt;&lt;details&gt;
+&lt;summary&gt;
+Stmt实现
+&lt;/summary&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Stmt类型&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;th&gt;例子&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;BadStmt&lt;/td&gt;
+&lt;td&gt;错误的语句&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;DeclStmt&lt;/td&gt;
+&lt;td&gt;继承Decl&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;EmptyStmt&lt;/td&gt;
+&lt;td&gt;空语句&lt;/td&gt;
+&lt;td&gt;;;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;LabeledStmt&lt;/td&gt;
+&lt;td&gt;定义标签用让goto/break/continue可跳到此处&lt;/td&gt;
+&lt;td&gt;MainLoop:&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ExprStmt&lt;/td&gt;
+&lt;td&gt;纯表达式，一些不取函数返回值的调用都属于这部分&lt;/td&gt;
+&lt;td&gt;a.Call()&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;SendStmt&lt;/td&gt;
+&lt;td&gt;channel的&amp;lt;-传值语句&lt;/td&gt;
+&lt;td&gt;a &amp;lt;- b&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;IncDecStmt&lt;/td&gt;
+&lt;td&gt;自增/自减语句&lt;/td&gt;
+&lt;td&gt;a++ or a&amp;ndash;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;AssignStmt&lt;/td&gt;
+&lt;td&gt;赋值语句&lt;/td&gt;
+&lt;td&gt;a := 2 or a = 2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;GoStmt&lt;/td&gt;
+&lt;td&gt;go协程语句&lt;/td&gt;
+&lt;td&gt;go myfunc()&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;DeferStmt&lt;/td&gt;
+&lt;td&gt;defer语句&lt;/td&gt;
+&lt;td&gt;defer myfunc()&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ReturnStmt&lt;/td&gt;
+&lt;td&gt;函数返回&lt;/td&gt;
+&lt;td&gt;return xxx&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;BranchStmt&lt;/td&gt;
+&lt;td&gt;循环控制&lt;/td&gt;
+&lt;td&gt;break [branch]/continue [branch]/goto branch/fallthrough&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;BlockStmt&lt;/td&gt;
+&lt;td&gt;块语句&lt;/td&gt;
+&lt;td&gt;{stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;IfStmt&lt;/td&gt;
+&lt;td&gt;if语句包含BlockStmt&lt;/td&gt;
+&lt;td&gt;if condition {stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;CaseClause&lt;/td&gt;
+&lt;td&gt;case语句包含stmt&lt;/td&gt;
+&lt;td&gt;case expr1,expr2: stmt&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;SwitchStmt&lt;/td&gt;
+&lt;td&gt;switch语句包含BlockStmt&lt;/td&gt;
+&lt;td&gt;switch expr {stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;TypeSwitchStmt&lt;/td&gt;
+&lt;td&gt;类型转换的switch&lt;/td&gt;
+&lt;td&gt;switch x.(type){stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;CommClause&lt;/td&gt;
+&lt;td&gt;select中的case语句&lt;/td&gt;
+&lt;td&gt;case a &amp;lt;-b: stmt&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;SelectStmt&lt;/td&gt;
+&lt;td&gt;select语句&lt;/td&gt;
+&lt;td&gt;select expr{stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ForStmt&lt;/td&gt;
+&lt;td&gt;for 语句&lt;/td&gt;
+&lt;td&gt;for assign;condition;stmt {stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;RangeStmt&lt;/td&gt;
+&lt;td&gt;for &amp;hellip; range语句&lt;/td&gt;
+&lt;td&gt;for k,v :=range kayVal{stmt&amp;hellip;}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;/details&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;details&gt;
+&lt;summary&gt;
+Expr实现
+&lt;/summary&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Expr类型&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;BadExpr&lt;/td&gt;
+&lt;td&gt;错误表达式&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ident&lt;/td&gt;
+&lt;td&gt;标示符，最基本的表达式&lt;/td&gt;
+&lt;td&gt;a := myfunc()中的a是ident&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ellipsis&lt;/td&gt;
+&lt;td&gt;可变长度参数&lt;/td&gt;
+&lt;td&gt;myfunc(args&amp;hellip;)中的args&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;BasicLit&lt;/td&gt;
+&lt;td&gt;literal常量&lt;/td&gt;
+&lt;td&gt;a := 22 中的22&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;FuncLit&lt;/td&gt;
+&lt;td&gt;函数literal常量&lt;/td&gt;
+&lt;td&gt;var fun = func(){}中的fun&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ParenExpr&lt;/td&gt;
+&lt;td&gt;括号表达式&lt;/td&gt;
+&lt;td&gt;a + (b*c)中的(b*c)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;SelectorExpr&lt;/td&gt;
+&lt;td&gt;选择表达式&lt;/td&gt;
+&lt;td&gt;a.Method()中的a.Method&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;IndexExpr&lt;/td&gt;
+&lt;td&gt;索引表达式&lt;/td&gt;
+&lt;td&gt;a[2] or a[&amp;ldquo;a&amp;rdquo;]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;SliceExpr&lt;/td&gt;
+&lt;td&gt;切片表达式&lt;/td&gt;
+&lt;td&gt;a[1:2] or a[1:2:1]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;TypeAssertExpr&lt;/td&gt;
+&lt;td&gt;类型转换表达式&lt;/td&gt;
+&lt;td&gt;b := a.(int)中的 a.(int)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;CallExpr&lt;/td&gt;
+&lt;td&gt;函数调用表达式&lt;/td&gt;
+&lt;td&gt;a.Call()&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;StarExpr&lt;/td&gt;
+&lt;td&gt;星表达式，去地址中的值或者定义指针变量&lt;/td&gt;
+&lt;td&gt;*pa = 2 or var pa *int&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;UnaryExpr&lt;/td&gt;
+&lt;td&gt;和星表达式相反，去地址符&lt;/td&gt;
+&lt;td&gt;return &amp;amp;a中的&amp;amp;a&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;BinaryExpr&lt;/td&gt;
+&lt;td&gt;条件表达式&lt;/td&gt;
+&lt;td&gt;if a &amp;gt; b {}中的 a &amp;gt; b，是的这个是expr不是stmt&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;KeyValueExpr&lt;/td&gt;
+&lt;td&gt;初始化map赋值时会用到&lt;/td&gt;
+&lt;td&gt;m := map[int]string{1:&amp;ldquo;a&amp;rdquo;, 2: &amp;ldquo;b&amp;rdquo;}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;/details&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;ps-我个人认为stmt和expr直接的定义是模糊的-一些expr当成stmt也是没有问题的&#34;&gt;PS: 我个人认为stmt和expr直接的定义是模糊的，一些expr当成stmt也是没有问题的&lt;/h5&gt;
+
+&lt;p&gt;好了，ast的类型部分基本介绍完了，我们可以开始解析源码做一些生成器或者type check工具了吗？&lt;/p&gt;
+
+&lt;p&gt;并不，因为无论parser.ParserFile或parser.ParserDir都是对单个go文件做解析的，go文件之间没有关联，而且也不会解析import的包，为了对go代码进行更准确解析需要用到另一个库go/types,不过这些我会留到下一章再讲&lt;/p&gt;
+
+&lt;h3 id=&#34;ref&#34;&gt;Ref&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://golang.org/pkg/go/ast&#34;&gt;go/ast&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/golang/example/tree/master/gotypes&#34;&gt;go/types&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>gorm简介[中]</title>
