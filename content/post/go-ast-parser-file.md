@@ -330,7 +330,7 @@ Stmt实现
 |IfStmt      | if语句包含BlockStmt   |if condition {stmt...}
 |CaseClause  | case语句包含stmt      | case expr1,expr2: stmt...
 |SwitchStmt  | switch语句包含BlockStmt| switch expr {stmt...}
-|TypeSwitchStmt | 类型转换的switch    | switch x.(type){stmt...}
+|TypeSwitchStmt | 类型转换的switch    | switch x.(type){stmt...} or switch y := x.(type){stmt...}
 |CommClause  | select中的case语句    | case a <-b: stmt...
 |SelectStmt  | select语句            | select expr{stmt...}
 |ForStmt     | for 语句              | for assign;condition;stmt {stmt...}
@@ -358,7 +358,7 @@ Expr实现
 |TypeAssertExpr | 类型转换表达式        | b := a.(int)中的 a.(int)
 |CallExpr    | 函数调用表达式          | a.Call()
 |StarExpr    | 星表达式，去地址中的值或者定义指针变量 | \*pa = 2 or var pa \*int
-|UnaryExpr   | 和星表达式相反，去地址符 | return &a中的&a
+|UnaryExpr   | 一元操作符，除了\*外都用这个 | return &a中的&a
 |BinaryExpr  | 条件表达式             | if a > b {}中的 a > b，是的这个是expr不是stmt
 |KeyValueExpr | 初始化map赋值时会用到  | m := map[int]string{1:"a", 2: "b"}
 
