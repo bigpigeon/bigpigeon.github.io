@@ -413,7 +413,7 @@ Stmt实现
 &lt;tr&gt;
 &lt;td&gt;TypeSwitchStmt&lt;/td&gt;
 &lt;td&gt;类型转换的switch&lt;/td&gt;
-&lt;td&gt;switch x.(type){stmt&amp;hellip;}&lt;/td&gt;
+&lt;td&gt;switch x.(type){stmt&amp;hellip;} or switch y := x.(type){stmt&amp;hellip;}&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -533,7 +533,7 @@ Expr实现
 
 &lt;tr&gt;
 &lt;td&gt;UnaryExpr&lt;/td&gt;
-&lt;td&gt;和星表达式相反，去地址符&lt;/td&gt;
+&lt;td&gt;一元操作符，除了*外都用这个&lt;/td&gt;
 &lt;td&gt;return &amp;amp;a中的&amp;amp;a&lt;/td&gt;
 &lt;/tr&gt;
 

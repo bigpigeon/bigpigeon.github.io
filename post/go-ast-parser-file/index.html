@@ -519,7 +519,7 @@ Stmt实现
 <tr>
 <td>TypeSwitchStmt</td>
 <td>类型转换的switch</td>
-<td>switch x.(type){stmt&hellip;}</td>
+<td>switch x.(type){stmt&hellip;} or switch y := x.(type){stmt&hellip;}</td>
 </tr>
 
 <tr>
@@ -639,7 +639,7 @@ Expr实现
 
 <tr>
 <td>UnaryExpr</td>
-<td>和星表达式相反，去地址符</td>
+<td>一元操作符，除了*外都用这个</td>
 <td>return &amp;a中的&amp;a</td>
 </tr>
 
