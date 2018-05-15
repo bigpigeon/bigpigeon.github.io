@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>toyorm 文档</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.37.1" />
+<title>toy-doctor :: toyorm 文档</title>
+<link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
+<link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
+<link href="/toyorm/css/nucleus.css" rel="stylesheet">
+<link href="/toyorm/theme-flex/style.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/toyorm/css/bootstrap.min.css">
+<script src="/toyorm/js/jquery-2.x.min.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/bigpigeon.org\/toyorm";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/toyorm/cn/toy_doctor/">
+    
+      <header>
+  <div class="logo">
+    
+	
+  
+    <a class="baselink" href="/toyorm/cn">toyorm 文档</a>
+  
+
+  </div>
+  <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+    <nav class="shortcuts">
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm"  rel="noopener">
+                  <i class='fa fa-github'></i> <label>Github repo</label>
+                </a>
+            </li>
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm/archive/master.zip"  rel="noopener">
+                  <i class='fa fa-cloud-download'></i> <label>Download</label>
+                </a>
+            </li>
+    </nav>
+</header>
+<article>
+  <aside>
+    <ul class="menu">
+    <li data-nav-id="/toyorm/cn/1_getting_started/" class="dd-item alwaysopen
+        ">
+      <div>
+      <a href="/toyorm/cn/1_getting_started/">开始</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/cn/2_engine/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/cn/2_engine/">引擎</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/cn/2_engine/toy_toolkit/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/2_engine/toy_toolkit/">
+            toy工具
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/cn/3_data_definition/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/cn/3_data_definition/">数据定义</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/cn/3_data_definition/type_translation/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/3_data_definition/type_translation/">
+            类型转换
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/3_data_definition/tag/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/3_data_definition/tag/">
+            Tag声明
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/cn/4_toy_brick/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/cn/4_toy_brick/">ToyBrick</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/9_join/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/9_join/">
+            Join
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/10_result/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/10_result/">
+            Result
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/5_scope/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/5_scope/">
+            Scope
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/1_codition/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/1_codition/">
+            Where条件
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/2_transaction/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/2_transaction/">
+            事务
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/4_bind_field/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/4_bind_field/">
+            字段绑定
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/11_field_selector/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/11_field_selector/">
+            字段选择器
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/6_template/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/6_template/">
+            模板
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/3_ignore_mode/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/3_ignore_mode/">
+            空值忽略
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/7_thread_safe/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/7_thread_safe/">
+            线程安全
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/cn/4_toy_brick/8_preload/" class="dd-item">
+        <div>
+          <a href="/toyorm/cn/4_toy_brick/8_preload/">
+            预加载
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/cn/toy_doctor/" class="dd-item parent active
+        ">
+      <div>
+      <a href="/toyorm/cn/toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+
+
+
+
+    </ul>
+<select id="select-language" onchange="location = this.value;">
+	
+	
+	
+	  
+	  
+	    
+	      
+	        <option id="en" value="/toyorm/en/toy_doctor/">English</option>
+	      
+	    
+	  
+	    
+	  
+	
+	  
+	  
+	    
+	  
+	    
+	      
+	        <option id="cn" value="/toyorm/cn/toy_doctor/" selected>中文</option>
+	      
+	    
+	  
+	
+</select>
+    <section>
+    </section>
+  </aside>
+  <section class="page">
+    
+    <div class="nav-select">
+      <center>Navigation : 
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/toyorm/cn/1_getting_started/" >
+   开始</option> 
+  
+    <option value="/toyorm/cn/2_engine/" >
+   引擎</option> 
+      <option value="/toyorm/cn/2_engine/toy_toolkit/" >- toy工具</option>
+  
+    <option value="/toyorm/cn/3_data_definition/" >
+   数据定义</option> 
+      <option value="/toyorm/cn/3_data_definition/type_translation/" >- 类型转换</option>
+      <option value="/toyorm/cn/3_data_definition/tag/" >- Tag声明</option>
+  
+    <option value="/toyorm/cn/4_toy_brick/" >
+   ToyBrick</option> 
+      <option value="/toyorm/cn/4_toy_brick/9_join/" >- Join</option>
+      <option value="/toyorm/cn/4_toy_brick/10_result/" >- Result</option>
+      <option value="/toyorm/cn/4_toy_brick/5_scope/" >- Scope</option>
+      <option value="/toyorm/cn/4_toy_brick/1_codition/" >- Where条件</option>
+      <option value="/toyorm/cn/4_toy_brick/2_transaction/" >- 事务</option>
+      <option value="/toyorm/cn/4_toy_brick/4_bind_field/" >- 字段绑定</option>
+      <option value="/toyorm/cn/4_toy_brick/11_field_selector/" >- 字段选择器</option>
+      <option value="/toyorm/cn/4_toy_brick/6_template/" >- 模板</option>
+      <option value="/toyorm/cn/4_toy_brick/3_ignore_mode/" >- 空值忽略</option>
+      <option value="/toyorm/cn/4_toy_brick/7_thread_safe/" >- 线程安全</option>
+      <option value="/toyorm/cn/4_toy_brick/8_preload/" >- 预加载</option>
+  
+    <option value="/toyorm/cn/toy_doctor/"  selected>
+   toy-doctor</option> 
+  
+
+
+
+        </select>
+      </center>
+    </div>
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="Search...">
+        </div>
+        <script type="text/javascript" src="/toyorm/js/lunr.min.js"></script>
+        <script type="text/javascript" src="/toyorm/js/auto-complete.js"></script>
+        <link href="/toyorm/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/bigpigeon.org\/toyorm\/cn";
+          
+        </script>
+        <script type="text/javascript" src="/toyorm/js/search.js"></script>
+      </div>
+    
+
+    <h1>toy-doctor</h1>
+    
+    
+    
+
+
+
+<p>一个参数检查工具</p>
+
+<h3 id="example">Example</h3>
+
+<p>main.go中的代码</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#75af00">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#111">(</span>
+	<span style="color:#d88200">&#34;github.com/bigpigeon/toyorm&#34;</span>
+	<span style="color:#111">.</span> <span style="color:#d88200">&#34;unsafe&#34;</span>
+<span style="color:#111">)</span>
+
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Detail</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span>        <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;primary key;auto_increment&#34;`</span>
+	<span style="color:#75af00">ProductID</span> <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Name</span>      <span style="color:#00a8c8">string</span>
+<span style="color:#111">}</span>
+
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Product</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span>   <span style="color:#00a8c8">string</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Detail</span> <span style="color:#f92672">*</span><span style="color:#75af00">Detail</span>
+<span style="color:#111">}</span>
+
+<span style="color:#00a8c8">func</span> <span style="color:#75af00">main</span><span style="color:#111">()</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toy</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">Open</span><span style="color:#111">(</span><span style="color:#d88200">&#34;sqlite3&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#75af00">brick</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toy</span><span style="color:#111">.</span><span style="color:#75af00">Model</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">Product</span><span style="color:#111">{})</span>
+	<span style="color:#75715e">// to preload detail
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">CreatedAt</span><span style="color:#111">)).</span><span style="color:#75af00">Preload</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">Detail</span><span style="color:#111">)).</span><span style="color:#75af00">Enter</span><span style="color:#111">()</span>
+	<span style="color:#00a8c8">var</span> <span style="color:#75af00">tab</span> <span style="color:#111">[]</span><span style="color:#75af00">Product</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+	<span style="color:#75715e">// have error
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Detail</span><span style="color:#111">{}.</span><span style="color:#75af00">Name</span><span style="color:#111">))</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+<span style="color:#111">}</span></code></pre></div>
+<p>使用 toy-doctor 去检查它的错误</p>
+
+<pre><code>toy-doctor main.go
+// Output:
+// main.go:37:33 type must same as main.go:20:6
+</code></pre>
+
+<p>生成 coverprofile</p>
+
+<pre><code>toy-doctor -coverprofile=a.out main.go
+// view corverage in browser
+go tool cover -html=a.out
+</code></pre>
+
+
+
+    
+    
+        <div class="chevrons">
+    <div id="navigation">
+<a class="nav nav-prev" href="/toyorm/cn/4_toy_brick/8_preload/" title="预加载"> <i class="fa fa-chevron-left"></i><label>预加载</label></a>
+    <a class="nav nav-next" href="/toyorm/cn/1_getting_started/" title="开始" style="margin-right: 0px;"><label>开始</label><i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  </section>
+</article>
+
+<footer>
+
+<div class="footline">
+    
+
+    
+
+  
+
+    <div class="github-link">
+      <a href="toy_doctor/_index.cn.md" target="blank"><i class="fa fa-code-fork"></i>
+        Improve this page</a>
+    </div>
+  </div>
+
+
+	<div>
+
+
+  
+    Create a content/_footer.md file to customize the footer content
+  
+
+
+
+	</div>
+</footer>
+
+<script src="/toyorm/js/clipboard.min.js"></script>
+
+<link href="/toyorm/css/featherlight.min.css" rel="stylesheet">
+<script src="/toyorm/js/featherlight.min.js"></script>
+
+
+
+<script src="/toyorm/theme-flex/script.js"></script>
+
+    
+
+    
+    
+
+    
+  </body>
+</html>

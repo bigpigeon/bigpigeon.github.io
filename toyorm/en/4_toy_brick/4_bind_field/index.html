@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Toyorm documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.37.1" />
+<title>Bind Field :: Toyorm documentation</title>
+<link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
+<link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
+<link href="/toyorm/css/nucleus.css" rel="stylesheet">
+<link href="/toyorm/theme-flex/style.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/toyorm/css/bootstrap.min.css">
+<script src="/toyorm/js/jquery-2.x.min.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/bigpigeon.org\/toyorm";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/toyorm/en/4_toy_brick/4_bind_field/">
+    
+      <header>
+  <div class="logo">
+    
+	
+  
+    <a class="baselink" href="/toyorm/en">Toyorm documentation</a>
+  
+
+  </div>
+  <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+    <nav class="shortcuts">
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm"  rel="noopener">
+                  <i class='fa fa-github'></i> <label>Github repo</label>
+                </a>
+            </li>
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm/archive/master.zip"  rel="noopener">
+                  <i class='fa fa-cloud-download'></i> <label>Download</label>
+                </a>
+            </li>
+    </nav>
+</header>
+<article>
+  <aside>
+    <ul class="menu">
+    <li data-nav-id="/toyorm/en/1_getting_started/" class="dd-item alwaysopen
+        ">
+      <div>
+      <a href="/toyorm/en/1_getting_started/">Getting started</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/2_engine/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/2_engine/">Engine</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/2_engine/toy_toolkit/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/2_engine/toy_toolkit/">
+            toy toolkit
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/3_data_definition/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/3_data_definition/">Data Definition</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/3_data_definition/type_translation/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/type_translation/">
+            Type Translate
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/3_data_definition/tag/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/tag/">
+            Tag declaration
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/4_toy_brick/" class="dd-item parent alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/4_toy_brick/">ToyBrick</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/3_data_definition/type_translation/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/type_translation/">
+            Type Translate
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/3_data_definition/tag/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/tag/">
+            Tag declaration
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/5_collection/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/5_collection/">collection</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/toy_doctor/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+
+
+
+
+    </ul>
+<select id="select-language" onchange="location = this.value;">
+	
+	
+	
+	  
+	  
+	    
+	      
+	        <option id="en" value="/toyorm/en/4_toy_brick/4_bind_field/" selected>English</option>
+	      
+	    
+	  
+	    
+	  
+	
+	  
+	  
+	    
+	  
+	    
+	      
+	        <option id="cn" value="/toyorm/cn/4_toy_brick/4_bind_field/">中文</option>
+	      
+	    
+	  
+	
+</select>
+    <section>
+    </section>
+  </aside>
+  <section class="page">
+    
+    <div class="nav-select">
+      <center>Navigation : 
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/toyorm/en/1_getting_started/" >
+   Getting started</option> 
+  
+    <option value="/toyorm/en/2_engine/" >
+   Engine</option> 
+      <option value="/toyorm/en/2_engine/toy_toolkit/" >- toy toolkit</option>
+  
+    <option value="/toyorm/en/3_data_definition/" >
+   Data Definition</option> 
+      <option value="/toyorm/en/3_data_definition/type_translation/" >- Type Translate</option>
+      <option value="/toyorm/en/3_data_definition/tag/" >- Tag declaration</option>
+  
+    <option value="/toyorm/en/4_toy_brick/" >
+   ToyBrick</option> 
+  
+    <option value="/toyorm/en/5_collection/" >
+   collection</option>
+    <option value="/toyorm/en/toy_doctor/" >
+   toy-doctor</option>
+
+
+
+        </select>
+      </center>
+    </div>
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="Search...">
+        </div>
+        <script type="text/javascript" src="/toyorm/js/lunr.min.js"></script>
+        <script type="text/javascript" src="/toyorm/js/auto-complete.js"></script>
+        <link href="/toyorm/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/bigpigeon.org\/toyorm\/en";
+          
+        </script>
+        <script type="text/javascript" src="/toyorm/js/search.js"></script>
+      </div>
+    
+
+    <h1>Bind Field</h1>
+    
+    
+    
+    <p>use bind fields method to rule which field in sql operation</p>
+
+<p>if bind fields, skill IgnoreMode</p>
+
+<p>BindDefaultFields work on all Mode</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#111">{</span>
+    <span style="color:#00a8c8">var</span> <span style="color:#75af00">p</span> <span style="color:#75af00">Product</span>
+    <span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">BindDefaultFields</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">p</span><span style="color:#111">.</span><span style="color:#75af00">Price</span><span style="color:#111">),</span> <span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">p</span><span style="color:#111">.</span><span style="color:#75af00">UpdatedAt</span><span style="color:#111">)).</span><span style="color:#75af00">Update</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">Product</span><span style="color:#111">{</span>
+        <span style="color:#75af00">Price</span><span style="color:#111">:</span> <span style="color:#ae81ff">0</span><span style="color:#111">,</span>
+    <span style="color:#111">})</span>
+    <span style="color:#75715e">// UPDATE `product` SET price=?,updated_at=?  WHERE deleted_at IS NULL  args:[0,&#34;2018-05-14T12:16:21.731031534+08:00&#34;] 
+</span><span style="color:#75715e"></span>   <span style="color:#75715e">// process error
+</span><span style="color:#75715e"></span>   <span style="color:#f92672">...</span>
+<span style="color:#111">}</span>
+<span style="color:#00a8c8">var</span> <span style="color:#75af00">products</span> <span style="color:#111">[]</span><span style="color:#75af00">Product</span>
+<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">products</span><span style="color:#111">)</span>
+<span style="color:#75715e">// process error
+</span><span style="color:#75715e"></span><span style="color:#f92672">...</span>
+
+<span style="color:#00a8c8">for</span> <span style="color:#75af00">_</span><span style="color:#111">,</span> <span style="color:#75af00">p</span> <span style="color:#f92672">:=</span> <span style="color:#00a8c8">range</span> <span style="color:#75af00">products</span> <span style="color:#111">{</span>
+    <span style="color:#75af00">fmt</span><span style="color:#111">.</span><span style="color:#75af00">Printf</span><span style="color:#111">(</span><span style="color:#d88200">&#34;product name %s, price %v\n&#34;</span><span style="color:#111">,</span> <span style="color:#75af00">p</span><span style="color:#111">.</span><span style="color:#75af00">Name</span><span style="color:#111">,</span> <span style="color:#75af00">p</span><span style="color:#111">.</span><span style="color:#75af00">Price</span><span style="color:#111">)</span>
+<span style="color:#111">}</span></code></pre></div>
+
+    
+    
+        <div class="chevrons">
+    <div id="navigation">
+<a class="nav nav-prev" href="/toyorm/en/4_toy_brick/" title="ToyBrick"> <i class="fa fa-chevron-left"></i><label>ToyBrick</label></a>
+    <a class="nav nav-next" href="/toyorm/en/4_toy_brick/1_condition/" title="Condition" style="margin-right: 0px;"><label>Condition</label><i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  </section>
+</article>
+
+<footer>
+
+<div class="footline">
+    
+
+    
+
+  
+
+    <div class="github-link">
+      <a href="4_toy_brick/4_bind_field.md" target="blank"><i class="fa fa-code-fork"></i>
+        Improve this page</a>
+    </div>
+  </div>
+
+
+	<div>
+
+
+  
+    Create a content/_footer.md file to customize the footer content
+  
+
+
+
+	</div>
+</footer>
+
+<script src="/toyorm/js/clipboard.min.js"></script>
+
+<link href="/toyorm/css/featherlight.min.css" rel="stylesheet">
+<script src="/toyorm/js/featherlight.min.js"></script>
+
+
+
+<script src="/toyorm/theme-flex/script.js"></script>
+
+    
+
+    
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Toyorm documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.37.1" />
+<title>Thread Safe :: Toyorm documentation</title>
+<link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
+<link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
+<link href="/toyorm/css/nucleus.css" rel="stylesheet">
+<link href="/toyorm/theme-flex/style.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/toyorm/css/bootstrap.min.css">
+<script src="/toyorm/js/jquery-2.x.min.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/bigpigeon.org\/toyorm";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/toyorm/en/4_toy_brick/7_thread_safe/">
+    
+      <header>
+  <div class="logo">
+    
+	
+  
+    <a class="baselink" href="/toyorm/en">Toyorm documentation</a>
+  
+
+  </div>
+  <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+    <nav class="shortcuts">
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm"  rel="noopener">
+                  <i class='fa fa-github'></i> <label>Github repo</label>
+                </a>
+            </li>
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm/archive/master.zip"  rel="noopener">
+                  <i class='fa fa-cloud-download'></i> <label>Download</label>
+                </a>
+            </li>
+    </nav>
+</header>
+<article>
+  <aside>
+    <ul class="menu">
+    <li data-nav-id="/toyorm/en/1_getting_started/" class="dd-item alwaysopen
+        ">
+      <div>
+      <a href="/toyorm/en/1_getting_started/">Getting started</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/2_engine/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/2_engine/">Engine</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/2_engine/toy_toolkit/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/2_engine/toy_toolkit/">
+            toy toolkit
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/3_data_definition/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/3_data_definition/">Data Definition</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/3_data_definition/type_translation/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/type_translation/">
+            Type Translate
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/3_data_definition/tag/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/tag/">
+            Tag declaration
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/4_toy_brick/" class="dd-item parent alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/4_toy_brick/">ToyBrick</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/4_toy_brick/4_bind_field/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/4_bind_field/">
+            Bind Field
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/1_condition/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/1_condition/">
+            Condition
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/11_field_selector/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/11_field_selector/">
+            Field Selector
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/3_ignore_mode/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/3_ignore_mode/">
+            Ignore Zero Value
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/9_join/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/9_join/">
+            Join
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/8_preload/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/8_preload/">
+            Preload
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/10_result/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/10_result/">
+            Result
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/5_scope/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/5_scope/">
+            Scope
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/6_template/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/6_template/">
+            Template
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/7_thread_safe/" class="dd-item active">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/7_thread_safe/">
+            Thread Safe
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/2_transaction/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/2_transaction/">
+            Transaction
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/5_collection/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/5_collection/">collection</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/toy_doctor/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+
+
+
+
+    </ul>
+<select id="select-language" onchange="location = this.value;">
+	
+	
+	
+	  
+	  
+	    
+	      
+	        <option id="en" value="/toyorm/en/4_toy_brick/7_thread_safe/" selected>English</option>
+	      
+	    
+	  
+	    
+	  
+	
+	  
+	  
+	    
+	  
+	    
+	      
+	        <option id="cn" value="/toyorm/cn/4_toy_brick/7_thread_safe/">中文</option>
+	      
+	    
+	  
+	
+</select>
+    <section>
+    </section>
+  </aside>
+  <section class="page">
+    
+    <div class="nav-select">
+      <center>Navigation : 
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/toyorm/en/1_getting_started/" >
+   Getting started</option> 
+  
+    <option value="/toyorm/en/2_engine/" >
+   Engine</option> 
+      <option value="/toyorm/en/2_engine/toy_toolkit/" >- toy toolkit</option>
+  
+    <option value="/toyorm/en/3_data_definition/" >
+   Data Definition</option> 
+      <option value="/toyorm/en/3_data_definition/type_translation/" >- Type Translate</option>
+      <option value="/toyorm/en/3_data_definition/tag/" >- Tag declaration</option>
+  
+    <option value="/toyorm/en/4_toy_brick/" >
+   ToyBrick</option> 
+      <option value="/toyorm/en/4_toy_brick/4_bind_field/" >- Bind Field</option>
+      <option value="/toyorm/en/4_toy_brick/1_condition/" >- Condition</option>
+      <option value="/toyorm/en/4_toy_brick/11_field_selector/" >- Field Selector</option>
+      <option value="/toyorm/en/4_toy_brick/3_ignore_mode/" >- Ignore Zero Value</option>
+      <option value="/toyorm/en/4_toy_brick/9_join/" >- Join</option>
+      <option value="/toyorm/en/4_toy_brick/8_preload/" >- Preload</option>
+      <option value="/toyorm/en/4_toy_brick/10_result/" >- Result</option>
+      <option value="/toyorm/en/4_toy_brick/5_scope/" >- Scope</option>
+      <option value="/toyorm/en/4_toy_brick/6_template/" >- Template</option>
+      <option value="/toyorm/en/4_toy_brick/7_thread_safe/"  selected>- Thread Safe</option>
+      <option value="/toyorm/en/4_toy_brick/2_transaction/" >- Transaction</option>
+  
+    <option value="/toyorm/en/5_collection/" >
+   collection</option>
+    <option value="/toyorm/en/toy_doctor/" >
+   toy-doctor</option>
+
+
+
+        </select>
+      </center>
+    </div>
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="Search...">
+        </div>
+        <script type="text/javascript" src="/toyorm/js/lunr.min.js"></script>
+        <script type="text/javascript" src="/toyorm/js/auto-complete.js"></script>
+        <link href="/toyorm/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/bigpigeon.org\/toyorm\/en";
+          
+        </script>
+        <script type="text/javascript" src="/toyorm/js/search.js"></script>
+      </div>
+    
+
+    <h1>Thread Safe</h1>
+    
+    
+    
+    <p>Thread safe if you comply with the following agreement</p>
+
+<ol>
+<li><p>make sure <strong>ToyBrick</strong> object is read only, if you want to change it, create a new one</p></li>
+
+<li><p>do not use <strong>append</strong> to change ToyBrick&rsquo;s slice data,use <strong>make</strong> and <strong>copy</strong> to clone new slice</p></li>
+</ol>
+
+
+    
+    
+        <div class="chevrons">
+    <div id="navigation">
+<a class="nav nav-prev" href="/toyorm/en/4_toy_brick/6_template/" title="Template"> <i class="fa fa-chevron-left"></i><label>Template</label></a>
+    <a class="nav nav-next" href="/toyorm/en/4_toy_brick/2_transaction/" title="Transaction" style="margin-right: 0px;"><label>Transaction</label><i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  </section>
+</article>
+
+<footer>
+
+<div class="footline">
+    
+
+    
+
+  
+
+    <div class="github-link">
+      <a href="4_toy_brick/7_thread_safe.md" target="blank"><i class="fa fa-code-fork"></i>
+        Improve this page</a>
+    </div>
+  </div>
+
+
+	<div>
+
+
+  
+    Create a content/_footer.md file to customize the footer content
+  
+
+
+
+	</div>
+</footer>
+
+<script src="/toyorm/js/clipboard.min.js"></script>
+
+<link href="/toyorm/css/featherlight.min.css" rel="stylesheet">
+<script src="/toyorm/js/featherlight.min.js"></script>
+
+
+
+<script src="/toyorm/theme-flex/script.js"></script>
+
+    
+
+    
+    
+
+    
+  </body>
+</html>
