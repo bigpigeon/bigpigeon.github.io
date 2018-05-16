@@ -1,0 +1,69 @@
+baseURL = "http://localhost/toyorm"
+
+languageCode = "en-us"
+DefaultContentLanguage = "en"
+title = "Toyorm Documentation"
+theme = "docdock"
+themesdir = "themes/"
+pygmentsCodeFences = true
+pygmentsStyle = "monokailight"
+
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir= true
+enableMissingTranslationPlaceholders = false
+
+
+[Languages]
+[Languages.en]
+  title = "Toyorm documentation"
+  weight = 1
+  languageName = "English"
+  
+[Languages.cn]
+  title = "toyorm 文档"
+  weight = 2
+  languageName = "中文"
+
+
+
+
+[params]
+#editURL = "https://github.com/vjeantet/hugo-theme-docdock/edit/master/exampleSite/content/"
+showVisitedLinks = true # default is false
+themeStyle = "flex" # "original" or "flex" # default "flex"
+themeVariant = "" # choose theme variant "green", "gold" , "gray", "blue" (default)
+ordersectionsby = "weight" # ordersectionsby = "title"
+disableHomeIcon = true# default is false
+disableSearch = false # default is false
+disableNavChevron = false # set true to hide next/prev chevron, default is false
+highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
+menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
+enableGitInfo = true
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+
+[[menu.shortcuts]]
+pre = "<h3>More</h3>"
+name = "<i class='fa fa-github'></i> <label>Github repo</label>"
+identifier = "ds"
+url = "https://github.com/bigpigeon/toyorm"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fa fa-cloud-download'></i> <label>Download</label>"
+url = "https://github.com/bigpigeon/toyorm/archive/master.zip"
+weight = 11
+
+
+#[[menu.shortcuts]]
+#name = "<i class='fa fa-bookmark'></i> <label>Hugo Documentation</label>"
+#identifier = "hugodoc"
+#url = "https://gohugo.io/"
+#weight = 20
+
+#[[menu.shortcuts]]
+#name = "<i class='fa fa-bullhorn'></i> <label>Credits</label>"
+#url = "/credits"
+#weight = 30
