@@ -101,16 +101,30 @@
   </url>
   
   <url>
-    <loc>https://bigpigeon.org/toyorm/cn/toy_doctor/</loc>
+    <loc>https://bigpigeon.org/toyorm/cn/6_toy_doctor/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://bigpigeon.org/toyorm/en/toy_doctor/"
+                href="https://bigpigeon.org/toyorm/en/6_toy_doctor/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="cn"
-                href="https://bigpigeon.org/toyorm/cn/toy_doctor/"
+                href="https://bigpigeon.org/toyorm/cn/6_toy_doctor/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://bigpigeon.org/toyorm/cn/7_example/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://bigpigeon.org/toyorm/en/7_example/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://bigpigeon.org/toyorm/cn/7_example/"
                 />
   </url>
   

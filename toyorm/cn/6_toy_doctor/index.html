@@ -6,7 +6,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.37.1" />
-<title>类型转换 :: toyorm 文档</title>
+<title>toy-doctor :: toyorm 文档</title>
 <link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
 <link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
 <link href="/toyorm/css/nucleus.css" rel="stylesheet">
@@ -17,13 +17,13 @@
 <script type="text/javascript">
       var baseurl = "https:\/\/bigpigeon.org\/toyorm";
 </script>
-<meta name="description" content="how to connection database">
+<meta name="description" content="">
 
 
 
     
   </head>
-  <body data-url="/toyorm/cn/3_data_definition/type_translation/">
+  <body data-url="/toyorm/cn/6_toy_doctor/">
     
       <header>
   <div class="logo">
@@ -73,14 +73,14 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/toyorm/cn/3_data_definition/" class="dd-item parent alwaysopen haschildren
+    <li data-nav-id="/toyorm/cn/3_data_definition/" class="dd-item alwaysopen haschildren
         ">
       <div>
       <a href="/toyorm/cn/3_data_definition/">数据定义</a>
             <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
-      <li data-nav-id="/toyorm/cn/3_data_definition/type_translation/" class="dd-item active">
+      <li data-nav-id="/toyorm/cn/3_data_definition/type_translation/" class="dd-item">
         <div>
           <a href="/toyorm/cn/3_data_definition/type_translation/">
             类型转换
@@ -182,7 +182,7 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/toyorm/cn/6_toy_doctor/" class="dd-item
+    <li data-nav-id="/toyorm/cn/6_toy_doctor/" class="dd-item parent active
         ">
       <div>
       <a href="/toyorm/cn/6_toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
@@ -207,7 +207,7 @@
 	  
 	    
 	      
-	        <option id="en" value="/toyorm/en/3_data_definition/type_translation/">English</option>
+	        <option id="en" value="/toyorm/en/6_toy_doctor/">English</option>
 	      
 	    
 	  
@@ -220,7 +220,7 @@
 	  
 	    
 	      
-	        <option id="cn" value="/toyorm/cn/3_data_definition/type_translation/" selected>中文</option>
+	        <option id="cn" value="/toyorm/cn/6_toy_doctor/" selected>中文</option>
 	      
 	    
 	  
@@ -244,7 +244,7 @@
   
     <option value="/toyorm/cn/3_data_definition/" >
    数据定义</option> 
-      <option value="/toyorm/cn/3_data_definition/type_translation/"  selected>- 类型转换</option>
+      <option value="/toyorm/cn/3_data_definition/type_translation/" >- 类型转换</option>
       <option value="/toyorm/cn/3_data_definition/tag/" >- Tag声明</option>
   
     <option value="/toyorm/cn/4_toy_brick/" >
@@ -261,8 +261,9 @@
       <option value="/toyorm/cn/4_toy_brick/7_thread_safe/" >- 线程安全</option>
       <option value="/toyorm/cn/4_toy_brick/8_preload/" >- 预加载</option>
   
-    <option value="/toyorm/cn/6_toy_doctor/" >
-   toy-doctor</option>
+    <option value="/toyorm/cn/6_toy_doctor/"  selected>
+   toy-doctor</option> 
+  
     <option value="/toyorm/cn/7_example/" >
    例子</option>
 
@@ -287,94 +288,85 @@
       </div>
     
 
-    <h1>类型转换</h1>
+    <h1>toy-doctor</h1>
     
     
     
-    <p>如果sql类型为空，toyorm在操作操作数据库时会忽略它</p>
 
-<p>你可以使用 <strong>&lt;type:sql_type&gt;</strong> tag去声明字段的 sql 类型</p>
 
-<p>下面这些go类型会自动声明它的sql类型</p>
 
-<table>
-<thead>
-<tr>
-<th align="left">Go Type</th>
-<th align="left">sql type</th>
-</tr>
-</thead>
+<p>一个参数检查工具</p>
 
-<tbody>
-<tr>
-<td align="left">bool</td>
-<td align="left">BOOLEAN</td>
-</tr>
+<h3 id="example">Example</h3>
 
-<tr>
-<td align="left">int8,int16,int32,uint8,uint16,uint32</td>
-<td align="left">INTEGER</td>
-</tr>
+<p>main.go中的代码</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#75af00">main</span>
 
-<tr>
-<td align="left">int64,uint64,int,uint</td>
-<td align="left">BIGINT</td>
-</tr>
+<span style="color:#f92672">import</span> <span style="color:#111">(</span>
+	<span style="color:#d88200">&#34;github.com/bigpigeon/toyorm&#34;</span>
+	<span style="color:#111">.</span> <span style="color:#d88200">&#34;unsafe&#34;</span>
+<span style="color:#111">)</span>
 
-<tr>
-<td align="left">float32,float64</td>
-<td align="left">FLOAT</td>
-</tr>
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Detail</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span>        <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;primary key;auto_increment&#34;`</span>
+	<span style="color:#75af00">ProductID</span> <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Name</span>      <span style="color:#00a8c8">string</span>
+<span style="color:#111">}</span>
 
-<tr>
-<td align="left">string</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Product</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span>   <span style="color:#00a8c8">string</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Detail</span> <span style="color:#f92672">*</span><span style="color:#75af00">Detail</span>
+<span style="color:#111">}</span>
 
-<tr>
-<td align="left">time.Time</td>
-<td align="left">TIMESTAMP</td>
-</tr>
+<span style="color:#00a8c8">func</span> <span style="color:#75af00">main</span><span style="color:#111">()</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toy</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">Open</span><span style="color:#111">(</span><span style="color:#d88200">&#34;sqlite3&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#75af00">brick</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toy</span><span style="color:#111">.</span><span style="color:#75af00">Model</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">Product</span><span style="color:#111">{})</span>
+	<span style="color:#75715e">// to preload detail
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">CreatedAt</span><span style="color:#111">)).</span><span style="color:#75af00">Preload</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">Detail</span><span style="color:#111">)).</span><span style="color:#75af00">Enter</span><span style="color:#111">()</span>
+	<span style="color:#00a8c8">var</span> <span style="color:#75af00">tab</span> <span style="color:#111">[]</span><span style="color:#75af00">Product</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+	<span style="color:#75715e">// have error
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Detail</span><span style="color:#111">{}.</span><span style="color:#75af00">Name</span><span style="color:#111">))</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+<span style="color:#111">}</span></code></pre></div>
+<p>使用 toy-doctor 去检查它的错误</p>
 
-<tr>
-<td align="left">[]byte</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
+<pre><code>toy-doctor main.go
+// Output:
+// main.go:37:33 type must same as main.go:20:6
+</code></pre>
 
-<tr>
-<td align="left">sql.NullBool</td>
-<td align="left">BOOLEAN</td>
-</tr>
+<p>生成 coverprofile</p>
 
-<tr>
-<td align="left">sql.NullInt64</td>
-<td align="left">BIGINT</td>
-</tr>
+<pre><code>toy-doctor -coverprofile=a.out main.go
+// view corverage in browser
+go tool cover -html=a.out
+</code></pre>
 
-<tr>
-<td align="left">sql.NullFloat64</td>
-<td align="left">FLOAT</td>
-</tr>
-
-<tr>
-<td align="left">sql.NullString</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
-
-<tr>
-<td align="left">sql.RawBytes</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
-</tbody>
-</table>
 
 
     
     
         <div class="chevrons">
     <div id="navigation">
-<a class="nav nav-prev" href="/toyorm/cn/3_data_definition/" title="数据定义"> <i class="fa fa-chevron-left"></i><label>数据定义</label></a>
-    <a class="nav nav-next" href="/toyorm/cn/3_data_definition/tag/" title="Tag声明" style="margin-right: 0px;"><label>Tag声明</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="/toyorm/cn/4_toy_brick/8_preload/" title="预加载"> <i class="fa fa-chevron-left"></i><label>预加载</label></a>
+    <a class="nav nav-next" href="/toyorm/cn/7_example/" title="例子" style="margin-right: 0px;"><label>例子</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
@@ -390,7 +382,7 @@
   
 
     <div class="github-link">
-      <a href="3_data_definition/type_translation.cn.md" target="blank"><i class="fa fa-code-fork"></i>
+      <a href="6_toy_doctor/_index.cn.md" target="blank"><i class="fa fa-code-fork"></i>
         Improve this page</a>
     </div>
   </div>

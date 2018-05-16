@@ -6,7 +6,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.37.1" />
-<title>类型转换 :: toyorm 文档</title>
+<title>例子 :: toyorm 文档</title>
 <link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
 <link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
 <link href="/toyorm/css/nucleus.css" rel="stylesheet">
@@ -17,13 +17,13 @@
 <script type="text/javascript">
       var baseurl = "https:\/\/bigpigeon.org\/toyorm";
 </script>
-<meta name="description" content="how to connection database">
+<meta name="description" content="">
 
 
 
     
   </head>
-  <body data-url="/toyorm/cn/3_data_definition/type_translation/">
+  <body data-url="/toyorm/cn/7_example/">
     
       <header>
   <div class="logo">
@@ -73,14 +73,14 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/toyorm/cn/3_data_definition/" class="dd-item parent alwaysopen haschildren
+    <li data-nav-id="/toyorm/cn/3_data_definition/" class="dd-item alwaysopen haschildren
         ">
       <div>
       <a href="/toyorm/cn/3_data_definition/">数据定义</a>
             <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
-      <li data-nav-id="/toyorm/cn/3_data_definition/type_translation/" class="dd-item active">
+      <li data-nav-id="/toyorm/cn/3_data_definition/type_translation/" class="dd-item">
         <div>
           <a href="/toyorm/cn/3_data_definition/type_translation/">
             类型转换
@@ -188,7 +188,7 @@
       <a href="/toyorm/cn/6_toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
       </div>
     </li>
-    <li data-nav-id="/toyorm/cn/7_example/" class="dd-item
+    <li data-nav-id="/toyorm/cn/7_example/" class="dd-item parent active
         ">
       <div>
       <a href="/toyorm/cn/7_example/">例子</a><i class="fa fa-circle-thin read-icon"></i>
@@ -207,7 +207,7 @@
 	  
 	    
 	      
-	        <option id="en" value="/toyorm/en/3_data_definition/type_translation/">English</option>
+	        <option id="en" value="/toyorm/en/7_example/">English</option>
 	      
 	    
 	  
@@ -220,7 +220,7 @@
 	  
 	    
 	      
-	        <option id="cn" value="/toyorm/cn/3_data_definition/type_translation/" selected>中文</option>
+	        <option id="cn" value="/toyorm/cn/7_example/" selected>中文</option>
 	      
 	    
 	  
@@ -244,7 +244,7 @@
   
     <option value="/toyorm/cn/3_data_definition/" >
    数据定义</option> 
-      <option value="/toyorm/cn/3_data_definition/type_translation/"  selected>- 类型转换</option>
+      <option value="/toyorm/cn/3_data_definition/type_translation/" >- 类型转换</option>
       <option value="/toyorm/cn/3_data_definition/tag/" >- Tag声明</option>
   
     <option value="/toyorm/cn/4_toy_brick/" >
@@ -263,8 +263,9 @@
   
     <option value="/toyorm/cn/6_toy_doctor/" >
    toy-doctor</option>
-    <option value="/toyorm/cn/7_example/" >
-   例子</option>
+    <option value="/toyorm/cn/7_example/"  selected>
+   例子</option> 
+  
 
 
 
@@ -287,94 +288,39 @@
       </div>
     
 
-    <h1>类型转换</h1>
+    <h1>例子</h1>
     
     
     
-    <p>如果sql类型为空，toyorm在操作操作数据库时会忽略它</p>
 
-<p>你可以使用 <strong>&lt;type:sql_type&gt;</strong> tag去声明字段的 sql 类型</p>
+<p>介绍 insert/save/find/where  用法</p>
 
-<p>下面这些go类型会自动声明它的sql类型</p>
+<p><a href="https://github.com/bigpigeon/toyorm/tree/master/examples/simple_example">simple example</a></p>
 
-<table>
-<thead>
-<tr>
-<th align="left">Go Type</th>
-<th align="left">sql type</th>
-</tr>
-</thead>
+<p>介绍 preload 用法</p>
 
-<tbody>
-<tr>
-<td align="left">bool</td>
-<td align="left">BOOLEAN</td>
-</tr>
+<p><a href="https://github.com/bigpigeon/toyorm/tree/master/examples/preload_example">preload example</a></p>
 
-<tr>
-<td align="left">int8,int16,int32,uint8,uint16,uint32</td>
-<td align="left">INTEGER</td>
-</tr>
+<p>介绍 join 用法</p>
 
-<tr>
-<td align="left">int64,uint64,int,uint</td>
-<td align="left">BIGINT</td>
-</tr>
+<p><a href="https://github.com/bigpigeon/toyorm/tree/master/examples/join_example">join example</a></p>
 
-<tr>
-<td align="left">float32,float64</td>
-<td align="left">FLOAT</td>
-</tr>
+<p>如果用toyorm构建一个网站</p>
 
-<tr>
-<td align="left">string</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
+<p><a href="https://github.com/bigpigeon/toyorm/tree/master/examples/website">website</a></p>
 
-<tr>
-<td align="left">time.Time</td>
-<td align="left">TIMESTAMP</td>
-</tr>
+<p>database 集群用例</p>
 
-<tr>
-<td align="left">[]byte</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
+<p><a href="https://github.com/bigpigeon/toyorm/tree/master/examples/collection_example">collection</a></p>
 
-<tr>
-<td align="left">sql.NullBool</td>
-<td align="left">BOOLEAN</td>
-</tr>
-
-<tr>
-<td align="left">sql.NullInt64</td>
-<td align="left">BIGINT</td>
-</tr>
-
-<tr>
-<td align="left">sql.NullFloat64</td>
-<td align="left">FLOAT</td>
-</tr>
-
-<tr>
-<td align="left">sql.NullString</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
-
-<tr>
-<td align="left">sql.RawBytes</td>
-<td align="left">VARCHAR(255)</td>
-</tr>
-</tbody>
-</table>
 
 
     
     
         <div class="chevrons">
     <div id="navigation">
-<a class="nav nav-prev" href="/toyorm/cn/3_data_definition/" title="数据定义"> <i class="fa fa-chevron-left"></i><label>数据定义</label></a>
-    <a class="nav nav-next" href="/toyorm/cn/3_data_definition/tag/" title="Tag声明" style="margin-right: 0px;"><label>Tag声明</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="/toyorm/cn/6_toy_doctor/" title="toy-doctor"> <i class="fa fa-chevron-left"></i><label>toy-doctor</label></a>
+    <a class="nav nav-next" href="/toyorm/cn/1_getting_started/" title="开始" style="margin-right: 0px;"><label>开始</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
@@ -390,7 +336,7 @@
   
 
     <div class="github-link">
-      <a href="3_data_definition/type_translation.cn.md" target="blank"><i class="fa fa-code-fork"></i>
+      <a href="7_example/_index.cn.md" target="blank"><i class="fa fa-code-fork"></i>
         Improve this page</a>
     </div>
   </div>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.37.1" />
-<title>404 Page not found :: Toyorm documentation</title>
+<title>toy-doctor :: Toyorm documentation</title>
 <link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
 <link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
 <link href="/toyorm/css/nucleus.css" rel="stylesheet">
@@ -23,7 +23,7 @@
 
     
   </head>
-  <body data-url="">
+  <body data-url="/toyorm/en/6_toy_doctor/">
     
       <header>
   <div class="logo">
@@ -188,7 +188,7 @@
       <a href="/toyorm/en/5_collection/">collection</a><i class="fa fa-circle-thin read-icon"></i>
       </div>
     </li>
-    <li data-nav-id="/toyorm/en/6_toy_doctor/" class="dd-item
+    <li data-nav-id="/toyorm/en/6_toy_doctor/" class="dd-item parent active
         ">
       <div>
       <a href="/toyorm/en/6_toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
@@ -208,6 +208,28 @@
 <select id="select-language" onchange="location = this.value;">
 	
 	
+	
+	  
+	  
+	    
+	      
+	        <option id="en" value="/toyorm/en/6_toy_doctor/" selected>English</option>
+	      
+	    
+	  
+	    
+	  
+	
+	  
+	  
+	    
+	  
+	    
+	      
+	        <option id="cn" value="/toyorm/cn/6_toy_doctor/">中文</option>
+	      
+	    
+	  
 	
 </select>
     <section>
@@ -247,8 +269,9 @@
   
     <option value="/toyorm/en/5_collection/" >
    collection</option>
-    <option value="/toyorm/en/6_toy_doctor/" >
-   toy-doctor</option>
+    <option value="/toyorm/en/6_toy_doctor/"  selected>
+   toy-doctor</option> 
+  
     <option value="/toyorm/en/7_example/" >
    example</option>
 
@@ -273,21 +296,85 @@
       </div>
     
 
-    <h1>404 Page not found</h1>
+    <h1>toy-doctor</h1>
     
     
-	<h1>Error</h1>
-	<p>
-	</p>
-	<p>Woops. Looks like this page doesn&#39;t exist.</p>
-	<p></p>
-	<p><a href="https://bigpigeon.org/toyorm">Go to homepage</a></p>
-	<p><img src="/toyorm/images/gopher-404.jpg" style="width:50%"></img></p>    
+    
+
+
+
+<p>simple parameter check for toyorm</p>
+
+<h3 id="example">Example</h3>
+
+<p>some code in main.go</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#75af00">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#111">(</span>
+	<span style="color:#d88200">&#34;github.com/bigpigeon/toyorm&#34;</span>
+	<span style="color:#111">.</span> <span style="color:#d88200">&#34;unsafe&#34;</span>
+<span style="color:#111">)</span>
+
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Detail</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span>        <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;primary key;auto_increment&#34;`</span>
+	<span style="color:#75af00">ProductID</span> <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Name</span>      <span style="color:#00a8c8">string</span>
+<span style="color:#111">}</span>
+
+<span style="color:#00a8c8">type</span> <span style="color:#75af00">Product</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span>   <span style="color:#00a8c8">string</span> <span style="color:#d88200">`toyorm:&#34;index&#34;`</span>
+	<span style="color:#75af00">Detail</span> <span style="color:#f92672">*</span><span style="color:#75af00">Detail</span>
+<span style="color:#111">}</span>
+
+<span style="color:#00a8c8">func</span> <span style="color:#75af00">main</span><span style="color:#111">()</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toy</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">Open</span><span style="color:#111">(</span><span style="color:#d88200">&#34;sqlite3&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#75af00">brick</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toy</span><span style="color:#111">.</span><span style="color:#75af00">Model</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">Product</span><span style="color:#111">{})</span>
+	<span style="color:#75715e">// to preload detail
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">CreatedAt</span><span style="color:#111">)).</span><span style="color:#75af00">Preload</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Product</span><span style="color:#111">{}.</span><span style="color:#75af00">Detail</span><span style="color:#111">)).</span><span style="color:#75af00">Enter</span><span style="color:#111">()</span>
+	<span style="color:#00a8c8">var</span> <span style="color:#75af00">tab</span> <span style="color:#111">[]</span><span style="color:#75af00">Product</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+	<span style="color:#75715e">// have error
+</span><span style="color:#75715e"></span>	<span style="color:#75af00">brick</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">OrderBy</span><span style="color:#111">(</span><span style="color:#75af00">Offsetof</span><span style="color:#111">(</span><span style="color:#75af00">Detail</span><span style="color:#111">{}.</span><span style="color:#75af00">Name</span><span style="color:#111">))</span>
+	<span style="color:#75af00">result</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#111">=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Find</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">tab</span><span style="color:#111">)</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#111">panic</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">)</span>
+	<span style="color:#111">}</span>
+	<span style="color:#00a8c8">if</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">result</span><span style="color:#111">.</span><span style="color:#75af00">Err</span><span style="color:#111">();</span><span style="color:#75af00">err</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">nil</span> <span style="color:#111">{</span>
+		<span style="color:#75715e">// sql error record it
+</span><span style="color:#75715e"></span>	<span style="color:#111">}</span>
+<span style="color:#111">}</span></code></pre></div>
+<p>use toy-doctor to check it&rsquo;s error</p>
+
+<pre><code>toy-doctor main.go
+// Output:
+// main.go:37:33 type must same as main.go:20:6
+</code></pre>
+
+<p>generate coverprofile</p>
+
+<pre><code>toy-doctor -coverprofile=a.out main.go
+// view corverage in browser
+go tool cover -html=a.out
+</code></pre>
+
+
+
     
     
         <div class="chevrons">
     <div id="navigation">
-</div>
+<a class="nav nav-prev" href="/toyorm/en/5_collection/" title="collection"> <i class="fa fa-chevron-left"></i><label>collection</label></a>
+    <a class="nav nav-next" href="/toyorm/en/7_example/" title="example" style="margin-right: 0px;"><label>example</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
@@ -303,7 +390,7 @@
   
 
     <div class="github-link">
-      <a href="" target="blank"><i class="fa fa-code-fork"></i>
+      <a href="6_toy_doctor/_index.md" target="blank"><i class="fa fa-code-fork"></i>
         Improve this page</a>
     </div>
   </div>
@@ -338,5 +425,3 @@
     
   </body>
 </html>
-
-
