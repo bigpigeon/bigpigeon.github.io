@@ -596,6 +596,12 @@ Expr实现
 </tr>
 
 <tr>
+<td>CompositeLit</td>
+<td>容器literal常量</td>
+<td>a := []int{1,2,3} 中的[]int{1,2,3} 或 b := map[int]string{}中的map[int]string{}</td>
+</tr>
+
+<tr>
 <td>ParenExpr</td>
 <td>括号表达式</td>
 <td>a + (b*c)中的(b*c)</td>
@@ -653,6 +659,36 @@ Expr实现
 <td>KeyValueExpr</td>
 <td>初始化map赋值时会用到</td>
 <td>m := map[int]string{1:&ldquo;a&rdquo;, 2: &ldquo;b&rdquo;}</td>
+</tr>
+
+<tr>
+<td>ArrayType</td>
+<td>容器类型</td>
+<td>a := []int{1,2,3} 中的[]int</td>
+</tr>
+
+<tr>
+<td>StructType</td>
+<td>结构体类型</td>
+<td>type Product struct { Name string }中的struct { Name string }</td>
+</tr>
+
+<tr>
+<td>InterfaceType</td>
+<td>接口类型</td>
+<td>var d interface{} = 5中的interface{}</td>
+</tr>
+
+<tr>
+<td>MapType</td>
+<td>map类型</td>
+<td>b := map[int]string{}中的map[int]string</td>
+</tr>
+
+<tr>
+<td>ChanType</td>
+<td>chan类型</td>
+<td>d := make(chan int,5)中的chan int</td>
 </tr>
 </tbody>
 </table>

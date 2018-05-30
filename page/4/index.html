@@ -130,6 +130,48 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.github.io/post/react-study/">react学习笔记 </a> </h2>
+<div class="post-meta">Thu, Apr 21, 2016 - Read in 3 Min </div>
+</header>
+<div class="summary">
+    <h3 id="jsx">JSX</h3>
+
+<p>React可以使用的是独有的JSX语法,包围它的<code>&lt;script&gt;</code>标签type值为text/babel</p>
+
+<p>那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:</p>
+
+<pre><code>var a = &lt;div class=&quot;green&quot;&gt;my color is green&lt;/div&gt;
+</code></pre>
+
+<p>在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用</p>
+
+<p>也可以使用react.createElement创建element</p>
+
+<pre><code class="language-javascript">var app = React.createElement(
+    &quot;div&quot;, //标签名或组件对象
+    {class:&quot;green&quot;}, //元素属性集
+    &quot;my color is green&quot; //子元素
+);
+</code></pre>
+
+<p>createElement的更多信息<a href="https://facebook.github.io/react/docs/top-level-api.html#react.createelement">看这里</a></p>
+
+<h2 id="hugomore42"></h2>
+
+<p>于是乎，我们可以自由组合js和xml了，比如</p>
+</div>
+<footer>
+<a href='https://bigpigeon.github.io/post/react-study/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.github.io/post/postgresql-type/">postgresql类型 </a> </h2>
 <div class="post-meta">Sun, Mar 13, 2016 - Read in 5 Min </div>
 </header>
@@ -176,28 +218,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.github.io/post/python-and-postgresql/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.github.io/post/docker-and-jekyll/">使用docker部署jekyll </a> </h2>
-<div class="post-meta">Sat, Feb 6, 2016 - Read in 3 Min </div>
-</header>
-<div class="summary">
-    <p>关于在docker部署jekyll在<a href="http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf">The.Docker.Book</a>中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了</p>
-
-<p>所以我在这记录一下部署过程以免将来再次踩坑</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.github.io/post/docker-and-jekyll/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

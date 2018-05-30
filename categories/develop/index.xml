@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 05 May 2018 10:07:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 23 May 2018 10:07:00 +0800</lastBuildDate>
     
 	<atom:link href="https://bigpigeon.github.io/categories/develop/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用go/ast来解析go文件II</title>
+      <link>https://bigpigeon.github.io/post/go-ast-type/</link>
+      <pubDate>Wed, 23 May 2018 10:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.github.io/post/go-ast-type/</guid>
+      <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
+
+&lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
+
+&lt;p&gt;先来看看全部代码&lt;/p&gt;
+
+&lt;p&gt;代码也可以通过&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/blog_go_types&#34;&gt;这里&lt;/a&gt;下载，建议在看教程的同时运行这个demo代码&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>使用go/ast来解析go文件</title>

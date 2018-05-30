@@ -130,6 +130,34 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.github.io/post/my-skip-gfw-stack/">我的翻墙技术栈 </a> </h2>
+<div class="post-meta">Tue, Dec 27, 2016 - Read in 3 Min </div>
+</header>
+<div class="summary">
+    <p>谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。</p>
+
+<p>这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。</p>
+
+<p>linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题</p>
+
+<p>也可以通过其他协议工具比如:<a href="https://github.com/xtaci/kcptun">kcptun</a></p>
+
+<p>kcptun可以提供双边加速和窗口控制，效果可能比bbr好</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.github.io/post/my-skip-gfw-stack/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.github.io/post/jekyll-to-hugo/">从jekyll到hugo，搬运经验总结 </a> </h2>
 <div class="post-meta">Wed, Oct 12, 2016 - Read in 2 Min </div>
 </header>
@@ -164,48 +192,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.github.io/post/iptables-study/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.github.io/post/react-study/">react学习笔记 </a> </h2>
-<div class="post-meta">Thu, Apr 21, 2016 - Read in 3 Min </div>
-</header>
-<div class="summary">
-    <h3 id="jsx">JSX</h3>
-
-<p>React可以使用的是独有的JSX语法,包围它的<code>&lt;script&gt;</code>标签type值为text/babel</p>
-
-<p>那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:</p>
-
-<pre><code>var a = &lt;div class=&quot;green&quot;&gt;my color is green&lt;/div&gt;
-</code></pre>
-
-<p>在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用</p>
-
-<p>也可以使用react.createElement创建element</p>
-
-<pre><code class="language-javascript">var app = React.createElement(
-    &quot;div&quot;, //标签名或组件对象
-    {class:&quot;green&quot;}, //元素属性集
-    &quot;my color is green&quot; //子元素
-);
-</code></pre>
-
-<p>createElement的更多信息<a href="https://facebook.github.io/react/docs/top-level-api.html#react.createelement">看这里</a></p>
-
-<h2 id="hugomore42"></h2>
-
-<p>于是乎，我们可以自由组合js和xml了，比如</p>
-</div>
-<footer>
-<a href='https://bigpigeon.github.io/post/react-study/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

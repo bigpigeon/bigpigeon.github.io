@@ -1,0 +1,1107 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 使用go/ast来解析go文件II &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.github.io/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.github.io/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.github.io/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.github.io/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.github.io/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.github.io/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.github.io/css/highlight/docco.css">
+    <script src="https://bigpigeon.github.io/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.github.io/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.github.io#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.github.io/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.github.io/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.github.io/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>使用go/ast来解析go文件II</h2>
+          <span class="post-date">Wed, May 23, 2018</span>
+          <p>在进行go文件解析经常需要对Ident对象的类型/值进行比较</p>
+
+<p>但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types</p>
+
+<p>先来看看全部代码</p>
+
+<p>代码也可以通过<a href="https://github.com/bigpigeon/Test/tree/master/go/blog_go_types">这里</a>下载，建议在看教程的同时运行这个demo代码</p>
+
+<p></p>
+
+<p><details>
+<summary>
+这是被分析的文件,在data/src.go中
+</summary></p>
+
+<pre><code class="language-golang">package main
+
+// implicitly import
+import &quot;fmt&quot;
+
+import . &quot;unsafe&quot;
+
+type Product struct {
+	Name string
+}
+
+func (p Product) String() string {
+	return &quot;Product:&quot; + p.Name
+}
+
+func ImplicitlyNode() {
+	var d interface{} = 5
+	switch x := d.(type) {
+	case int:
+		fmt.Println(x)
+	default:
+		fmt.Println(x)
+	}
+	var e func(int)
+	fmt.Println(e)
+}
+
+func SelectionNode() {
+	p := Product{Name: &quot;t011&quot;}
+	fmt.Println(p.Name)
+	fmt.Println(p.String())
+	fmt.Println(Product.String(p))
+	fmt.Println(Offsetof(p.Name))
+}
+
+const MaxRoutines = 100
+
+var CurrentRoutines = 1
+
+func main() { //test1
+	fmt.Println(&quot;Hello, World!&quot;) //test2
+	a := []int{1, 2, 3}
+	fmt.Println(a)
+	b := map[int]string{
+		1: &quot;a&quot;,
+		2: &quot;b&quot;,
+	}
+	fmt.Println(b)
+
+	d := make(chan int, 5)
+	fmt.Println(d)
+
+	fmt.Println(MaxRoutines)
+
+}
+</code></pre>
+
+<p></details></p>
+
+<p><details>
+<summary>
+使用types分析库并打印其中各种信息
+</summary></p>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;go/ast&quot;
+	&quot;go/importer&quot;
+	&quot;go/parser&quot;
+	&quot;go/token&quot;
+	&quot;go/types&quot;
+	&quot;reflect&quot;
+	&quot;sort&quot;
+)
+
+// 排序规则order by Pos(), End()
+func sortNodes(nodes []ast.Node) {
+	sort.Slice(nodes, func(i, j int) bool {
+		if nodes[i].Pos() == nodes[j].Pos() {
+			return nodes[i].End() &lt; nodes[j].End()
+		}
+		return nodes[i].Pos() &lt; nodes[j].Pos()
+	})
+}
+
+// map中的元素是无序的，对key排序打印更好查看
+func getSortedKeys(m interface{}) []ast.Node {
+	mValue := reflect.ValueOf(m)
+	nodes := make([]ast.Node, mValue.Len())
+	keys := mValue.MapKeys()
+	for i := range keys {
+		nodes[i] = keys[i].Interface().(ast.Node)
+	}
+	sortNodes(nodes)
+	return nodes
+}
+
+func main() {
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &quot;data/src.go&quot;, nil, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 使用types check
+	// 构造config
+	config := types.Config{
+		// 加载包的方式，可以通过源码或编译好的包，其中编译好的包分为gc和gccgo,前者应该是
+		Importer: importer.For(&quot;source&quot;, nil),
+		// 表示允许包里面加载c库 import &quot;c&quot;
+		FakeImportC: true,
+	}
+
+	info := &amp;types.Info{
+		// 表达式对应的类型
+		Types: make(map[ast.Expr]types.TypeAndValue),
+		// 被定义的标示符
+		Defs: make(map[*ast.Ident]types.Object),
+		// 被使用的标示符
+		Uses: make(map[*ast.Ident]types.Object),
+		// 隐藏节点，匿名import包，type-specific时的case对应的当前类型，声明函数的匿名参数如var func(int)
+		Implicits: make(map[ast.Node]types.Object),
+		// 选择器,只能针对类型/对象.字段/method的选择，package.API这种不会记录在这里
+		Selections: make(map[*ast.SelectorExpr]*types.Selection),
+		// scope 记录当前库scope下的所有域，*ast.File/*ast.FuncType/... 都属于scope，详情看Scopes说明
+		// scope关系: 最外层Universe scope,之后Package scope，其他子scope
+		Scopes: make(map[ast.Node]*types.Scope),
+		// 记录所有package级的初始化值
+		InitOrder: make([]*types.Initializer, 0, 0),
+	}
+	// 这里第一个path参数觉得当前pkg前缀，和FileSet的文件路径是无关的
+	pkg, err := config.Check(&quot;&quot;, fset, []*ast.File{f}, info)
+
+	if err != nil {
+		panic(err)
+	}
+	// 打印types
+	fmt.Println(&quot;------------ types -----------&quot;)
+	for _, node := range getSortedKeys(info.Types) {
+		expr := node.(ast.Expr)
+		typeValue := info.Types[expr]
+		fmt.Printf(&quot;%s - %s %T it's value: %v type: %s\n&quot;,
+			fset.Position(expr.Pos()),
+			fset.Position(expr.End()),
+			expr,
+			typeValue.Value,
+			typeValue.Type.String(),
+		)
+		if typeValue.Assignable() {
+			fmt.Print(&quot;assignable &quot;)
+		}
+		if typeValue.Addressable() {
+			fmt.Print(&quot;addressable &quot;)
+		}
+		if typeValue.IsNil() {
+			fmt.Print(&quot;nil &quot;)
+		}
+		if typeValue.HasOk() {
+			fmt.Print(&quot;has ok &quot;)
+		}
+		if typeValue.IsBuiltin() {
+			fmt.Print(&quot;builtin &quot;)
+		}
+		if typeValue.IsType() {
+			fmt.Print(&quot;is type &quot;)
+		}
+		if typeValue.IsValue() {
+			fmt.Print(&quot;is value &quot;)
+		}
+		if typeValue.IsVoid() {
+			fmt.Print(&quot;void &quot;)
+		}
+		fmt.Println()
+	}
+	// 打印defs
+	fmt.Println(&quot;------------ def -----------&quot;)
+	for _, node := range getSortedKeys(info.Defs) {
+		ident := node.(*ast.Ident)
+		object := info.Defs[ident]
+		fmt.Printf(&quot;%s - %s %T&quot;,
+			fset.Position(ident.Pos()),
+			fset.Position(ident.End()),
+			object,
+		)
+		if object != nil {
+			fmt.Printf(&quot; it's object: %s type: %s&quot;,
+				object,
+				object.Type().String(),
+			)
+
+		}
+		fmt.Println()
+	}
+	// 打印Uses
+	fmt.Println(&quot;------------ uses -----------&quot;)
+	for _, node := range getSortedKeys(info.Uses) {
+		ident := node.(*ast.Ident)
+		object := info.Uses[ident]
+		fmt.Printf(&quot;%s - %s %T&quot;,
+			fset.Position(ident.Pos()),
+			fset.Position(ident.End()),
+			object,
+		)
+		if object != nil {
+			fmt.Printf(&quot; it's object: %s type: %s&quot;,
+				object,
+				object.Type().String(),
+			)
+
+		}
+		fmt.Println()
+	}
+	// 打印Implicits
+	fmt.Println(&quot;------------ implicits -----------&quot;)
+	for _, node := range getSortedKeys(info.Implicits) {
+		object := info.Implicits[node]
+		fmt.Printf(&quot;%s - %s %T it's object: %s\n&quot;,
+			fset.Position(node.Pos()),
+			fset.Position(node.End()),
+			node,
+			object,
+		)
+	}
+	// 打印Selections
+	fmt.Println(&quot;------------ selections -----------&quot;)
+	for _, node := range getSortedKeys(info.Selections) {
+		sel := node.(*ast.SelectorExpr)
+		typeSel := info.Selections[sel]
+		fmt.Printf(&quot;%s - %s it's selection: %s\n&quot;,
+			fset.Position(sel.Pos()),
+			fset.Position(sel.End()),
+			typeSel.String(),
+		)
+		fmt.Printf(&quot;receive: %s index: %v obj: %s\n&quot;, typeSel.Recv(), typeSel.Index(), typeSel.Obj())
+	}
+	// 打印Scopes
+	fmt.Println(&quot;------------ scopes -----------&quot;)
+	//打印package scope
+	fmt.Printf(&quot;package level scope %s\n&quot;,
+		pkg.Scope().String(),
+	)
+	// 打印宇宙级scope
+	fmt.Printf(&quot;universe level scope %s\n&quot;,
+		pkg.Scope().Parent().String(),
+	)
+	for _, node := range getSortedKeys(info.Scopes) {
+		scope := info.Scopes[node]
+		fmt.Printf(&quot;%s - %s %T it's scope %s\n&quot;,
+			fset.Position(node.Pos()),
+			fset.Position(node.End()),
+			node,
+			scope.String(),
+		)
+	}
+	// 打印InitOrder
+	fmt.Println(&quot;------------ init -----------&quot;)
+	for _, init := range info.InitOrder {
+		fmt.Printf(&quot;init %s\n&quot;,
+			init.String(),
+		)
+	}
+}
+
+</code></pre>
+
+<p></details></p>
+
+<h4 id="构建types-config">构建types.Config</h4>
+
+<p>types.Config决定如何去解析go代码，这里<strong>importer.For(&ldquo;source&rdquo;, nil)</strong>表示通过源码的方式解析go库,FakeImportC表示允许加载C库</p>
+
+<h4 id="创建types-info">创建types.Info</h4>
+
+<p>types.Info决定要解析哪些信息，给字段赋值后在Config.Check是会对这部分信息进行解析</p>
+
+<pre><code>Types保存表达式对应的类型，
+Defs保存所有被定义的标示符，包括package name（包名）和带名字的加载库(import _ &quot;package&quot; / import . &quot;package&quot;)
+Uses保存所有被使用的标示符
+Implicits保存三种隐藏节点,匿名import 的库(import &quot;package&quot;), type-specific时的case对应类型（switch t := x.(type){case int:}中case节点映射的t类型)
+Selections保存所有类选择器,只能针对类型/对象.字段/method的选择，package.API这种不会记录在这里
+Scopes保存当前库scope下的所有域，*ast.File/*ast.FuncType/... 都属于scope,最外层Universe scope,之后Package scope，其他子scope
+InitOrder保存所有最外部初始化的值
+</code></pre>
+
+<h4 id="config-check">config.Check</h4>
+
+<p>使用config.Check会填充types.Info的内容</p>
+
+<p>这里第一个path参数决定当前pkg前缀，和FileSet的文件路径是无关的，[]*ast.File{f}是要解析的go文件，这些go文件必须是同一个pkg的文件</p>
+
+<pre><code>pkg, err := config.Check(&quot;&quot;, fset, []*ast.File{f}, info)
+</code></pre>
+
+<p>pkg包含顶级scope和包名信息，err则是解析文件的语法错误</p>
+
+<p>config.Check过后我们就可以通过types.Info来读取go文件信息了</p>
+
+<h4 id="types-info-types">types.Info.Types</h4>
+
+<p>types.Info.Types 映射ast.Expr(不包括在types.Info.Defs和types.Info.Users中的*ast.Ident)到types.TypeAndValue类型</p>
+
+<p>types.TypeAndValue解析expr的类型和它的额外属性，如果expr是一个常量值，TypeAndValue也会解析它的Value</p>
+
+<p>我们来打印一下types.Info.Types的内容</p>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ types -----------&quot;)
+for _, node := range getSortedKeys(info.Types) {
+	expr := node.(ast.Expr)
+	typeValue := info.Types[expr]
+	fmt.Printf(&quot;%s - %s %T it's value: %v type: %s\n&quot;,
+		fset.Position(expr.Pos()),
+		fset.Position(expr.End()),
+		expr,
+		typeValue.Value,
+		typeValue.Type.String(),
+	)
+	if typeValue.Assignable() {
+		fmt.Print(&quot;assignable &quot;)
+	}
+	if typeValue.Addressable() {
+		fmt.Print(&quot;addressable &quot;)
+	}
+	if typeValue.IsNil() {
+		fmt.Print(&quot;nil &quot;)
+	}
+	if typeValue.HasOk() {
+		fmt.Print(&quot;has ok &quot;)
+	}
+	if typeValue.IsBuiltin() {
+		fmt.Print(&quot;builtin &quot;)
+	}
+	if typeValue.IsType() {
+		fmt.Print(&quot;is type &quot;)
+	}
+	if typeValue.IsValue() {
+		fmt.Print(&quot;is value &quot;)
+	}
+	if typeValue.IsVoid() {
+		fmt.Print(&quot;void &quot;)
+	}
+	fmt.Println()
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">------------ types -----------
+data/src.go:7:14 - data/src.go:9:2 *ast.StructType it's value: &lt;nil&gt; type: struct{Name string}
+is type 
+data/src.go:8:7 - data/src.go:8:13 *ast.Ident it's value: &lt;nil&gt; type: string
+is type 
+data/src.go:11:9 - data/src.go:11:16 *ast.Ident it's value: &lt;nil&gt; type: Product
+is type 
+data/src.go:11:27 - data/src.go:11:33 *ast.Ident it's value: &lt;nil&gt; type: string
+is type 
+data/src.go:12:9 - data/src.go:12:19 *ast.BasicLit it's value: &quot;Product:&quot; type: string
+is value 
+data/src.go:12:9 - data/src.go:12:28 *ast.BinaryExpr it's value: &lt;nil&gt; type: string
+is value 
+data/src.go:12:22 - data/src.go:12:23 *ast.Ident it's value: &lt;nil&gt; type: Product
+assignable addressable is value 
+data/src.go:12:22 - data/src.go:12:28 *ast.SelectorExpr it's value: &lt;nil&gt; type: string
+assignable addressable is value 
+data/src.go:16:8 - data/src.go:16:19 *ast.InterfaceType it's value: &lt;nil&gt; type: interface{}
+is type 
+data/src.go:16:22 - data/src.go:16:23 *ast.BasicLit it's value: 5 type: int
+is value 
+data/src.go:17:14 - data/src.go:17:15 *ast.Ident it's value: &lt;nil&gt; type: interface{}
+assignable addressable is value 
+data/src.go:18:7 - data/src.go:18:10 *ast.Ident it's value: &lt;nil&gt; type: int
+is type 
+data/src.go:19:3 - data/src.go:19:14 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:19:3 - data/src.go:19:17 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:19:15 - data/src.go:19:16 *ast.Ident it's value: &lt;nil&gt; type: int
+assignable addressable is value 
+data/src.go:21:3 - data/src.go:21:14 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:21:3 - data/src.go:21:17 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:21:15 - data/src.go:21:16 *ast.Ident it's value: &lt;nil&gt; type: interface{}
+assignable addressable is value 
+data/src.go:23:8 - data/src.go:23:17 *ast.FuncType it's value: &lt;nil&gt; type: func(int)
+is type 
+data/src.go:23:13 - data/src.go:23:16 *ast.Ident it's value: &lt;nil&gt; type: int
+is type 
+data/src.go:24:2 - data/src.go:24:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:24:2 - data/src.go:24:16 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:24:14 - data/src.go:24:15 *ast.Ident it's value: &lt;nil&gt; type: func(int)
+assignable addressable is value 
+data/src.go:28:7 - data/src.go:28:14 *ast.Ident it's value: &lt;nil&gt; type: Product
+is type 
+data/src.go:28:7 - data/src.go:28:28 *ast.CompositeLit it's value: &lt;nil&gt; type: Product
+is value 
+data/src.go:28:21 - data/src.go:28:27 *ast.BasicLit it's value: &quot;t011&quot; type: string
+is value 
+data/src.go:29:2 - data/src.go:29:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:29:2 - data/src.go:29:21 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:29:14 - data/src.go:29:15 *ast.Ident it's value: &lt;nil&gt; type: Product
+assignable addressable is value 
+data/src.go:29:14 - data/src.go:29:20 *ast.SelectorExpr it's value: &lt;nil&gt; type: string
+assignable addressable is value 
+data/src.go:30:2 - data/src.go:30:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:30:2 - data/src.go:30:25 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:30:14 - data/src.go:30:15 *ast.Ident it's value: &lt;nil&gt; type: Product
+assignable addressable is value 
+data/src.go:30:14 - data/src.go:30:22 *ast.SelectorExpr it's value: &lt;nil&gt; type: func() string
+is value 
+data/src.go:30:14 - data/src.go:30:24 *ast.CallExpr it's value: &lt;nil&gt; type: string
+is value 
+data/src.go:31:2 - data/src.go:31:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:31:2 - data/src.go:31:32 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:31:14 - data/src.go:31:21 *ast.Ident it's value: &lt;nil&gt; type: Product
+is type 
+data/src.go:31:14 - data/src.go:31:28 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(Product) string
+is value 
+data/src.go:31:14 - data/src.go:31:31 *ast.CallExpr it's value: &lt;nil&gt; type: string
+is value 
+data/src.go:31:29 - data/src.go:31:30 *ast.Ident it's value: &lt;nil&gt; type: Product
+assignable addressable is value 
+data/src.go:32:2 - data/src.go:32:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:32:2 - data/src.go:32:31 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:32:14 - data/src.go:32:22 *ast.Ident it's value: &lt;nil&gt; type: invalid type
+builtin 
+data/src.go:32:14 - data/src.go:32:30 *ast.CallExpr it's value: 0 type: uintptr
+is value 
+data/src.go:32:23 - data/src.go:32:24 *ast.Ident it's value: &lt;nil&gt; type: Product
+assignable addressable is value 
+data/src.go:35:21 - data/src.go:35:24 *ast.BasicLit it's value: 100 type: untyped int
+is value 
+data/src.go:37:23 - data/src.go:37:24 *ast.BasicLit it's value: 1 type: int
+is value 
+data/src.go:40:2 - data/src.go:40:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:40:2 - data/src.go:40:30 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:40:14 - data/src.go:40:29 *ast.BasicLit it's value: &quot;Hello, World!&quot; type: string
+is value 
+data/src.go:41:7 - data/src.go:41:12 *ast.ArrayType it's value: &lt;nil&gt; type: []int
+is type 
+data/src.go:41:7 - data/src.go:41:21 *ast.CompositeLit it's value: &lt;nil&gt; type: []int
+is value 
+data/src.go:41:9 - data/src.go:41:12 *ast.Ident it's value: &lt;nil&gt; type: int
+is type 
+data/src.go:41:13 - data/src.go:41:14 *ast.BasicLit it's value: 1 type: int
+is value 
+data/src.go:41:16 - data/src.go:41:17 *ast.BasicLit it's value: 2 type: int
+is value 
+data/src.go:41:19 - data/src.go:41:20 *ast.BasicLit it's value: 3 type: int
+is value 
+data/src.go:42:2 - data/src.go:42:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:42:2 - data/src.go:42:16 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:42:14 - data/src.go:42:15 *ast.Ident it's value: &lt;nil&gt; type: []int
+assignable addressable is value 
+data/src.go:43:7 - data/src.go:43:21 *ast.MapType it's value: &lt;nil&gt; type: map[int]string
+is type 
+data/src.go:43:7 - data/src.go:46:3 *ast.CompositeLit it's value: &lt;nil&gt; type: map[int]string
+is value 
+data/src.go:43:11 - data/src.go:43:14 *ast.Ident it's value: &lt;nil&gt; type: int
+is type 
+data/src.go:43:15 - data/src.go:43:21 *ast.Ident it's value: &lt;nil&gt; type: string
+is type 
+data/src.go:44:3 - data/src.go:44:4 *ast.BasicLit it's value: 1 type: int
+is value 
+data/src.go:44:6 - data/src.go:44:9 *ast.BasicLit it's value: &quot;a&quot; type: string
+is value 
+data/src.go:45:3 - data/src.go:45:4 *ast.BasicLit it's value: 2 type: int
+is value 
+data/src.go:45:6 - data/src.go:45:9 *ast.BasicLit it's value: &quot;b&quot; type: string
+is value 
+data/src.go:47:2 - data/src.go:47:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:47:2 - data/src.go:47:16 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:47:14 - data/src.go:47:15 *ast.Ident it's value: &lt;nil&gt; type: map[int]string
+assignable addressable is value 
+data/src.go:49:7 - data/src.go:49:11 *ast.Ident it's value: &lt;nil&gt; type: func(chan int, int) chan int
+builtin 
+data/src.go:49:7 - data/src.go:49:24 *ast.CallExpr it's value: &lt;nil&gt; type: chan int
+is value 
+data/src.go:49:12 - data/src.go:49:20 *ast.ChanType it's value: &lt;nil&gt; type: chan int
+is type 
+data/src.go:49:17 - data/src.go:49:20 *ast.Ident it's value: &lt;nil&gt; type: int
+is type 
+data/src.go:49:22 - data/src.go:49:23 *ast.BasicLit it's value: 5 type: int
+is value 
+data/src.go:50:2 - data/src.go:50:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:50:2 - data/src.go:50:16 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:50:14 - data/src.go:50:15 *ast.Ident it's value: &lt;nil&gt; type: chan int
+assignable addressable is value 
+data/src.go:52:2 - data/src.go:52:13 *ast.SelectorExpr it's value: &lt;nil&gt; type: func(a ...interface{}) (n int, err error)
+is value 
+data/src.go:52:2 - data/src.go:52:26 *ast.CallExpr it's value: &lt;nil&gt; type: (n int, err error)
+is value 
+data/src.go:52:14 - data/src.go:52:25 *ast.Ident it's value: 100 type: int
+is value 
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-defs">types.Info.Defs</h4>
+
+<p>Defs保存所有定义的*ast.Ident，并映射为types.Object</p>
+
+<p>types.Object可以是一个包名，函数，常量，变量,或者标签的接口</p>
+
+<p>当前包的package name也保存在Defs表中，不过它的Object是nil，不知道是不是bug</p>
+
+<p>打印一下Defs的内容</p>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ def -----------&quot;)
+for _, node := range getSortedKeys(info.Defs) {
+	ident := node.(*ast.Ident)
+	object := info.Defs[ident]
+	fmt.Printf(&quot;%s - %s %T&quot;,
+		fset.Position(ident.Pos()),
+		fset.Position(ident.End()),
+		object,
+	)
+	if object != nil {
+		fmt.Printf(&quot; it's object: %s type: %s&quot;,
+			object,
+			object.Type().String(),
+		)
+
+	}
+	fmt.Println()
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">------------ def -----------
+data/src.go:1:9 - data/src.go:1:13 &lt;nil&gt;
+data/src.go:5:8 - data/src.go:5:9 *types.PkgName it's object: package . (&quot;unsafe&quot;) type: invalid type
+data/src.go:7:6 - data/src.go:7:13 *types.TypeName it's object: type Product struct{Name string} type: Product
+data/src.go:8:2 - data/src.go:8:6 *types.Var it's object: field Name string type: string
+data/src.go:11:7 - data/src.go:11:8 *types.Var it's object: var p Product type: Product
+data/src.go:11:18 - data/src.go:11:24 *types.Func it's object: func (Product).String() string type: func() string
+data/src.go:15:6 - data/src.go:15:20 *types.Func it's object: func ImplicitlyNode() type: func()
+data/src.go:16:6 - data/src.go:16:7 *types.Var it's object: var d interface{} type: interface{}
+data/src.go:17:9 - data/src.go:17:10 &lt;nil&gt;
+data/src.go:23:6 - data/src.go:23:7 *types.Var it's object: var e func(int) type: func(int)
+data/src.go:27:6 - data/src.go:27:19 *types.Func it's object: func SelectionNode() type: func()
+data/src.go:28:2 - data/src.go:28:3 *types.Var it's object: var p Product type: Product
+data/src.go:35:7 - data/src.go:35:18 *types.Const it's object: const MaxRoutines untyped int type: untyped int
+data/src.go:37:5 - data/src.go:37:20 *types.Var it's object: var CurrentRoutines int type: int
+data/src.go:39:6 - data/src.go:39:10 *types.Func it's object: func main() type: func()
+data/src.go:41:2 - data/src.go:41:3 *types.Var it's object: var a []int type: []int
+data/src.go:43:2 - data/src.go:43:3 *types.Var it's object: var b map[int]string type: map[int]string
+data/src.go:49:2 - data/src.go:49:3 *types.Var it's object: var d chan int type: chan int
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-uses">types.Info.Uses</h4>
+
+<p>Uses保存所有使用的*ast.Ident，并映射为types.Object</p>
+
+<p>基本在Uses中的Ident也会出现在Types里，这部分逻辑很迷</p>
+
+<p>打印Uses</p>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ uses -----------&quot;)
+for _, node := range getSortedKeys(info.Uses) {
+	ident := node.(*ast.Ident)
+	object := info.Uses[ident]
+	fmt.Printf(&quot;%s - %s %T&quot;,
+		fset.Position(ident.Pos()),
+		fset.Position(ident.End()),
+		object,
+	)
+	if object != nil {
+		fmt.Printf(&quot; it's object: %s type: %s&quot;,
+			object,
+			object.Type().String(),
+		)
+
+	}
+	fmt.Println()
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">------------ uses -----------
+data/src.go:8:7 - data/src.go:8:13 *types.TypeName it's object: type string type: string
+data/src.go:11:9 - data/src.go:11:16 *types.TypeName it's object: type Product struct{Name string} type: Product
+data/src.go:11:27 - data/src.go:11:33 *types.TypeName it's object: type string type: string
+data/src.go:12:22 - data/src.go:12:23 *types.Var it's object: var p Product type: Product
+data/src.go:12:24 - data/src.go:12:28 *types.Var it's object: field Name string type: string
+data/src.go:17:14 - data/src.go:17:15 *types.Var it's object: var d interface{} type: interface{}
+data/src.go:18:7 - data/src.go:18:10 *types.TypeName it's object: type int type: int
+data/src.go:19:3 - data/src.go:19:6 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:19:7 - data/src.go:19:14 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:19:15 - data/src.go:19:16 *types.Var it's object: var x int type: int
+data/src.go:21:3 - data/src.go:21:6 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:21:7 - data/src.go:21:14 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:21:15 - data/src.go:21:16 *types.Var it's object: var x interface{} type: interface{}
+data/src.go:23:13 - data/src.go:23:16 *types.TypeName it's object: type int type: int
+data/src.go:24:2 - data/src.go:24:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:24:6 - data/src.go:24:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:24:14 - data/src.go:24:15 *types.Var it's object: var e func(int) type: func(int)
+data/src.go:28:7 - data/src.go:28:14 *types.TypeName it's object: type Product struct{Name string} type: Product
+data/src.go:28:15 - data/src.go:28:19 *types.Var it's object: field Name string type: string
+data/src.go:29:2 - data/src.go:29:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:29:6 - data/src.go:29:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:29:14 - data/src.go:29:15 *types.Var it's object: var p Product type: Product
+data/src.go:29:16 - data/src.go:29:20 *types.Var it's object: field Name string type: string
+data/src.go:30:2 - data/src.go:30:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:30:6 - data/src.go:30:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:30:14 - data/src.go:30:15 *types.Var it's object: var p Product type: Product
+data/src.go:30:16 - data/src.go:30:22 *types.Func it's object: func (Product).String() string type: func() string
+data/src.go:31:2 - data/src.go:31:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:31:6 - data/src.go:31:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:31:14 - data/src.go:31:21 *types.TypeName it's object: type Product struct{Name string} type: Product
+data/src.go:31:22 - data/src.go:31:28 *types.Func it's object: func (Product).String() string type: func() string
+data/src.go:31:29 - data/src.go:31:30 *types.Var it's object: var p Product type: Product
+data/src.go:32:2 - data/src.go:32:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:32:6 - data/src.go:32:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:32:14 - data/src.go:32:22 *types.Builtin it's object: builtin unsafe.Offsetof type: invalid type
+data/src.go:32:23 - data/src.go:32:24 *types.Var it's object: var p Product type: Product
+data/src.go:32:25 - data/src.go:32:29 *types.Var it's object: field Name string type: string
+data/src.go:40:2 - data/src.go:40:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:40:6 - data/src.go:40:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:41:9 - data/src.go:41:12 *types.TypeName it's object: type int type: int
+data/src.go:42:2 - data/src.go:42:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:42:6 - data/src.go:42:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:42:14 - data/src.go:42:15 *types.Var it's object: var a []int type: []int
+data/src.go:43:11 - data/src.go:43:14 *types.TypeName it's object: type int type: int
+data/src.go:43:15 - data/src.go:43:21 *types.TypeName it's object: type string type: string
+data/src.go:47:2 - data/src.go:47:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:47:6 - data/src.go:47:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:47:14 - data/src.go:47:15 *types.Var it's object: var b map[int]string type: map[int]string
+data/src.go:49:7 - data/src.go:49:11 *types.Builtin it's object: builtin make type: invalid type
+data/src.go:49:17 - data/src.go:49:20 *types.TypeName it's object: type int type: int
+data/src.go:50:2 - data/src.go:50:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:50:6 - data/src.go:50:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:50:14 - data/src.go:50:15 *types.Var it's object: var d chan int type: chan int
+data/src.go:52:2 - data/src.go:52:5 *types.PkgName it's object: package fmt type: invalid type
+data/src.go:52:6 - data/src.go:52:13 *types.Func it's object: func fmt.Println(a ...interface{}) (n int, err error) type: func(a ...interface{}) (n int, err error)
+data/src.go:52:14 - data/src.go:52:25 *types.Const it's object: const MaxRoutines untyped int type: untyped int
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-implicits">types.Info.Implicits</h4>
+
+<p>Implicits保存各种隐藏声明的节点,以下节点可能出现在Implicits表中</p>
+
+<p>没有包名的import</p>
+
+<p>type-specific的swtich语句</p>
+
+<p>声明函数时的匿名参数</p>
+
+<p>这个example已经把实现了所有隐藏声明代码，来看看哪些节点会出现在这里</p>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ implicits -----------&quot;)
+for _, node := range getSortedKeys(info.Implicits) {
+	object := info.Implicits[node]
+	fmt.Printf(&quot;%s - %s %T it's object: %s\n&quot;,
+		fset.Position(node.Pos()),
+		fset.Position(node.End()),
+		node,
+		object,
+	)
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">------------ implicits -----------
+data/src.go:4:8 - data/src.go:4:13 *ast.ImportSpec it's object: package fmt
+data/src.go:11:27 - data/src.go:11:33 *ast.Field it's object: var  string
+data/src.go:18:2 - data/src.go:19:17 *ast.CaseClause it's object: var x int
+data/src.go:20:2 - data/src.go:21:17 *ast.CaseClause it's object: var x interface{}
+data/src.go:23:13 - data/src.go:23:16 *ast.Field it's object: var  int
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-selections">types.Info.Selections</h4>
+
+<p>Selections保存所有结构体选择表达式像 x.f，它会把*ast.SelectorExpr映射成*types.Selection，只有类成员的使用表达式会被映射，库成员的使用则不会</p>
+
+<p>types.Selection有3中类型，对应3种调用方式(这里参考了types源码)</p>
+
+<pre><code class="language-golang">//	type T struct{ x int; E }
+//	type E struct{}
+//	func (e E) m() {}
+//	var p *T
+//
+// the following relations exist:
+//
+//	Selector    Kind          Recv    Obj    Type               Index     Indirect
+//
+//	p.x         FieldVal      T       x      int                {0}       true
+//	p.m         MethodVal     *T      m      func (e *T) m()    {1, 0}    true
+//	T.m         MethodExpr    T       m      func m(_ T)        {1, 0}    false
+//
+</code></pre>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ selections -----------&quot;)
+for _, node := range getSortedKeys(info.Selections) {
+	sel := node.(*ast.SelectorExpr)
+	typeSel := info.Selections[sel]
+	fmt.Printf(&quot;%s - %s it's selection: %s\n&quot;,
+		fset.Position(sel.Pos()),
+		fset.Position(sel.End()),
+		typeSel.String(),
+	)
+	fmt.Printf(&quot;receive: %s index: %v obj: %s\n&quot;, typeSel.Recv(), typeSel.Index(), typeSel.Obj())
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">------------ selections -----------
+data/src.go:13:22 - data/src.go:13:28 it's selection: field (Product) Name string
+receive: Product index: [0] obj: field Name string
+data/src.go:30:14 - data/src.go:30:20 it's selection: field (Product) Name string
+receive: Product index: [0] obj: field Name string
+data/src.go:31:14 - data/src.go:31:22 it's selection: method (Product) String() string
+receive: Product index: [0] obj: func (Product).String() string
+data/src.go:32:14 - data/src.go:32:28 it's selection: method expr (Product) String(p Product) string
+receive: Product index: [0] obj: func (Product).String() string
+data/src.go:33:23 - data/src.go:33:29 it's selection: field (Product) Name string
+receive: Product index: [0] obj: field Name string
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-scope">types.Info.Scope</h4>
+
+<p>scope 记录当前库scope下的所有域，*ast.File/*ast.FuncType/&hellip; 都属于scope，详情看Scopes说明</p>
+
+<p>scope关系: 最外层Universe scope,之后Package scope，其他子scope</p>
+
+<p>打印Universe scope的内容和Package scope的内容</p>
+
+<pre><code class="language-golang">// 打印宇宙级scope
+//打印package scope
+fmt.Printf(&quot;package level scope %s\n&quot;,
+	pkg.Scope().String(),
+)
+// 打印宇宙级scope
+fmt.Printf(&quot;universe level scope %s\n&quot;,
+	pkg.Scope().Parent().String(),
+)
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">package level scope package &quot;&quot; scope 0xc42009dbd0 {
+.  var CurrentRoutines int
+.  func ImplicitlyNode()
+.  const MaxRoutines untyped int
+.  type Product struct{Name string}
+.  func SelectionNode()
+.  func main()
+}
+universe level scope universe scope 0xc42009c320 {
+.  builtin append
+.  type bool
+.  type byte
+.  builtin cap
+.  builtin close
+.  builtin complex
+.  type complex128
+.  type complex64
+.  builtin copy
+.  builtin delete
+.  type error interface{Error() string}
+.  const false untyped bool
+.  type float32
+.  type float64
+.  builtin imag
+.  type int
+.  type int16
+.  type int32
+.  type int64
+.  type int8
+.  const iota untyped int
+.  builtin len
+.  builtin make
+.  builtin new
+.  nil
+.  builtin panic
+.  builtin print
+.  builtin println
+.  builtin real
+.  builtin recover
+.  type rune
+.  type string
+.  const true untyped bool
+.  type uint
+.  type uint16
+.  type uint32
+.  type uint64
+.  type uint8
+.  type uintptr
+}
+</code></pre>
+
+<p></details></p>
+
+<p>打印所有scope(types.Info.Scope不会包含Package scope和Universe scope)</p>
+
+<pre><code class="language-golang">for _, node := range getSortedKeys(info.Scopes) {
+	scope := info.Scopes[node]
+	fmt.Printf(&quot;%s - %s %T it's scope: %s\n&quot;,
+		fset.Position(node.Pos()),
+		fset.Position(node.End()),
+		node,
+		scope.String(),
+	)
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">data/src.go:12:1 - data/src.go:12:33 *ast.FuncType it's scope: function scope 0xc421388ff0 {
+.  var p Product
+}
+data/src.go:16:1 - data/src.go:16:22 *ast.FuncType it's scope: function scope 0xc4213890e0 {
+.  var d interface{}
+.  var e func(int)
+}
+data/src.go:18:2 - data/src.go:23:3 *ast.TypeSwitchStmt it's scope: type switch scope 0xc421389310 {}
+
+data/src.go:19:2 - data/src.go:20:17 *ast.CaseClause it's scope: case scope 0xc421389360 {
+.  var x int
+}
+data/src.go:21:2 - data/src.go:22:17 *ast.CaseClause it's scope: case scope 0xc421389400 {
+.  var x interface{}
+}
+data/src.go:24:8 - data/src.go:24:17 *ast.FuncType it's scope: function scope 0xc4213894f0 {}
+
+data/src.go:28:1 - data/src.go:28:21 *ast.FuncType it's scope: function scope 0xc421389180 {
+.  var p Product
+}
+data/src.go:40:1 - data/src.go:40:12 *ast.FuncType it's scope: function scope 0xc4213891d0 {
+.  var a []int
+.  var b map[int]string
+.  var d chan int
+}
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-info-initorder">types.Info.InitOrder</h4>
+
+<p>InitOrder保存当前库最外层的变量</p>
+
+<p>打印当前所有InitOrder内容</p>
+
+<pre><code class="language-golang">fmt.Println(&quot;------------ init -----------&quot;)
+for _, init := range info.InitOrder {
+	fmt.Printf(&quot;init %s\n&quot;,
+		init.String(),
+	)
+}
+</code></pre>
+
+<p><details>
+<summary>
+打印日志
+</summary></p>
+
+<pre><code class="language-log">init CurrentRoutines = 1
+</code></pre>
+
+<p></details></p>
+
+<h4 id="types-object比较">types.Object比较</h4>
+
+<p>可以使用Object.Pos()模块查找这个Object的声明时的位置，从而比较哪些Object属于同一个对象</p>
+
+<h4 id="types-type比较">types.Type比较</h4>
+
+<p>可以通过Type.String()来比较这2个Type是不是相同的类型</p>
+
+<h4 id="总结">总结</h4>
+
+<p>以上就是就是go/types的全部内容了，下一章继续介绍go/types中实现的Type类型</p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6II-https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f&title=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6II" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.github.io%2fpost%2fgo-ast-type%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>
