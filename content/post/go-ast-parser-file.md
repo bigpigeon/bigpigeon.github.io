@@ -351,6 +351,7 @@ Expr实现
 |Ellipsis    | 可变长度参数            | myfunc(args...)中的args
 |BasicLit    | literal常量            | a := 22 中的22
 |FuncLit     | 函数literal常量         | var fun = func(){}中的fun
+|CompositeLit| 容器literal常量         | a := []int{1,2,3} 中的[]int{1,2,3} 或 b := map[int]string{}中的map[int]string{}
 |ParenExpr   | 括号表达式              | a + (b*c)中的(b*c)
 |SelectorExpr| 选择表达式             | a.Method()中的a.Method
 |IndexExpr   | 索引表达式              | a[2] or a["a"]
@@ -361,6 +362,11 @@ Expr实现
 |UnaryExpr   | 一元操作符，除了\*外都用这个 | return &a中的&a
 |BinaryExpr  | 条件表达式             | if a > b {}中的 a > b，是的这个是expr不是stmt
 |KeyValueExpr | 初始化map赋值时会用到  | m := map[int]string{1:"a", 2: "b"}
+|ArrayType   | 容器类型               | a := []int{1,2,3} 中的[]int
+|StructType  | 结构体类型             | type Product struct { Name string }中的struct { Name string }
+|InterfaceType| 接口类型              | var d interface{} = 5中的interface{}
+|MapType      | map类型              | b := map[int]string{}中的map[int]string
+|ChanType     | chan类型             | d := make(chan int,5)中的chan int
 
 </details>
 
