@@ -91,6 +91,17 @@ brick = brick.IgnoreMode(toyorm.Mode(&amp;#34;Update&amp;#34;), toyorm.IgnoreZer
     </item>
     
     <item>
+      <title>Insert Or Save</title>
+      <link>https://bigpigeon.org/toyorm/en/4_toy_brick/12_insert_or_save/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://bigpigeon.org/toyorm/en/4_toy_brick/12_insert_or_save/</guid>
+      <description>If you clearly know you want to add new data , use Insert
+type User struct { toyorm.ModelDefault Name string } ... brick := toy.Model(&amp;amp;User{}) data := User{ Name: &amp;#34;bigpigeon&amp;#34;, } brick.Insert(&amp;amp;data) If you lazy let toyorm auto select insert or update, use Save
+// if have zero primary key, save still use insert into brick.Save(&amp;amp;User{ Name: &amp;#34;bigpigeon&amp;#34;, }) // this operation almost same as brick.Insert // INSERT INTO user(...) VALUES(.</description>
+    </item>
+    
+    <item>
       <title>Join</title>
       <link>https://bigpigeon.org/toyorm/en/4_toy_brick/9_join/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

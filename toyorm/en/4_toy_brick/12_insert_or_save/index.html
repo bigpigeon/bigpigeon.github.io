@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Toyorm documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.37.1" />
+<title>Insert Or Save :: Toyorm documentation</title>
+<link rel="shortcut icon" href="/toyorm/images/favicon.png" type="image/x-icon" />
+<link href="/toyorm/css/font-awesome.min.css" rel="stylesheet">
+<link href="/toyorm/css/nucleus.css" rel="stylesheet">
+<link href="/toyorm/theme-flex/style.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/toyorm/css/bootstrap.min.css">
+<script src="/toyorm/js/jquery-2.x.min.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/bigpigeon.org\/toyorm";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/toyorm/en/4_toy_brick/12_insert_or_save/">
+    
+      <header>
+  <div class="logo">
+    
+	
+  
+    <a class="baselink" href="/toyorm/en">Toyorm documentation</a>
+  
+
+  </div>
+  <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
+    <nav class="shortcuts">
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm"  rel="noopener">
+                  <i class='fa fa-github'></i> <label>Github repo</label>
+                </a>
+            </li>
+            <li class="" role="">
+                <a href="https://github.com/bigpigeon/toyorm/archive/master.zip"  rel="noopener">
+                  <i class='fa fa-cloud-download'></i> <label>Download</label>
+                </a>
+            </li>
+    </nav>
+</header>
+<article>
+  <aside>
+    <ul class="menu">
+    <li data-nav-id="/toyorm/en/1_getting_started/" class="dd-item alwaysopen
+        ">
+      <div>
+      <a href="/toyorm/en/1_getting_started/">Getting started</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/2_engine/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/2_engine/">Engine</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/2_engine/toy_toolkit/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/2_engine/toy_toolkit/">
+            toy toolkit
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/3_data_definition/" class="dd-item alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/3_data_definition/">Data Definition</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/3_data_definition/type_translation/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/type_translation/">
+            Type Translate
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/3_data_definition/tag/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/3_data_definition/tag/">
+            Tag declaration
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/4_toy_brick/" class="dd-item parent alwaysopen haschildren
+        ">
+      <div>
+      <a href="/toyorm/en/4_toy_brick/">ToyBrick</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/toyorm/en/4_toy_brick/4_bind_field/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/4_bind_field/">
+            Bind Field
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/1_condition/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/1_condition/">
+            Condition
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/11_field_selector/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/11_field_selector/">
+            Field Selector
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/3_ignore_mode/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/3_ignore_mode/">
+            Ignore Zero Value
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/12_insert_or_save/" class="dd-item active">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/12_insert_or_save/">
+            Insert Or Save
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/9_join/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/9_join/">
+            Join
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/8_preload/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/8_preload/">
+            Preload
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/10_result/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/10_result/">
+            Result
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/5_scope/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/5_scope/">
+            Scope
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/6_template/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/6_template/">
+            Template
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/7_thread_safe/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/7_thread_safe/">
+            Thread Safe
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/toyorm/en/4_toy_brick/2_transaction/" class="dd-item">
+        <div>
+          <a href="/toyorm/en/4_toy_brick/2_transaction/">
+            Transaction
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/toyorm/en/5_collection/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/5_collection/">collection</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/6_toy_doctor/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/6_toy_doctor/">toy-doctor</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/toyorm/en/7_example/" class="dd-item
+        ">
+      <div>
+      <a href="/toyorm/en/7_example/">example</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+
+
+
+
+    </ul>
+<select id="select-language" onchange="location = this.value;">
+	
+	
+	
+	  
+	  
+	    
+	      
+	        <option id="en" value="/toyorm/en/4_toy_brick/12_insert_or_save/" selected>English</option>
+	      
+	    
+	  
+	    
+	  
+	
+	  
+	  
+	    
+	  
+	    
+	      
+	        <option id="cn" value="/toyorm/cn/4_toy_brick/12_insert_or_save/">中文</option>
+	      
+	    
+	  
+	
+</select>
+    <section>
+    </section>
+  </aside>
+  <section class="page">
+    
+    <div class="nav-select">
+      <center>Navigation : 
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/toyorm/en/1_getting_started/" >
+   Getting started</option> 
+  
+    <option value="/toyorm/en/2_engine/" >
+   Engine</option> 
+      <option value="/toyorm/en/2_engine/toy_toolkit/" >- toy toolkit</option>
+  
+    <option value="/toyorm/en/3_data_definition/" >
+   Data Definition</option> 
+      <option value="/toyorm/en/3_data_definition/type_translation/" >- Type Translate</option>
+      <option value="/toyorm/en/3_data_definition/tag/" >- Tag declaration</option>
+  
+    <option value="/toyorm/en/4_toy_brick/" >
+   ToyBrick</option> 
+      <option value="/toyorm/en/4_toy_brick/4_bind_field/" >- Bind Field</option>
+      <option value="/toyorm/en/4_toy_brick/1_condition/" >- Condition</option>
+      <option value="/toyorm/en/4_toy_brick/11_field_selector/" >- Field Selector</option>
+      <option value="/toyorm/en/4_toy_brick/3_ignore_mode/" >- Ignore Zero Value</option>
+      <option value="/toyorm/en/4_toy_brick/12_insert_or_save/"  selected>- Insert Or Save</option>
+      <option value="/toyorm/en/4_toy_brick/9_join/" >- Join</option>
+      <option value="/toyorm/en/4_toy_brick/8_preload/" >- Preload</option>
+      <option value="/toyorm/en/4_toy_brick/10_result/" >- Result</option>
+      <option value="/toyorm/en/4_toy_brick/5_scope/" >- Scope</option>
+      <option value="/toyorm/en/4_toy_brick/6_template/" >- Template</option>
+      <option value="/toyorm/en/4_toy_brick/7_thread_safe/" >- Thread Safe</option>
+      <option value="/toyorm/en/4_toy_brick/2_transaction/" >- Transaction</option>
+  
+    <option value="/toyorm/en/5_collection/" >
+   collection</option>
+    <option value="/toyorm/en/6_toy_doctor/" >
+   toy-doctor</option>
+    <option value="/toyorm/en/7_example/" >
+   example</option>
+
+
+
+        </select>
+      </center>
+    </div>
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="Search...">
+        </div>
+        <script type="text/javascript" src="/toyorm/js/lunr.min.js"></script>
+        <script type="text/javascript" src="/toyorm/js/auto-complete.js"></script>
+        <link href="/toyorm/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/bigpigeon.org\/toyorm\/en";
+          
+        </script>
+        <script type="text/javascript" src="/toyorm/js/search.js"></script>
+      </div>
+    
+
+    <h1>Insert Or Save</h1>
+    
+    
+    
+    <p>If you clearly know you want to add new data , use Insert</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#00a8c8">type</span> <span style="color:#75af00">User</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span> <span style="color:#00a8c8">string</span>
+<span style="color:#111">}</span>
+<span style="color:#f92672">...</span>
+<span style="color:#75af00">brick</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">toy</span><span style="color:#111">.</span><span style="color:#75af00">Model</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{})</span>
+<span style="color:#75af00">data</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">}</span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Insert</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">data</span><span style="color:#111">)</span></code></pre></div>
+<p>If you lazy let toyorm auto select insert or update, use Save</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// if have zero primary key, save still use insert into
+</span><span style="color:#75715e"></span><span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">})</span> <span style="color:#75715e">// this operation almost same as brick.Insert
+</span><span style="color:#75715e">// INSERT INTO user(...) VALUES(...,&#34;bigpigeon&#34;)
+</span><span style="color:#75715e"></span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">1</span><span style="color:#111">,</span>
+	<span style="color:#75af00">CreatedAt</span><span style="color:#111">:</span> <span style="color:#75af00">now</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">})</span> <span style="color:#75715e">// if id existed, will use insert if conflict update operation
+</span><span style="color:#75715e">// in postgresql dialect, execute code
+</span><span style="color:#75715e"></span><span style="color:#f92672">//</span> <span style="color:#75af00">INSERT</span> <span style="color:#75af00">INTO</span> <span style="color:#75af00">user</span><span style="color:#111">(</span><span style="color:#f92672">...</span><span style="color:#111">)</span> <span style="color:#75af00">VALUES</span><span style="color:#111">(</span><span style="color:#f92672">...</span><span style="color:#111">,</span><span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">)</span> <span style="color:#75af00">ON</span> <span style="color:#75af00">CONFLICT</span><span style="color:#111">(</span><span style="color:#75af00">id</span><span style="color:#111">)</span> <span style="color:#75af00">DO</span> <span style="color:#75af00">UPDATE</span> <span style="color:#75af00">SET</span> <span style="color:#f92672">...</span><span style="color:#111">,</span> <span style="color:#75af00">name</span> <span style="color:#111">=</span> <span style="color:#75af00">Excluded</span><span style="color:#111">.</span><span style="color:#75af00">name</span> </code></pre></div>
+<p>but Save will lose data when related table have unique index</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#00a8c8">type</span> <span style="color:#75af00">User</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span> <span style="color:#00a8c8">string</span> <span style="color:#d88200">`toyorm:&#34;unique index&#34;`</span>
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">1</span><span style="color:#111">,</span>
+	<span style="color:#75af00">CreatedAt</span><span style="color:#111">:</span> <span style="color:#75af00">now</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">})</span> 
+
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">2</span><span style="color:#111">,</span>
+	<span style="color:#75af00">CreatedAt</span><span style="color:#111">:</span> <span style="color:#75af00">now</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">})</span> <span style="color:#f92672">//</span> <span style="color:#75af00">in</span> <span style="color:#75af00">sqlite3</span> <span style="color:#111">,</span><span style="color:#75af00">this</span> <span style="color:#75af00">operation</span> <span style="color:#75af00">will</span> <span style="color:#75af00">replace</span> <span style="color:#75af00">ID</span><span style="color:#111">=</span><span style="color:#ae81ff">1</span> <span style="color:#75af00">data</span> <span style="color:#75af00">and</span> <span style="color:#75af00">lose</span> <span style="color:#75af00">it</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#75af00">s</span> <span style="color:#75af00">infomation</span></code></pre></div>
+<p>use USave if you clearly know data&rsquo;s existed, USave use Update operation to save data</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#00a8c8">type</span> <span style="color:#75af00">User</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span> <span style="color:#00a8c8">string</span> <span style="color:#d88200">`toyorm:&#34;unique index&#34;`</span>
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">oldData</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">1</span><span style="color:#111">,</span>
+	<span style="color:#75af00">CreatedAt</span><span style="color:#111">:</span> <span style="color:#75af00">now</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Insert</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">oldData</span><span style="color:#111">)</span> 
+
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Insert</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">2</span><span style="color:#111">,</span>
+	<span style="color:#75af00">CreatedAt</span><span style="color:#111">:</span> <span style="color:#75af00">now</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;pigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">})</span>
+
+<span style="color:#75af00">oldData</span><span style="color:#111">.</span><span style="color:#75af00">Name</span> <span style="color:#111">=</span> <span style="color:#d88200">&#34;pigeon&#34;</span>
+
+<span style="color:#75af00">report</span><span style="color:#111">,</span> <span style="color:#75af00">err</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">USave</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">oldData</span><span style="color:#111">)</span> <span style="color:#f92672">//</span> <span style="color:#75af00">USave</span> <span style="color:#75af00">will</span> <span style="color:#00a8c8">return</span> <span style="color:#75af00">report</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#75af00">s</span> <span style="color:#00a8c8">error</span><span style="color:#111">,</span> <span style="color:#75af00">because</span> <span style="color:#75af00">Name</span> <span style="color:#75af00">field</span> <span style="color:#75af00">conflict</span></code></pre></div>
+<p>if data not change , brick.USave also return &ldquo;save failure&rdquo; error</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#00a8c8">type</span> <span style="color:#75af00">User</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span>   <span style="color:#00a8c8">uint32</span> <span style="color:#d88200">`toyorm:&#34;primary key&#34;`</span>
+	<span style="color:#75af00">Name</span> <span style="color:#00a8c8">string</span> 
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">oldData</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">1</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Insert</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">oldData</span><span style="color:#111">)</span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">USave</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">oldData</span><span style="color:#111">)</span> <span style="color:#f92672">//</span> <span style="color:#75af00">this</span> <span style="color:#75af00">operation</span> <span style="color:#75af00">will</span> <span style="color:#00a8c8">return</span> <span style="color:#d88200">&#34;save failure&#34;</span> <span style="color:#75af00">because</span> <span style="color:#75af00">data</span> <span style="color:#75af00">was</span> <span style="color:#75af00">not</span> <span style="color:#75af00">change</span></code></pre></div>
+<p>if have Cas field, save operation will failure when it&rsquo;s value modified by third party</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#00a8c8">type</span> <span style="color:#75af00">User</span> <span style="color:#00a8c8">struct</span> <span style="color:#111">{</span>
+	<span style="color:#75af00">toyorm</span><span style="color:#111">.</span><span style="color:#75af00">ModelDefault</span>
+	<span style="color:#75af00">Name</span>   <span style="color:#00a8c8">string</span>
+	<span style="color:#75af00">Cas</span>    <span style="color:#00a8c8">int</span>
+<span style="color:#111">}</span>
+
+<span style="color:#75af00">data</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">User</span><span style="color:#111">{</span>
+	<span style="color:#75af00">ID</span><span style="color:#111">:</span> <span style="color:#ae81ff">1</span><span style="color:#111">,</span>
+	<span style="color:#75af00">Name</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;bigpigeon&#34;</span><span style="color:#111">,</span>
+<span style="color:#111">}</span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Insert</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">data</span><span style="color:#111">)</span> 
+
+
+<span style="color:#75af00">data2</span> <span style="color:#f92672">:=</span> <span style="color:#75af00">User</span>
+<span style="color:#75af00">data2</span><span style="color:#111">.</span><span style="color:#75af00">Name</span> <span style="color:#111">=</span> <span style="color:#d88200">&#34;pigeon&#34;</span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">data2</span><span style="color:#111">)</span>
+
+<span style="color:#75af00">data</span><span style="color:#111">.</span><span style="color:#75af00">Name</span> <span style="color:#111">=</span> <span style="color:#d88200">&#34;benjamin&#34;</span>
+<span style="color:#75af00">brick</span><span style="color:#111">.</span><span style="color:#75af00">Save</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#75af00">data</span><span style="color:#111">)</span> <span style="color:#f92672">//</span> <span style="color:#75af00">save</span> <span style="color:#75af00">will</span> <span style="color:#75af00">failure</span><span style="color:#111">,</span> <span style="color:#75af00">because</span> <span style="color:#75af00">Cas</span> <span style="color:#75af00">not</span> <span style="color:#75af00">match</span></code></pre></div>
+
+    
+    
+        <div class="chevrons">
+    <div id="navigation">
+<a class="nav nav-prev" href="/toyorm/en/4_toy_brick/3_ignore_mode/" title="Ignore Zero Value"> <i class="fa fa-chevron-left"></i><label>Ignore Zero Value</label></a>
+    <a class="nav nav-next" href="/toyorm/en/4_toy_brick/9_join/" title="Join" style="margin-right: 0px;"><label>Join</label><i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  </section>
+</article>
+
+<footer>
+
+<div class="footline">
+    
+
+    
+
+  
+
+    <div class="github-link">
+      <a href="4_toy_brick/12_insert_or_save.md" target="blank"><i class="fa fa-code-fork"></i>
+        Improve this page</a>
+    </div>
+  </div>
+
+
+	<div>
+
+
+  
+    Create a content/_footer.md file to customize the footer content
+  
+
+
+
+	</div>
+</footer>
+
+<script src="/toyorm/js/clipboard.min.js"></script>
+
+<link href="/toyorm/css/featherlight.min.css" rel="stylesheet">
+<script src="/toyorm/js/featherlight.min.js"></script>
+
+
+
+<script src="/toyorm/theme-flex/script.js"></script>
+
+    
+
+    
+    
+
+    
+  </body>
+</html>

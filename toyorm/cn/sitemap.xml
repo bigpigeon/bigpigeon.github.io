@@ -144,6 +144,20 @@
   </url>
   
   <url>
+    <loc>https://bigpigeon.org/toyorm/cn/4_toy_brick/12_insert_or_save/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://bigpigeon.org/toyorm/en/4_toy_brick/12_insert_or_save/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://bigpigeon.org/toyorm/cn/4_toy_brick/12_insert_or_save/"
+                />
+  </url>
+  
+  <url>
     <loc>https://bigpigeon.org/toyorm/cn/4_toy_brick/9_join/</loc>
     <xhtml:link
                 rel="alternate"

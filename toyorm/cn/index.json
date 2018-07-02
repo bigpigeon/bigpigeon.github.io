@@ -70,6 +70,13 @@
 	"content": ""
 },
 {
+	"uri": "https://bigpigeon.org/toyorm/cn/4_toy_brick/12_insert_or_save/",
+	"title": "Insert Or Save",
+	"tags": [],
+	"description": "",
+	"content": "如果你清楚的知道需要插入一个新数据，使用Insert\ntype User struct { toyorm.ModelDefault Name string } ... brick := toy.Model(\u0026amp;User{}) data := User{ Name: \u0026#34;bigpigeon\u0026#34;, } brick.Insert(\u0026amp;data) 如果你比较懒，想让toyorm自动选择插入或者保存，使用Save\n// if have zero primary key, save still use insert into brick.Save(\u0026amp;User{ Name: \u0026#34;bigpigeon\u0026#34;, }) // this operation almost same as brick.Insert // INSERT INTO user(...) VALUES(...,\u0026#34;bigpigeon\u0026#34;)  brick.Save(\u0026amp;User{ ID: 1, CreatedAt: now, Name: \u0026#34;bigpigeon\u0026#34;, }) // if id existed, will use insert if conflict update operation // in postgresql dialect, execute code // INSERT INTO user(...) VALUES(...,\u0026#34;bigpigeon\u0026#34;) ON CONFLICT(id) DO UPDATE SET ..., name = Excluded.name  如果映射的表中有unique index属性的字段，使用Save可能导致数据丢失\ntype User struct { toyorm.ModelDefault Name string `toyorm:\u0026#34;unique index\u0026#34;` } brick.Save(\u0026amp;User{ ID: 1, CreatedAt: now, Name: \u0026#34;bigpigeon\u0026#34;, }) brick.Save(\u0026amp;User{ ID: 2, CreatedAt: now, Name: \u0026#34;bigpigeon\u0026#34;, }) // in sqlite3 ,this operation will replace ID=1 data and lose it\u0026#39;s infomation 如果你清楚的知道数据已经存在使用Usave, USave 使用更新操作跟新数据\ntype User struct { toyorm.ModelDefault Name string `toyorm:\u0026#34;unique index\u0026#34;` } oldData := User{ ID: 1, CreatedAt: now, Name: \u0026#34;bigpigeon\u0026#34;, } brick.Insert(\u0026amp;oldData) brick.Insert(\u0026amp;User{ ID: 2, CreatedAt: now, Name: \u0026#34;pigeon\u0026#34;, }) oldData.Name = \u0026#34;pigeon\u0026#34; report, err := brick.USave(\u0026amp;oldData) // USave will return report\u0026#39;s error, because Name field conflict PS: 如果USave的数据没有被改变，也会导致\u0026rdquo;save failure\u0026rdquo;错误\ntype User struct { ID uint32 `toyorm:\u0026#34;primary key\u0026#34;` Name string } oldData := User{ ID: 1, Name: \u0026#34;bigpigeon\u0026#34;, } brick.Insert(\u0026amp;oldData) brick.USave(\u0026amp;oldData) // this operation will return \u0026#34;save failure\u0026#34; because data was not change 如果包含Cas字段，当数据被第三方修改,保存操作将会失败\ntype User struct { toyorm.ModelDefault Name string Cas int } data := User{ ID: 1, Name: \u0026#34;bigpigeon\u0026#34;, } brick.Insert(\u0026amp;data) data2 := User data2.Name = \u0026#34;pigeon\u0026#34; brick.Save(\u0026amp;data2) data.Name = \u0026#34;benjamin\u0026#34; brick.Save(\u0026amp;data) // save will failure, because Cas not match"
+},
+{
 	"uri": "https://bigpigeon.org/toyorm/cn/4_toy_brick/9_join/",
 	"title": "Join",
 	"tags": [],
@@ -102,7 +109,7 @@
 	"title": "Toyorm",
 	"tags": [],
 	"description": "powerful toyorm",
-	"content": " Toyorm  一个功能强大的go语言orm\n Overview  数据迁移 (CreateTable/DropTable) 操作数据 (Insert/Save/Update/Find/Delete) 预加载操作(BelongTo/OneToOne/OneToMany/ManyToMany mode) Join操作 事务 空值忽略 (toyorm允许你只忽略指定的空值) 字段绑定 (绑定后，操作表时只对绑定字段操作) 软删除 (更新 DeletedAt 字段值代替物理删除) Scope (自定义中间层) 线程安全(但必须准守协定) 查询模板 (自定义你的查询/执行语句) 返回值和错误记录 (记录数据库的操作记录和返回的错误) 集合 (多数据库操作) toy-doctor(检查FieldSelection参数错误)  Go 版本 version \u0026gt; 1.9\n支持数据库  sqlite3  mysql  postgresql  "
+	"content": " Toyorm  一个功能强大的go语言orm\n Overview  数据迁移 (CreateTable/DropTable) 操作数据 (Insert/Save/Update/Find/Delete) 预加载操作(BelongTo/OneToOne/OneToMany/ManyToMany mode) Join操作 事务 空值忽略 (toyorm允许你只忽略指定的空值) 字段绑定 (绑定后，操作表时只对绑定字段操作) 软删除 (更新 DeletedAt 字段值代替物理删除) Scope (自定义构建函数) 线程安全(但必须准守协定) 查询模板 (自定义你的查询/执行语句) 返回值和错误记录 (记录数据库的操作记录和返回的错误) 集合 (多数据库操作) toy-doctor(检查FieldSelection参数错误)  Go 版本 version \u0026gt; 1.9\n支持数据库  sqlite3  mysql  postgresql  "
 },
 {
 	"uri": "https://bigpigeon.org/toyorm/cn/4_toy_brick/1_codition/",
