@@ -17,7 +17,7 @@ data := User{
 brick.Insert(&data)
 ```
 
-If you lazy want toyorm auto select insert or update, use Save
+If you lazy let toyorm auto select insert or update, use Save
 
 ```golang
 // if have zero primary key, save still use insert into

@@ -101,7 +101,7 @@ brick.Insert(&oldData)
 brick.USave(&oldData) // this operation will return "save failure" because data was not change
 ```
 
-如果包含Cas字段，当数据被第三方修改,保存操作将会在失败
+如果包含Cas字段，当数据被第三方修改,保存操作将会失败
 
 ```golang
 type User struct {
