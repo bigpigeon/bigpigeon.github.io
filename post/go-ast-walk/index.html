@@ -391,9 +391,11 @@ const unintType = 42
 </code></pre>
 
 <blockquote>
-<p>types.AssignableTo(strType, interfaceType) =&gt; true
-types.AssignableTo(24, int64Type) =&gt; true
-types.AssignableTo(unintType, int64Type) =&gt; false // 这个不知道是不是bug,理应能转的</p>
+<p>types.AssignableTo(strType, interfaceType) =&gt; true</p>
+
+<p>types.AssignableTo(24, int64Type) =&gt; true</p>
+
+<p>types.AssignableTo(unintType, int64Type) =&gt; false // 这个不知道是不是bug,理应能转的</p>
 </blockquote>
 
 <h3 id="末尾">末尾</h3>

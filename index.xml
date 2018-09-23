@@ -285,9 +285,11 @@ const unintType = 42
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;types.AssignableTo(strType, interfaceType) =&amp;gt; true
-types.AssignableTo(24, int64Type) =&amp;gt; true
-types.AssignableTo(unintType, int64Type) =&amp;gt; false // 这个不知道是不是bug,理应能转的&lt;/p&gt;
+&lt;p&gt;types.AssignableTo(strType, interfaceType) =&amp;gt; true&lt;/p&gt;
+
+&lt;p&gt;types.AssignableTo(24, int64Type) =&amp;gt; true&lt;/p&gt;
+
+&lt;p&gt;types.AssignableTo(unintType, int64Type) =&amp;gt; false // 这个不知道是不是bug,理应能转的&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&#34;末尾&#34;&gt;末尾&lt;/h3&gt;
