@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Development on bigpigeon</title>
-    <link>https://bigpigeon.github.io/tags/development/</link>
+    <link>/tags/development/</link>
     <description>Recent content in Development on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Wed, 12 Oct 2016 11:43:37 +0800</lastBuildDate>
     
-	<atom:link href="https://bigpigeon.github.io/tags/development/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/development/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>从jekyll到hugo，搬运经验总结</title>
-      <link>https://bigpigeon.github.io/post/jekyll-to-hugo/</link>
+      <link>/post/jekyll-to-hugo/</link>
       <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/jekyll-to-hugo/</guid>
+      <guid>/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
 
 &lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>react学习笔记</title>
-      <link>https://bigpigeon.github.io/post/react-study/</link>
+      <link>/post/react-study/</link>
       <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/react-study/</guid>
+      <guid>/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
 
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
@@ -60,10 +60,10 @@
     
     <item>
       <title>postgresql类型</title>
-      <link>https://bigpigeon.github.io/post/postgresql-type/</link>
+      <link>/post/postgresql-type/</link>
       <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/postgresql-type/</guid>
+      <guid>/post/postgresql-type/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
 
@@ -81,10 +81,10 @@
     
     <item>
       <title>在python上操作postgresql</title>
-      <link>https://bigpigeon.github.io/post/python-and-postgresql/</link>
+      <link>/post/python-and-postgresql/</link>
       <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/python-and-postgresql/</guid>
+      <guid>/post/python-and-postgresql/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
 
@@ -98,10 +98,10 @@
     
     <item>
       <title>gin框架介绍</title>
-      <link>https://bigpigeon.github.io/post/gin-framework/</link>
+      <link>/post/gin-framework/</link>
       <pubDate>Thu, 24 Dec 2015 06:25:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/gin-framework/</guid>
+      <guid>/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
 
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;

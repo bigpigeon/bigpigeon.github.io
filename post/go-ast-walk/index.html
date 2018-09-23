@@ -1,0 +1,445 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 使用go/ast来解析go文件III &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.min.js"></script>
+    <link rel="stylesheet" href="/css/highlight/docco.css">
+    <script src="/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>使用go/ast来解析go文件III</h2>
+          <span class="post-date">Sun, Sep 23, 2018</span>
+          
+
+<p>可能很多人想问types中的Type和Object接口有什么区别</p>
+
+<p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
+
+<p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
+
+<p>我们先来看看go/types中所有的Types实现</p>
+
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Array</td>
+<td>固定长度数组类型</td>
+</tr>
+
+<tr>
+<td>Basic</td>
+<td>基本类型,比如int,string,float等</td>
+</tr>
+
+<tr>
+<td>Chan</td>
+<td>通道类型，相当于线程安全的slice</td>
+</tr>
+
+<tr>
+<td>Interface</td>
+<td>接口类型</td>
+</tr>
+
+<tr>
+<td>Map</td>
+<td>map类型</td>
+</tr>
+
+<tr>
+<td>Named</td>
+<td>所有用type起名字的自定义类型</td>
+</tr>
+
+<tr>
+<td>Pointer</td>
+<td>指针类型</td>
+</tr>
+
+<tr>
+<td>Signature</td>
+<td>所有函数或者method都属于这个类型</td>
+</tr>
+
+<tr>
+<td>Slice</td>
+<td>slice类型</td>
+</tr>
+
+<tr>
+<td>Struct</td>
+<td>结构体类型，注意:自定义的结构体是named类型，它的Underlying是Struct类型</td>
+</tr>
+
+<tr>
+<td>Tuple</td>
+<td>函数的参数和返回值</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="array-类型">Array 类型</h3>
+
+<p>array类型中包括它的子类型Elem()和数组长度Len() 2个属性</p>
+
+<h3 id="basic-类型">Basic 类型</h3>
+
+<p>basic类型有Kind()和Info()2个属性，Kind是types.BasicKind类型，用来表示所有go的类型，如果import &ldquo;C&rdquo;，所有C.type都是Invalid类型</p>
+
+<p>而Info则是types.BasicInfo类型，使用&amp;运算符比较类型，比如types.IsNumeric&amp; x.Info() 可以知道这个类型是否为数字(数字可以是所有int，float,complex类型)</p>
+
+<h3 id="chan-类型">Chan 类型</h3>
+
+<p>chan类型有Dir()和Elem()方法</p>
+
+<p>其中Dir()返回types.ChanDir,它可以是SendRecv,SendOnly,RecvOnly分别表示 发送接收，只发送，只接收 3中channel类型</p>
+
+<h3 id="接口类型">接口类型</h3>
+
+<p>接口类型有ExplicitMethod，Embedded，Method 3个方法，分别对应对应获取自己定义的方法，获取嵌套Interface，获取包含嵌套的所有方法</p>
+
+<p>这3个方法有对应的Num方法拿到它们的总数</p>
+
+<h3 id="map-类型">map 类型</h3>
+
+<p>map类型有Key和Elem方法，分别对应map的key,value类型</p>
+
+<h3 id="named-类型">named 类型</h3>
+
+<p>named类型就是用户定义的类型，用户定义所有有名字的类型都是named</p>
+
+<p>named类型有个Obj方法，可以返回它对应的types.TypeName，TypeName是一个types.Object接口实现</p>
+
+<p>named 类型也是唯一使用Underlying方法返回的不是自身，可以说Underlying方法就是因为有named类型强加上去的</p>
+
+<p>named也有Method和NumMethods方法，用于查看该named下所定义的方法</p>
+
+<p>结合named和interface的Method可以非常方便的实现Interface实现扫描</p>
+
+<h3 id="pointer-类型">Pointer 类型</h3>
+
+<p>Pointer类型有一个Elem方法返回它的子类型</p>
+
+<h3 id="signature-类型">Signature 类型</h3>
+
+<p>所有方法和函数都属于这个类型，一些go的bulit-in函数和伪函数则不是，它们属于Basic类型</p>
+
+<p>Signature有Params和Results方法返回函数的参数和返回值，Params和Results本身则返回一个Tuple类型</p>
+
+<p>Signature还有一个Recv方法，用于返回方法类型的接收者</p>
+
+<h3 id="slice类型">Slice类型</h3>
+
+<p>Pointer类型有一个Elem方法返回它的成员类型</p>
+
+<h3 id="struct类型">Struct类型</h3>
+
+<p>struct类型的Field(int)方法返回结构体中第n个字段，而Tag方法则是对应字段的tag信息</p>
+
+<p>Field方法返回的是types.Var类型，它是type.Object接口的实现</p>
+
+<h3 id="tuple类型">Tuple类型</h3>
+
+<p>Tuple只会出现在Signature的参数和返回值中</p>
+
+<p>它有At(int)返回第n个字段的信息，该信息是types.Var类型，它是type.Object接口的实现</p>
+
+<p>Len方法则返回总字段数</p>
+
+<h3 id="比对type类型">比对Type类型</h3>
+
+<p>使用types.Identical函数可以比对2个type类型，返回bool值,比对的具体逻辑可以看下面的例子</p>
+
+<pre><code>
+var idName1 struct {
+	ID   int
+	Name string
+}
+
+var idName2 struct {
+	ID   int
+	Name string
+}
+
+var idName3 struct {
+	ID   int
+	Name []byte
+}
+
+type IDName struct {
+	ID   int
+	Name string
+}
+
+var idName4 IDName
+
+</code></pre>
+
+<p>其中idName1和idName2是相同的类型，和idName3不同类型</p>
+
+<p>idName1和idName4也是不同类型，idName4属于Named type，所以比如和idName1不相等</p>
+
+<h3 id="实现扫描">实现扫描</h3>
+
+<p>使用types.Implements(T,I)可以判断T类型是否实现了接口I</p>
+
+<p>比如下面的Response就实现了Stringer接口，Implements比如返回true</p>
+
+<pre><code class="language-golang">type Stringer interface {
+	String() string
+}
+
+// named 类型包含它的method信息
+type Response struct {
+	Name  string
+	Value string
+	Buff  bytes.Buffer
+}
+
+func (r Response) String() string {
+	return r.Name + &quot; &quot; + r.Value
+}
+
+func (r *Response) Write(w io.Writer) {
+	r.Buff.WriteTo(w)
+}
+</code></pre>
+
+<p>types.Implements也可以对接口与接口之间的扫描，下面的WriteStringer也实现了Stringer</p>
+
+<pre><code class="language-golang">type Stringer interface {
+	String() string
+}
+
+type WriteStringer interface {
+	String() string
+	Writer(writer io.Writer)
+}
+
+</code></pre>
+
+<p>types.AssertableTo(I,T)则是判断T类型能否分配成I接口,可以理解为接口版的types.AssignableTo</p>
+
+<p>伪代码:</p>
+
+<blockquote>
+<p>types.AssertableTo(WriteStringer, Stringer) =&gt; true</p>
+
+<p>types.AssertableTo(Stringer, Response) =&gt; true</p>
+
+<p>types.AssertableTo(Stringer, WriteStringer) =&gt; false</p>
+
+<p>types.AssertableTo(WriteStringer, Response) =&gt; false</p>
+</blockquote>
+
+<h3 id="类型转换判断">类型转换判断</h3>
+
+<p>types.ConvertibleTo(T1,T2)可以用来判断T1类型能否转成T2类型</p>
+
+<p>通常使用type T2 T1的类型都可以互相转换，还有一些基本类型比如[]byte和string类型，int和int64/int32类型等</p>
+
+<h3 id="赋值转换判断">赋值转换判断</h3>
+
+<p>types.AssignableTo(T1,T2)可以判断T1类型是否可以赋给T2类型</p>
+
+<p>赋值转换和类型转换不同，它是一种软转换，也就是不需要带声明</p>
+
+<p>在go里面所有类型都是强类型，每个对象都有明确的类型标识，而软转换的条件就是不允许转换后的类型信息丢失</p>
+
+<p>所以只有3种情况可以接受转换：</p>
+
+<ul>
+<li><p>同类型的转换</p></li>
+
+<li><p>普通类型转接口类型或接口类型直接的转换，因为接口类型会携带源类型的信息，所以不算做信息丢失</p></li>
+
+<li><p>由一个untype类型转成符合条件的type类型比如42转int64,32.0转float64，&rdquo;abc&rdquo;转string类型</p></li>
+</ul>
+
+<p>使用伪代码举几个例子</p>
+
+<pre><code class="language-golang">
+var strType string
+var interfaceType interface{}
+
+var int64Type int = 24
+
+const unintType = 42
+
+</code></pre>
+
+<blockquote>
+<p>types.AssignableTo(strType, interfaceType) =&gt; true
+types.AssignableTo(24, int64Type) =&gt; true
+types.AssignableTo(unintType, int64Type) =&gt; false // 这个不知道是不是bug,理应能转的</p>
+</blockquote>
+
+<h3 id="末尾">末尾</h3>
+
+<p>types.Type的所有内容基本都介绍齐了，如有遗漏就遗漏了</p>
+
+<p>我也许还会出一篇关于types.Object介绍，也可能直接出一篇关于ast应用实践的博客，写ast实在是太累的，下期见</p>
+
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6III-%2fpost%2fgo-ast-walk%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fgo-ast-walk%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=%2fpost%2fgo-ast-walk%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=%2fpost%2fgo-ast-walk%2f&title=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6III" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=%2fpost%2fgo-ast-walk%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=%2fpost%2fgo-ast-walk%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

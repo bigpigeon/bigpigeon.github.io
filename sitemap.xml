@@ -3,293 +3,298 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://bigpigeon.github.io/post/go-ast-type/</loc>
+    <loc>/post/go-ast-walk/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/go-ast-type/</loc>
     <lastmod>2018-05-23T10:07:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/go-ast-parser-file/</loc>
+    <loc>/post/go-ast-parser-file/</loc>
     <lastmod>2018-05-05T10:07:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/gorm-tutorial-second/</loc>
+    <loc>/post/gorm-tutorial-second/</loc>
     <lastmod>2017-06-23T15:16:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/go-reflect-talk/</loc>
+    <loc>/post/go-reflect-talk/</loc>
     <lastmod>2017-06-06T15:16:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/gorm-tutorial-first/</loc>
+    <loc>/post/gorm-tutorial-first/</loc>
     <lastmod>2017-05-29T15:16:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/git-push-recover-way/</loc>
+    <loc>/post/git-push-recover-way/</loc>
     <lastmod>2017-03-09T09:44:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/concurrent/</loc>
+    <loc>/demo/concurrent/</loc>
     <lastmod>2017-01-20T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/my-skip-gfw-stack/</loc>
+    <loc>/post/my-skip-gfw-stack/</loc>
     <lastmod>2016-12-27T17:07:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/jekyll-to-hugo/</loc>
+    <loc>/post/jekyll-to-hugo/</loc>
     <lastmod>2016-10-12T11:43:37+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2016-10-09T14:21:23+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/iptables-study/</loc>
+    <loc>/post/iptables-study/</loc>
     <lastmod>2016-06-28T16:00:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/react-study/</loc>
+    <loc>/post/react-study/</loc>
     <lastmod>2016-04-21T10:43:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/postgresql-type/</loc>
+    <loc>/post/postgresql-type/</loc>
     <lastmod>2016-03-13T10:30:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/python-and-postgresql/</loc>
+    <loc>/post/python-and-postgresql/</loc>
     <lastmod>2016-03-07T10:30:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/docker-and-jekyll/</loc>
+    <loc>/post/docker-and-jekyll/</loc>
     <lastmod>2016-02-06T14:06:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/defer/</loc>
+    <loc>/demo/defer/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/goarray/</loc>
+    <loc>/demo/goarray/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/goclone/</loc>
+    <loc>/demo/goclone/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/gohelloworld/</loc>
+    <loc>/demo/gohelloworld/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/gointerface/</loc>
+    <loc>/demo/gointerface/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/gosched/</loc>
+    <loc>/demo/gosched/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/goselect/</loc>
+    <loc>/demo/goselect/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/gostruct/</loc>
+    <loc>/demo/gostruct/</loc>
     <lastmod>2016-01-16T17:59:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/gin-framework/</loc>
+    <loc>/post/gin-framework/</loc>
     <lastmod>2015-12-24T06:25:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/switchy-proxy-pac-optimization/</loc>
+    <loc>/post/switchy-proxy-pac-optimization/</loc>
     <lastmod>2015-12-19T22:00:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/jekyll-deploy/</loc>
+    <loc>/post/jekyll-deploy/</loc>
     <lastmod>2015-12-09T16:00:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/demo/</loc>
+    <loc>/demo/</loc>
     <lastmod>2017-01-20T17:59:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/develop/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
+    <loc>/categories/develop/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/development/</loc>
+    <loc>/tags/development/</loc>
     <lastmod>2016-10-12T11:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/gfw/</loc>
+    <loc>/categories/gfw/</loc>
     <lastmod>2016-12-27T17:07:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/git/</loc>
+    <loc>/categories/git/</loc>
     <lastmod>2017-03-09T09:44:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/golang/</loc>
+    <loc>/categories/golang/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/golang/</loc>
     <lastmod>2017-01-20T17:59:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/golang/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
+    <loc>/tags/go%E8%AF%AD%E8%A8%80/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/go%E8%AF%AD%E8%A8%80/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://bigpigeon.github.io/tags/iptables/</loc>
+    <loc>/tags/iptables/</loc>
     <lastmod>2016-06-28T16:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/javascript/</loc>
+    <loc>/categories/javascript/</loc>
     <lastmod>2015-12-19T22:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/jekyll/</loc>
+    <loc>/categories/jekyll/</loc>
     <lastmod>2016-02-06T14:06:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/operation/</loc>
+    <loc>/categories/operation/</loc>
+    <lastmod>2016-02-06T14:06:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/operation/</loc>
     <lastmod>2016-06-28T16:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/operation/</loc>
-    <lastmod>2016-02-06T14:06:00+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://bigpigeon.github.io/tags/postgresql/</loc>
+    <loc>/tags/postgresql/</loc>
     <lastmod>2016-03-13T10:30:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/post/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
+    <loc>/post/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/proxy/</loc>
+    <loc>/categories/proxy/</loc>
     <lastmod>2016-12-27T17:07:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/python/</loc>
+    <loc>/tags/python/</loc>
     <lastmod>2016-03-07T10:30:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/react/</loc>
+    <loc>/tags/react/</loc>
     <lastmod>2016-04-21T10:43:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2016-10-12T11:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
+    <loc>/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2015-12-09T16:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2018-05-23T10:07:00+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://bigpigeon.github.io/categories/%E5%BC%80%E5%8F%91/</loc>
+    <loc>/categories/%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2016-10-12T11:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/%E6%B5%8B%E8%AF%95/</loc>
+    <loc>/tags/%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2018-09-23T12:42:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%B5%8B%E8%AF%95/</loc>
     <lastmod>2017-01-20T17:59:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/tags/%E8%BF%90%E7%BB%B4/</loc>
-    <lastmod>2016-12-27T17:07:00+08:00</lastmod>
+    <loc>/categories/%E8%BF%90%E7%BB%B4/</loc>
+    <lastmod>2016-06-28T16:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://bigpigeon.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
-    <lastmod>2016-06-28T16:00:00+08:00</lastmod>
+    <loc>/tags/%E8%BF%90%E7%BB%B4/</loc>
+    <lastmod>2016-12-27T17:07:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   

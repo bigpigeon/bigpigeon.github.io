@@ -2,20 +2,306 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>bigpigeon</title>
-    <link>https://bigpigeon.github.io/</link>
+    <link>/</link>
     <description>Recent content on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 23 May 2018 10:07:00 +0800</lastBuildDate>
-    <atom:link href="https://bigpigeon.github.io/" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Sep 2018 12:42:00 +0800</lastBuildDate>
+    <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用go/ast来解析go文件III</title>
+      <link>/post/go-ast-walk/</link>
+      <pubDate>Sun, 23 Sep 2018 12:42:00 +0800</pubDate>
+      
+      <guid>/post/go-ast-walk/</guid>
+      <description>
+
+&lt;p&gt;可能很多人想问types中的Type和Object接口有什么区别&lt;/p&gt;
+
+&lt;p&gt;我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象&lt;/p&gt;
+
+&lt;p&gt;比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical&lt;/p&gt;
+
+&lt;p&gt;我们先来看看go/types中所有的Types实现&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Array&lt;/td&gt;
+&lt;td&gt;固定长度数组类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Basic&lt;/td&gt;
+&lt;td&gt;基本类型,比如int,string,float等&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Chan&lt;/td&gt;
+&lt;td&gt;通道类型，相当于线程安全的slice&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Interface&lt;/td&gt;
+&lt;td&gt;接口类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Map&lt;/td&gt;
+&lt;td&gt;map类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Named&lt;/td&gt;
+&lt;td&gt;所有用type起名字的自定义类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Pointer&lt;/td&gt;
+&lt;td&gt;指针类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Signature&lt;/td&gt;
+&lt;td&gt;所有函数或者method都属于这个类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Slice&lt;/td&gt;
+&lt;td&gt;slice类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Struct&lt;/td&gt;
+&lt;td&gt;结构体类型，注意:自定义的结构体是named类型，它的Underlying是Struct类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Tuple&lt;/td&gt;
+&lt;td&gt;函数的参数和返回值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;array-类型&#34;&gt;Array 类型&lt;/h3&gt;
+
+&lt;p&gt;array类型中包括它的子类型Elem()和数组长度Len() 2个属性&lt;/p&gt;
+
+&lt;h3 id=&#34;basic-类型&#34;&gt;Basic 类型&lt;/h3&gt;
+
+&lt;p&gt;basic类型有Kind()和Info()2个属性，Kind是types.BasicKind类型，用来表示所有go的类型，如果import &amp;ldquo;C&amp;rdquo;，所有C.type都是Invalid类型&lt;/p&gt;
+
+&lt;p&gt;而Info则是types.BasicInfo类型，使用&amp;amp;运算符比较类型，比如types.IsNumeric&amp;amp; x.Info() 可以知道这个类型是否为数字(数字可以是所有int，float,complex类型)&lt;/p&gt;
+
+&lt;h3 id=&#34;chan-类型&#34;&gt;Chan 类型&lt;/h3&gt;
+
+&lt;p&gt;chan类型有Dir()和Elem()方法&lt;/p&gt;
+
+&lt;p&gt;其中Dir()返回types.ChanDir,它可以是SendRecv,SendOnly,RecvOnly分别表示 发送接收，只发送，只接收 3中channel类型&lt;/p&gt;
+
+&lt;h3 id=&#34;接口类型&#34;&gt;接口类型&lt;/h3&gt;
+
+&lt;p&gt;接口类型有ExplicitMethod，Embedded，Method 3个方法，分别对应对应获取自己定义的方法，获取嵌套Interface，获取包含嵌套的所有方法&lt;/p&gt;
+
+&lt;p&gt;这3个方法有对应的Num方法拿到它们的总数&lt;/p&gt;
+
+&lt;h3 id=&#34;map-类型&#34;&gt;map 类型&lt;/h3&gt;
+
+&lt;p&gt;map类型有Key和Elem方法，分别对应map的key,value类型&lt;/p&gt;
+
+&lt;h3 id=&#34;named-类型&#34;&gt;named 类型&lt;/h3&gt;
+
+&lt;p&gt;named类型就是用户定义的类型，用户定义所有有名字的类型都是named&lt;/p&gt;
+
+&lt;p&gt;named类型有个Obj方法，可以返回它对应的types.TypeName，TypeName是一个types.Object接口实现&lt;/p&gt;
+
+&lt;p&gt;named 类型也是唯一使用Underlying方法返回的不是自身，可以说Underlying方法就是因为有named类型强加上去的&lt;/p&gt;
+
+&lt;p&gt;named也有Method和NumMethods方法，用于查看该named下所定义的方法&lt;/p&gt;
+
+&lt;p&gt;结合named和interface的Method可以非常方便的实现Interface实现扫描&lt;/p&gt;
+
+&lt;h3 id=&#34;pointer-类型&#34;&gt;Pointer 类型&lt;/h3&gt;
+
+&lt;p&gt;Pointer类型有一个Elem方法返回它的子类型&lt;/p&gt;
+
+&lt;h3 id=&#34;signature-类型&#34;&gt;Signature 类型&lt;/h3&gt;
+
+&lt;p&gt;所有方法和函数都属于这个类型，一些go的bulit-in函数和伪函数则不是，它们属于Basic类型&lt;/p&gt;
+
+&lt;p&gt;Signature有Params和Results方法返回函数的参数和返回值，Params和Results本身则返回一个Tuple类型&lt;/p&gt;
+
+&lt;p&gt;Signature还有一个Recv方法，用于返回方法类型的接收者&lt;/p&gt;
+
+&lt;h3 id=&#34;slice类型&#34;&gt;Slice类型&lt;/h3&gt;
+
+&lt;p&gt;Pointer类型有一个Elem方法返回它的成员类型&lt;/p&gt;
+
+&lt;h3 id=&#34;struct类型&#34;&gt;Struct类型&lt;/h3&gt;
+
+&lt;p&gt;struct类型的Field(int)方法返回结构体中第n个字段，而Tag方法则是对应字段的tag信息&lt;/p&gt;
+
+&lt;p&gt;Field方法返回的是types.Var类型，它是type.Object接口的实现&lt;/p&gt;
+
+&lt;h3 id=&#34;tuple类型&#34;&gt;Tuple类型&lt;/h3&gt;
+
+&lt;p&gt;Tuple只会出现在Signature的参数和返回值中&lt;/p&gt;
+
+&lt;p&gt;它有At(int)返回第n个字段的信息，该信息是types.Var类型，它是type.Object接口的实现&lt;/p&gt;
+
+&lt;p&gt;Len方法则返回总字段数&lt;/p&gt;
+
+&lt;h3 id=&#34;比对type类型&#34;&gt;比对Type类型&lt;/h3&gt;
+
+&lt;p&gt;使用types.Identical函数可以比对2个type类型，返回bool值,比对的具体逻辑可以看下面的例子&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+var idName1 struct {
+	ID   int
+	Name string
+}
+
+var idName2 struct {
+	ID   int
+	Name string
+}
+
+var idName3 struct {
+	ID   int
+	Name []byte
+}
+
+type IDName struct {
+	ID   int
+	Name string
+}
+
+var idName4 IDName
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中idName1和idName2是相同的类型，和idName3不同类型&lt;/p&gt;
+
+&lt;p&gt;idName1和idName4也是不同类型，idName4属于Named type，所以比如和idName1不相等&lt;/p&gt;
+
+&lt;h3 id=&#34;实现扫描&#34;&gt;实现扫描&lt;/h3&gt;
+
+&lt;p&gt;使用types.Implements(T,I)可以判断T类型是否实现了接口I&lt;/p&gt;
+
+&lt;p&gt;比如下面的Response就实现了Stringer接口，Implements比如返回true&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;type Stringer interface {
+	String() string
+}
+
+// named 类型包含它的method信息
+type Response struct {
+	Name  string
+	Value string
+	Buff  bytes.Buffer
+}
+
+func (r Response) String() string {
+	return r.Name + &amp;quot; &amp;quot; + r.Value
+}
+
+func (r *Response) Write(w io.Writer) {
+	r.Buff.WriteTo(w)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;types.Implements也可以对接口与接口之间的扫描，下面的WriteStringer也实现了Stringer&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;type Stringer interface {
+	String() string
+}
+
+type WriteStringer interface {
+	String() string
+	Writer(writer io.Writer)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;types.AssertableTo(I,T)则是判断T类型能否分配成I接口,可以理解为接口版的types.AssignableTo&lt;/p&gt;
+
+&lt;p&gt;伪代码:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;types.AssertableTo(WriteStringer, Stringer) =&amp;gt; true&lt;/p&gt;
+
+&lt;p&gt;types.AssertableTo(Stringer, Response) =&amp;gt; true&lt;/p&gt;
+
+&lt;p&gt;types.AssertableTo(Stringer, WriteStringer) =&amp;gt; false&lt;/p&gt;
+
+&lt;p&gt;types.AssertableTo(WriteStringer, Response) =&amp;gt; false&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;类型转换判断&#34;&gt;类型转换判断&lt;/h3&gt;
+
+&lt;p&gt;types.ConvertibleTo(T1,T2)可以用来判断T1类型能否转成T2类型&lt;/p&gt;
+
+&lt;p&gt;通常使用type T2 T1的类型都可以互相转换，还有一些基本类型比如[]byte和string类型，int和int64/int32类型等&lt;/p&gt;
+
+&lt;h3 id=&#34;赋值转换判断&#34;&gt;赋值转换判断&lt;/h3&gt;
+
+&lt;p&gt;types.AssignableTo(T1,T2)可以判断T1类型是否可以赋给T2类型&lt;/p&gt;
+
+&lt;p&gt;赋值转换和类型转换不同，它是一种软转换，也就是不需要带声明&lt;/p&gt;
+
+&lt;p&gt;在go里面所有类型都是强类型，每个对象都有明确的类型标识，而软转换的条件就是不允许转换后的类型信息丢失&lt;/p&gt;
+
+&lt;p&gt;所以只有3种情况可以接受转换：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;同类型的转换&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;普通类型转接口类型或接口类型直接的转换，因为接口类型会携带源类型的信息，所以不算做信息丢失&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;由一个untype类型转成符合条件的type类型比如42转int64,32.0转float64，&amp;rdquo;abc&amp;rdquo;转string类型&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用伪代码举几个例子&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;
+var strType string
+var interfaceType interface{}
+
+var int64Type int = 24
+
+const unintType = 42
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;types.AssignableTo(strType, interfaceType) =&amp;gt; true
+types.AssignableTo(24, int64Type) =&amp;gt; true
+types.AssignableTo(unintType, int64Type) =&amp;gt; false // 这个不知道是不是bug,理应能转的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;末尾&#34;&gt;末尾&lt;/h3&gt;
+
+&lt;p&gt;types.Type的所有内容基本都介绍齐了，如有遗漏就遗漏了&lt;/p&gt;
+
+&lt;p&gt;我也许还会出一篇关于types.Object介绍，也可能直接出一篇关于ast应用实践的博客，写ast实在是太累的，下期见&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>使用go/ast来解析go文件II</title>
-      <link>https://bigpigeon.github.io/post/go-ast-type/</link>
+      <link>/post/go-ast-type/</link>
       <pubDate>Wed, 23 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/go-ast-type/</guid>
+      <guid>/post/go-ast-type/</guid>
       <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
 
 &lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
@@ -960,10 +1246,10 @@ for _, init := range info.InitOrder {
     
     <item>
       <title>使用go/ast来解析go文件</title>
-      <link>https://bigpigeon.github.io/post/go-ast-parser-file/</link>
+      <link>/post/go-ast-parser-file/</link>
       <pubDate>Sat, 05 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/go-ast-parser-file/</guid>
+      <guid>/post/go-ast-parser-file/</guid>
       <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
 
 &lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
@@ -1552,10 +1838,10 @@ Expr实现
     
     <item>
       <title>gorm简介[中]</title>
-      <link>https://bigpigeon.github.io/post/gorm-tutorial-second/</link>
+      <link>/post/gorm-tutorial-second/</link>
       <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/gorm-tutorial-second/</guid>
+      <guid>/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
 
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
@@ -1707,10 +1993,10 @@ t.Logf(&amp;quot;this product name &#39;%s&#39;, the address is &#39;%v&#39;&amp
     
     <item>
       <title>谈谈go的relfect</title>
-      <link>https://bigpigeon.github.io/post/go-reflect-talk/</link>
+      <link>/post/go-reflect-talk/</link>
       <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/go-reflect-talk/</guid>
+      <guid>/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
 
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
@@ -2000,10 +2286,10 @@ t.Logf(&amp;quot;b is MoneyType?%v&amp;quot;, bIsMoneyType)
     
     <item>
       <title>gorm简介[前]</title>
-      <link>https://bigpigeon.github.io/post/gorm-tutorial-first/</link>
+      <link>/post/gorm-tutorial-first/</link>
       <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/gorm-tutorial-first/</guid>
+      <guid>/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
 
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
@@ -2511,10 +2797,10 @@ db.Delete(&amp;amp;email)
     
     <item>
       <title>git错误push与回滚</title>
-      <link>https://bigpigeon.github.io/post/git-push-recover-way/</link>
+      <link>/post/git-push-recover-way/</link>
       <pubDate>Thu, 09 Mar 2017 09:44:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/git-push-recover-way/</guid>
+      <guid>/post/git-push-recover-way/</guid>
       <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -2560,10 +2846,10 @@ git pull origin bate
     
     <item>
       <title>我的翻墙技术栈</title>
-      <link>https://bigpigeon.github.io/post/my-skip-gfw-stack/</link>
+      <link>/post/my-skip-gfw-stack/</link>
       <pubDate>Tue, 27 Dec 2016 17:07:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/my-skip-gfw-stack/</guid>
+      <guid>/post/my-skip-gfw-stack/</guid>
       <description>&lt;p&gt;谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。&lt;/p&gt;
 
 &lt;p&gt;这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。&lt;/p&gt;
@@ -2860,15 +3146,15 @@ function FindProxyForURL(url, host) {
 
 &lt;p&gt;父域名会自动匹配所有子域名,比如domains中加入google.com 那www.google.com map.google.com的内容都会被代理&lt;/p&gt;
 
-&lt;p&gt;关于这份pac的更多内容可以看&lt;a href=&#34;https://bigpigeon.github.io/post/switchy-proxy-pac-optimization&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;</description>
+&lt;p&gt;关于这份pac的更多内容可以看&lt;a href=&#34;/post/switchy-proxy-pac-optimization&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>从jekyll到hugo，搬运经验总结</title>
-      <link>https://bigpigeon.github.io/post/jekyll-to-hugo/</link>
+      <link>/post/jekyll-to-hugo/</link>
       <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/jekyll-to-hugo/</guid>
+      <guid>/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
 
 &lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
@@ -3081,10 +3367,10 @@ EOF
     
     <item>
       <title>Iptables学习笔记</title>
-      <link>https://bigpigeon.github.io/post/iptables-study/</link>
+      <link>/post/iptables-study/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/iptables-study/</guid>
+      <guid>/post/iptables-study/</guid>
       <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
 
 &lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
@@ -3253,10 +3539,10 @@ iptables -t nat [-A|-I PREROUTING] [--to-destination ip或网域]  &amp;lt;-j MA
     
     <item>
       <title>react学习笔记</title>
-      <link>https://bigpigeon.github.io/post/react-study/</link>
+      <link>/post/react-study/</link>
       <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/react-study/</guid>
+      <guid>/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
 
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
@@ -3579,10 +3865,10 @@ getInitialState 设置组件默认状态值
     
     <item>
       <title>postgresql类型</title>
-      <link>https://bigpigeon.github.io/post/postgresql-type/</link>
+      <link>/post/postgresql-type/</link>
       <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/postgresql-type/</guid>
+      <guid>/post/postgresql-type/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
 
@@ -4308,10 +4594,10 @@ SELECT isempty(numrange(1, 5));
     
     <item>
       <title>在python上操作postgresql</title>
-      <link>https://bigpigeon.github.io/post/python-and-postgresql/</link>
+      <link>/post/python-and-postgresql/</link>
       <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/python-and-postgresql/</guid>
+      <guid>/post/python-and-postgresql/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
 
@@ -4581,10 +4867,10 @@ DETAIL:  Failing row contains (jic, 2016-03-01, null).
     
     <item>
       <title>使用docker部署jekyll</title>
-      <link>https://bigpigeon.github.io/post/docker-and-jekyll/</link>
+      <link>/post/docker-and-jekyll/</link>
       <pubDate>Sat, 06 Feb 2016 14:06:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/docker-and-jekyll/</guid>
+      <guid>/post/docker-and-jekyll/</guid>
       <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
 
 &lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
@@ -4884,10 +5170,10 @@ docker start -a blog_push
     
     <item>
       <title>gin框架介绍</title>
-      <link>https://bigpigeon.github.io/post/gin-framework/</link>
+      <link>/post/gin-framework/</link>
       <pubDate>Thu, 24 Dec 2015 06:25:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/gin-framework/</guid>
+      <guid>/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
 
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;
@@ -5252,10 +5538,10 @@ func main() {
     
     <item>
       <title>pac脚本优化</title>
-      <link>https://bigpigeon.github.io/post/switchy-proxy-pac-optimization/</link>
+      <link>/post/switchy-proxy-pac-optimization/</link>
       <pubDate>Sat, 19 Dec 2015 22:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/switchy-proxy-pac-optimization/</guid>
+      <guid>/post/switchy-proxy-pac-optimization/</guid>
       <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
 
 &lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
@@ -5357,7 +5643,7 @@ function FindProxyForURL(url, host) {
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
-&lt;li&gt;以下是我在nodejs下的性能测试结果 &lt;a href=&#34;https://bigpigeon.github.io/static/testdata/pac_benchmark.zip&#34;&gt;测试js下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;以下是我在nodejs下的性能测试结果 &lt;a href=&#34;/static/testdata/pac_benchmark.zip&#34;&gt;测试js下载地址&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div&gt;
@@ -5430,10 +5716,10 @@ renderChart(document.getElementById(&#34;bench-chart-1m&#34;), benck1mData);
     
     <item>
       <title>jekyll部署总结</title>
-      <link>https://bigpigeon.github.io/post/jekyll-deploy/</link>
+      <link>/post/jekyll-deploy/</link>
       <pubDate>Wed, 09 Dec 2015 16:00:00 +0800</pubDate>
       
-      <guid>https://bigpigeon.github.io/post/jekyll-deploy/</guid>
+      <guid>/post/jekyll-deploy/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况&lt;/li&gt;
 &lt;li&gt;把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件&lt;/li&gt;
