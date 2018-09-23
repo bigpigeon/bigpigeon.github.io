@@ -134,11 +134,13 @@
 <div class="post-meta">Sun, Sep 23, 2018 - Read in 2 Min </div>
 </header>
 <div class="summary">
-    可能很多人想问types中的Type和Object接口有什么区别
-我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象
-比如type V1 struct {Name string} 和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical
-我们先来看看go/types中所有的Types实现
-   类型 说明     Array 固定长度数组类型   Basic 基本类型,比如int,string,float等   Chan 通道类型，相当于线程安全的slice   Interface 接口类型   Map map类型   Named 所有用type起名字的自定义类型   Pointer 指针类型   Signature 所有函数或者method都属于这个类型   Slice slice类型   Struct 结构体类型，注意:自定义的结构体是named类型，它的Underlying是Struct类型   Tuple 函数的参数和返回值    Array 类型 array类型中包括它的子类型Elem()和数组长度Len() 2个属性
+    <p>可能很多人想问types中的Type和Object接口有什么区别</p>
+
+<p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
+
+<p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
+
+<p></p>
 </div>
 <footer>
 <a href='/post/go-ast-walk/'><nobr>继续阅读 →</nobr></a>

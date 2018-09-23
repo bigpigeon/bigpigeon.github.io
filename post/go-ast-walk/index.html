@@ -122,13 +122,15 @@
         <div class="post">
           <h2>使用go/ast来解析go文件III</h2>
           <span class="post-date">Sun, Sep 23, 2018</span>
-          
-
-<p>可能很多人想问types中的Type和Object接口有什么区别</p>
+          <p>可能很多人想问types中的Type和Object接口有什么区别</p>
 
 <p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
 
 <p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
+
+<p></p>
+
+<p><strong>下面所有内容在这个<a href="https://github.com/bigpigeon/Test/blob/master/go/blog_go_walk/main.go">Example</a>中有对应的测试代码</strong></p>
 
 <p>我们先来看看go/types中所有的Types实现</p>
 
@@ -399,7 +401,6 @@ types.AssignableTo(unintType, int64Type) =&gt; false // 这个不知道是不是
 <p>types.Type的所有内容基本都介绍齐了，如有遗漏就遗漏了</p>
 
 <p>我也许还会出一篇关于types.Object介绍，也可能直接出一篇关于ast应用实践的博客，写ast实在是太累的，下期见</p>
-
         </div>
         <div class="sharing">
 <a href="https://twitter.com/intent/tweet?status=%e4%bd%bf%e7%94%a8go%2fast%e6%9d%a5%e8%a7%a3%e6%9e%90go%e6%96%87%e4%bb%b6III-%2fpost%2fgo-ast-walk%2f" target="_blank" title="Follow me on Twitter" class="twitter">
