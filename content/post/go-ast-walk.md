@@ -267,7 +267,9 @@ const unintType = 42
 ```
 
 > types.AssignableTo(strType, interfaceType) => true
+
 > types.AssignableTo(24, int64Type) => true
+
 > types.AssignableTo(unintType, int64Type) => false // 这个不知道是不是bug,理应能转的
 
 
