@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Develop on bigpigeon</title>
-    <link>/categories/develop/</link>
+    <link>https://bigpigeon.org/categories/develop/</link>
     <description>Recent content in Develop on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Sun, 23 Sep 2018 12:42:00 +0800</lastBuildDate>
     
-	<atom:link href="/categories/develop/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/categories/develop/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用go/ast来解析go文件III</title>
-      <link>/post/go-ast-walk/</link>
+      <link>https://bigpigeon.org/post/go-ast-walk/</link>
       <pubDate>Sun, 23 Sep 2018 12:42:00 +0800</pubDate>
       
-      <guid>/post/go-ast-walk/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-walk/</guid>
       <description>&lt;p&gt;可能很多人想问types中的Type和Object接口有什么区别&lt;/p&gt;
 
 &lt;p&gt;我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象&lt;/p&gt;
@@ -29,10 +29,10 @@
     
     <item>
       <title>使用go/ast来解析go文件II</title>
-      <link>/post/go-ast-type/</link>
+      <link>https://bigpigeon.org/post/go-ast-type/</link>
       <pubDate>Wed, 23 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>/post/go-ast-type/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-type/</guid>
       <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
 
 &lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
@@ -46,10 +46,10 @@
     
     <item>
       <title>使用go/ast来解析go文件</title>
-      <link>/post/go-ast-parser-file/</link>
+      <link>https://bigpigeon.org/post/go-ast-parser-file/</link>
       <pubDate>Sat, 05 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>/post/go-ast-parser-file/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-parser-file/</guid>
       <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
 
 &lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
@@ -102,10 +102,10 @@ func main() { //test1
     
     <item>
       <title>gorm简介[中]</title>
-      <link>/post/gorm-tutorial-second/</link>
+      <link>https://bigpigeon.org/post/gorm-tutorial-second/</link>
       <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/gorm-tutorial-second/</guid>
+      <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
 
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
@@ -134,10 +134,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>谈谈go的relfect</title>
-      <link>/post/go-reflect-talk/</link>
+      <link>https://bigpigeon.org/post/go-reflect-talk/</link>
       <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/go-reflect-talk/</guid>
+      <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
 
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
@@ -155,10 +155,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>gorm简介[前]</title>
-      <link>/post/gorm-tutorial-first/</link>
+      <link>https://bigpigeon.org/post/gorm-tutorial-first/</link>
       <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/gorm-tutorial-first/</guid>
+      <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
 
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
@@ -171,10 +171,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>git错误push与回滚</title>
-      <link>/post/git-push-recover-way/</link>
+      <link>https://bigpigeon.org/post/git-push-recover-way/</link>
       <pubDate>Thu, 09 Mar 2017 09:44:00 +0800</pubDate>
       
-      <guid>/post/git-push-recover-way/</guid>
+      <guid>https://bigpigeon.org/post/git-push-recover-way/</guid>
       <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>

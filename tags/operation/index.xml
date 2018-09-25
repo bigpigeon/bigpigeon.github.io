@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Operation on bigpigeon</title>
-    <link>/tags/operation/</link>
+    <link>https://bigpigeon.org/tags/operation/</link>
     <description>Recent content in Operation on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Tue, 28 Jun 2016 16:00:00 +0800</lastBuildDate>
     
-	<atom:link href="/tags/operation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/tags/operation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Iptables学习笔记</title>
-      <link>/post/iptables-study/</link>
+      <link>https://bigpigeon.org/post/iptables-study/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>/post/iptables-study/</guid>
+      <guid>https://bigpigeon.org/post/iptables-study/</guid>
       <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
 
 &lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>jekyll部署总结</title>
-      <link>/post/jekyll-deploy/</link>
+      <link>https://bigpigeon.org/post/jekyll-deploy/</link>
       <pubDate>Wed, 09 Dec 2015 16:00:00 +0800</pubDate>
       
-      <guid>/post/jekyll-deploy/</guid>
+      <guid>https://bigpigeon.org/post/jekyll-deploy/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况&lt;/li&gt;
 &lt;li&gt;把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件&lt;/li&gt;

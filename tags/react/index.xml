@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>React on bigpigeon</title>
-    <link>/tags/react/</link>
+    <link>https://bigpigeon.org/tags/react/</link>
     <description>Recent content in React on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Thu, 21 Apr 2016 10:43:00 +0800</lastBuildDate>
     
-	<atom:link href="/tags/react/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/tags/react/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>react学习笔记</title>
-      <link>/post/react-study/</link>
+      <link>https://bigpigeon.org/post/react-study/</link>
       <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
       
-      <guid>/post/react-study/</guid>
+      <guid>https://bigpigeon.org/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
 
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;

@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Golang on bigpigeon</title>
-    <link>/categories/golang/</link>
+    <link>https://bigpigeon.org/categories/golang/</link>
     <description>Recent content in Golang on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Sun, 23 Sep 2018 12:42:00 +0800</lastBuildDate>
     
-	<atom:link href="/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用go/ast来解析go文件III</title>
-      <link>/post/go-ast-walk/</link>
+      <link>https://bigpigeon.org/post/go-ast-walk/</link>
       <pubDate>Sun, 23 Sep 2018 12:42:00 +0800</pubDate>
       
-      <guid>/post/go-ast-walk/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-walk/</guid>
       <description>&lt;p&gt;可能很多人想问types中的Type和Object接口有什么区别&lt;/p&gt;
 
 &lt;p&gt;我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象&lt;/p&gt;
@@ -29,10 +29,10 @@
     
     <item>
       <title>使用go/ast来解析go文件II</title>
-      <link>/post/go-ast-type/</link>
+      <link>https://bigpigeon.org/post/go-ast-type/</link>
       <pubDate>Wed, 23 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>/post/go-ast-type/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-type/</guid>
       <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
 
 &lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
@@ -46,10 +46,10 @@
     
     <item>
       <title>使用go/ast来解析go文件</title>
-      <link>/post/go-ast-parser-file/</link>
+      <link>https://bigpigeon.org/post/go-ast-parser-file/</link>
       <pubDate>Sat, 05 May 2018 10:07:00 +0800</pubDate>
       
-      <guid>/post/go-ast-parser-file/</guid>
+      <guid>https://bigpigeon.org/post/go-ast-parser-file/</guid>
       <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
 
 &lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
@@ -102,10 +102,10 @@ func main() { //test1
     
     <item>
       <title>gorm简介[中]</title>
-      <link>/post/gorm-tutorial-second/</link>
+      <link>https://bigpigeon.org/post/gorm-tutorial-second/</link>
       <pubDate>Fri, 23 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/gorm-tutorial-second/</guid>
+      <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
 
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
@@ -134,10 +134,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>谈谈go的relfect</title>
-      <link>/post/go-reflect-talk/</link>
+      <link>https://bigpigeon.org/post/go-reflect-talk/</link>
       <pubDate>Tue, 06 Jun 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/go-reflect-talk/</guid>
+      <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
 
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
@@ -155,10 +155,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>gorm简介[前]</title>
-      <link>/post/gorm-tutorial-first/</link>
+      <link>https://bigpigeon.org/post/gorm-tutorial-first/</link>
       <pubDate>Mon, 29 May 2017 15:16:00 +0800</pubDate>
       
-      <guid>/post/gorm-tutorial-first/</guid>
+      <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
 
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
@@ -171,28 +171,28 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
     
     <item>
       <title>并发测试</title>
-      <link>/demo/concurrent/</link>
+      <link>https://bigpigeon.org/demo/concurrent/</link>
       <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
       
-      <guid>/demo/concurrent/</guid>
+      <guid>https://bigpigeon.org/demo/concurrent/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;math/rand&#34; &#34;time&#34; ) func process(id int, result chan string) { // 开启一个定时任务的线程 heart := time.Duration(5) // 定时任务间隔 done := make(chan bool, 1) defer close(done) go func() { tick := time.NewTicker(heart * time.Second) defer tick.Stop() //	defer fmt.Println(&#34;tick stop:&#34;, id) for { select { case heart\n&#34;, id) case </description>
     </item>
     
     <item>
       <title>defer测试</title>
-      <link>/demo/defer/</link>
+      <link>https://bigpigeon.org/demo/defer/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/defer/</guid>
+      <guid>https://bigpigeon.org/demo/defer/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;sync&#34; &#34;testing&#34; ) //调用顺序 //最早调用的defer会在最后执行 func test0() { defer func() { fmt.Print(&#34;a\n&#34;) }() defer func() { fmt.Print(&#34;b&#34;) }() defer func() { fmt.Print(&#34;c&#34;) }() fmt.Println(&#34;test 0&#34;) } //defer是在函数结束后返回前被执行 //并且lambda闭包传的是值的引用 //也就是说如果返回值在函数定义时被命名，在defer调用的函数中就可以修改返回值 func test1() { doubleSum := func(x, y int) (z int) { //don&#39;t forget add () with return expression fmt.Printf(&#34;start:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) defer func() { fmt.Printf(&#34;defer:x(%p)=%d,y(%p)=%d,z(%p)=%d\n&#34;, &amp;x, x, &amp;y, y, &amp;z, z) z = z * 2 }() x = x * 2 y = y * 2 return x + y } fmt.</description>
     </item>
     
     <item>
       <title>go array and slice</title>
-      <link>/demo/goarray/</link>
+      <link>https://bigpigeon.org/demo/goarray/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/goarray/</guid>
+      <guid>https://bigpigeon.org/demo/goarray/</guid>
       <description>package main
 
 import (
@@ -218,10 +218,10 @@ func arrayInit() {
     
     <item>
       <title>go clone</title>
-      <link>/demo/goclone/</link>
+      <link>https://bigpigeon.org/demo/goclone/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/goclone/</guid>
+      <guid>https://bigpigeon.org/demo/goclone/</guid>
       <description>package main
 
 import (
@@ -248,10 +248,10 @@ func main() {
     
     <item>
       <title>go hello</title>
-      <link>/demo/gohelloworld/</link>
+      <link>https://bigpigeon.org/demo/gohelloworld/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/gohelloworld/</guid>
+      <guid>https://bigpigeon.org/demo/gohelloworld/</guid>
       <description>package main
 
 import &#34;fmt&#34;
@@ -265,10 +265,10 @@ func main() {
     
     <item>
       <title>go interface</title>
-      <link>/demo/gointerface/</link>
+      <link>https://bigpigeon.org/demo/gointerface/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/gointerface/</guid>
+      <guid>https://bigpigeon.org/demo/gointerface/</guid>
       <description>package main
 
 import (
@@ -305,10 +305,10 @@ type Tester interface {
     
     <item>
       <title>go sched</title>
-      <link>/demo/gosched/</link>
+      <link>https://bigpigeon.org/demo/gosched/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/gosched/</guid>
+      <guid>https://bigpigeon.org/demo/gosched/</guid>
       <description>package main
 
 import (
@@ -340,19 +340,19 @@ func main() {
     
     <item>
       <title>go select</title>
-      <link>/demo/goselect/</link>
+      <link>https://bigpigeon.org/demo/goselect/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/goselect/</guid>
+      <guid>https://bigpigeon.org/demo/goselect/</guid>
       <description>package main import ( &#34;fmt&#34; &#34;runtime&#34; &#34;sync&#34; &#34;time&#34; ) //测试select 加入default和不加default的区别 func test() { cA, cB := make(chan int), make(chan int) //为防止在go routines跑完前进程退出 wg := sync.WaitGroup{} wg.Add(3) go func() { defer wg.Done() cA </description>
     </item>
     
     <item>
       <title>go struct</title>
-      <link>/demo/gostruct/</link>
+      <link>https://bigpigeon.org/demo/gostruct/</link>
       <pubDate>Sat, 16 Jan 2016 17:59:00 +0800</pubDate>
       
-      <guid>/demo/gostruct/</guid>
+      <guid>https://bigpigeon.org/demo/gostruct/</guid>
       <description>package main
 
 import (

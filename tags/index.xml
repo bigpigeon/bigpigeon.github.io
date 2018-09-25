@@ -2,112 +2,112 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on bigpigeon</title>
-    <link>/tags/</link>
+    <link>https://bigpigeon.org/tags/</link>
     <description>Recent content in Tags on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Wed, 12 Oct 2016 11:43:37 +0800</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Development</title>
-      <link>/tags/development/</link>
+      <link>https://bigpigeon.org/tags/development/</link>
       <pubDate>Wed, 12 Oct 2016 11:43:37 +0800</pubDate>
       
-      <guid>/tags/development/</guid>
+      <guid>https://bigpigeon.org/tags/development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Golang</title>
-      <link>/tags/golang/</link>
+      <link>https://bigpigeon.org/tags/golang/</link>
       <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
       
-      <guid>/tags/golang/</guid>
+      <guid>https://bigpigeon.org/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go语言</title>
-      <link>/tags/go%E8%AF%AD%E8%A8%80/</link>
+      <link>https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/</link>
       <pubDate>Sun, 23 Sep 2018 12:42:00 +0800</pubDate>
       
-      <guid>/tags/go%E8%AF%AD%E8%A8%80/</guid>
+      <guid>https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Iptables</title>
-      <link>/tags/iptables/</link>
+      <link>https://bigpigeon.org/tags/iptables/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>/tags/iptables/</guid>
+      <guid>https://bigpigeon.org/tags/iptables/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Operation</title>
-      <link>/tags/operation/</link>
+      <link>https://bigpigeon.org/tags/operation/</link>
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
-      <guid>/tags/operation/</guid>
+      <guid>https://bigpigeon.org/tags/operation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Postgresql</title>
-      <link>/tags/postgresql/</link>
+      <link>https://bigpigeon.org/tags/postgresql/</link>
       <pubDate>Sun, 13 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>/tags/postgresql/</guid>
+      <guid>https://bigpigeon.org/tags/postgresql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/tags/python/</link>
+      <link>https://bigpigeon.org/tags/python/</link>
       <pubDate>Mon, 07 Mar 2016 10:30:00 +0800</pubDate>
       
-      <guid>/tags/python/</guid>
+      <guid>https://bigpigeon.org/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>React</title>
-      <link>/tags/react/</link>
+      <link>https://bigpigeon.org/tags/react/</link>
       <pubDate>Thu, 21 Apr 2016 10:43:00 +0800</pubDate>
       
-      <guid>/tags/react/</guid>
+      <guid>https://bigpigeon.org/tags/react/</guid>
       <description></description>
     </item>
     
     <item>
       <title>开发</title>
-      <link>/tags/%E5%BC%80%E5%8F%91/</link>
+      <link>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</link>
       <pubDate>Sun, 23 Sep 2018 12:42:00 +0800</pubDate>
       
-      <guid>/tags/%E5%BC%80%E5%8F%91/</guid>
+      <guid>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</guid>
       <description></description>
     </item>
     
     <item>
       <title>测试</title>
-      <link>/tags/%E6%B5%8B%E8%AF%95/</link>
+      <link>https://bigpigeon.org/tags/%E6%B5%8B%E8%AF%95/</link>
       <pubDate>Fri, 20 Jan 2017 17:59:00 +0800</pubDate>
       
-      <guid>/tags/%E6%B5%8B%E8%AF%95/</guid>
+      <guid>https://bigpigeon.org/tags/%E6%B5%8B%E8%AF%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>运维</title>
-      <link>/tags/%E8%BF%90%E7%BB%B4/</link>
+      <link>https://bigpigeon.org/tags/%E8%BF%90%E7%BB%B4/</link>
       <pubDate>Tue, 27 Dec 2016 17:07:00 +0800</pubDate>
       
-      <guid>/tags/%E8%BF%90%E7%BB%B4/</guid>
+      <guid>https://bigpigeon.org/tags/%E8%BF%90%E7%BB%B4/</guid>
       <description></description>
     </item>
     

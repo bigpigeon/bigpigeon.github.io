@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gfw on bigpigeon</title>
-    <link>/categories/gfw/</link>
+    <link>https://bigpigeon.org/categories/gfw/</link>
     <description>Recent content in Gfw on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Tue, 27 Dec 2016 17:07:00 +0800</lastBuildDate>
     
-	<atom:link href="/categories/gfw/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/categories/gfw/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>我的翻墙技术栈</title>
-      <link>/post/my-skip-gfw-stack/</link>
+      <link>https://bigpigeon.org/post/my-skip-gfw-stack/</link>
       <pubDate>Tue, 27 Dec 2016 17:07:00 +0800</pubDate>
       
-      <guid>/post/my-skip-gfw-stack/</guid>
+      <guid>https://bigpigeon.org/post/my-skip-gfw-stack/</guid>
       <description>&lt;p&gt;谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。&lt;/p&gt;
 
 &lt;p&gt;这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。&lt;/p&gt;

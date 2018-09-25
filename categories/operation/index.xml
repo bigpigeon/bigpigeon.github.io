@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Operation on bigpigeon</title>
-    <link>/categories/operation/</link>
+    <link>https://bigpigeon.org/categories/operation/</link>
     <description>Recent content in Operation on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
     <lastBuildDate>Sat, 06 Feb 2016 14:06:00 +0800</lastBuildDate>
     
-	<atom:link href="/categories/operation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://bigpigeon.org/categories/operation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用docker部署jekyll</title>
-      <link>/post/docker-and-jekyll/</link>
+      <link>https://bigpigeon.org/post/docker-and-jekyll/</link>
       <pubDate>Sat, 06 Feb 2016 14:06:00 +0800</pubDate>
       
-      <guid>/post/docker-and-jekyll/</guid>
+      <guid>https://bigpigeon.org/post/docker-and-jekyll/</guid>
       <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
 
 &lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>pac脚本优化</title>
-      <link>/post/switchy-proxy-pac-optimization/</link>
+      <link>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</link>
       <pubDate>Sat, 19 Dec 2015 22:00:00 +0800</pubDate>
       
-      <guid>/post/switchy-proxy-pac-optimization/</guid>
+      <guid>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</guid>
       <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
 
 &lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
