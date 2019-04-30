@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 23 Sep 2018 12:42:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 30 Apr 2019 11:47:00 +0800</lastBuildDate>
     
 	<atom:link href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>kubernetes官方kubeadm部署笔记</title>
+      <link>https://bigpigeon.org/post/kubernetes-deployment/</link>
+      <pubDate>Tue, 30 Apr 2019 11:47:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/kubernetes-deployment/</guid>
+      <description>&lt;p&gt;老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来&lt;/p&gt;
+
+&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>使用go/ast来解析go文件III</title>

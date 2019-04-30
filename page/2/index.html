@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.37.1" />
+	<meta name="generator" content="Hugo 0.48-DEV" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -130,6 +130,71 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/go-ast-parser-file/">使用go/ast来解析go文件 </a> </h2>
+<div class="post-meta">Sat, May 5, 2018 - Read in 9 Min </div>
+</header>
+<div class="summary">
+    <p>go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具</p>
+
+<p>下面我们来看看如何ast树的结构</p>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;go/ast&quot;
+	&quot;go/parser&quot;
+	&quot;go/token&quot;
+)
+
+func main() {
+	src := `
+package main
+
+// 该声明为GenDecl TOK=token.IMPORT
+import &quot;fmt&quot;
+
+// 该声明为GenDecl TOK=token.TYPE
+type Product struct {
+	Name string
+}
+
+// 该声明为GenDecl TOK=token.VAR
+var product Product
+
+// 该声明为FunDecl
+func main() { //test1
+	fmt.Println(&quot;Hello, World!&quot;) //test2
+	a := []int{1,2,3}
+	a[1],a[2] = 5,6
+}
+`
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &quot;&quot;, src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 打印ast节点
+	ast.Print(fset, f)
+}
+
+</code></pre>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-ast-parser-file/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/gorm-tutorial-second/">gorm简介[中] </a> </h2>
 <div class="post-meta">Fri, Jun 23, 2017 - Read in 2 Min </div>
 </header>
@@ -191,31 +256,6 @@ db.Model(&amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;chars).Error
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/go-reflect-talk/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/gorm-tutorial-first/">gorm简介[前] </a> </h2>
-<div class="post-meta">Mon, May 29, 2017 - Read in 4 Min </div>
-</header>
-<div class="summary">
-    <p>我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险</p>
-
-<p>而且组装sql语句也容易出错和减低代码的可维护性</p>
-
-<p>所以需要一个工具来管理数据库语句的组装和操作</p>
-
-<p>gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
-</p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/gorm-tutorial-first/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>
