@@ -21,7 +21,7 @@ package xxx.internel.io/lib/with-lfs: unknown import path "xxx.internel.io/lib/w
 ```
 
 
-在多方信息干扰下我先从gitlab查起，当然比较竟然叫 `go module无法拉取库的原因排查`,问题自然不再这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上
+在多方信息干扰下我先从gitlab查起，当然比较竟然叫 `go module无法拉取库的原因排查`,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上
 
 
 在一番google我找到了 [issue](https://github.com/golang/go/issues/29987) 应该就是对应这个问题的，但一直没有close,看来是没解决
@@ -91,25 +91,35 @@ git remote add origin -- https://xxx.internel.io/lib/with-lfs
 
 2. 列出所有git 远程分支名，用一套规则匹配最合适的tag
 
-    git tag -l
-    git ls-remote -q origin 
+```
+git tag -l
+git ls-remote -q origin 
+```
 
 3. 检查本地对应tag的分支存不存在，不存在则从远端拉取
 
-    git -c log.showsignature=false log -m --format="format:%H %ct %D"  bf4fcb5a15f71ba8c5d50de10604048331ae94df --
-    git fetch -f --depth=1 origin refs/tags/v0.2.6:refs/tags/v0.2.6
+```
+git -c log.showsignature=false log -m --format="format:%H %ct %D"  bf4fcb5a15f71ba8c5d50de10604048331ae94df --
+git fetch -f --depth=1 origin refs/tags/v0.2.6:refs/tags/v0.2.6
+```
 
 4. 再次查询tag信息
 
-    git -c log.showsignature=false log -n1 --format="format:%H %ct %D" refs/tags/v0.2.6 --
+```
+git -c log.showsignature=false log -n1 --format="format:%H %ct %D" refs/tags/v0.2.6 --
+```
 
 5. 查看该tag的`go.mod`文件
 
-    git cat-file blob bf4fcb5a15f71ba8c5d50de10604048331ae94df:go.mod
+```
+git cat-file blob bf4fcb5a15f71ba8c5d50de10604048331ae94df:go.mod
+```
 
 6. 把该分支整个打成zip包并解压(这一步git lfs才会真实下载需要的大文件),因为该Run函数执行的命令行返回值直接缓存到[]byte里，而不是一个Reader，于是乎相当于你的库有多大，该进程就得占多少内存
 
-    git -c core.autocrlf=input -c core.eol=lf archive --format=zip --prefix=prefix/ bf4fcb5a15f71ba8c5d50de10604048331ae94df
+```
+git -c core.autocrlf=input -c core.eol=lf archive --format=zip --prefix=prefix/ bf4fcb5a15f71ba8c5d50de10604048331ae94df
+```
 
 7. 在TempDir下创建一个`go-codehost-`前缀的文件并把刚刚的zip内容拷过去，当字节数大于`codehost.MaxZipFile`时报错
 
@@ -117,7 +127,7 @@ git remote add origin -- https://xxx.internel.io/lib/with-lfs
 
 8. 将zip文件解压放入`$GOPATH/pkg/mod/cache/download`对应的项目目录
 
-改代码地址src/cmd/go/internal/modfetch/coderepo.go:820
+该代码地址src/cmd/go/internal/modfetch/coderepo.go:820
 
 ### 解决方案
 
@@ -139,7 +149,7 @@ git remote add origin -- https://xxx.internel.io/lib/with-lfs
 修改codehost.MaxZipFile到一个合适的值
 
     vim internal/modfetch/codehost/codehost.go
-    // edit 31 line data
+    // edit 31 line MaxZipFile
 
 重新build go 
 
@@ -150,10 +160,11 @@ git remote add origin -- https://xxx.internel.io/lib/with-lfs
 
 ### 吐槽
 
+
 看过源码，感觉go module这一块实现的很不好，首先在步骤6一定会把zip包写入内存，也就是说你限制只是针对拉下来后的包，不会减少进程内存使用，`func (r *gitRepo) ReadZip(rev, subdir string, maxSize int64)` 的maxSize也没有使用
 
 
-所以我才大胆改了`codehost.MaxZipFile`,这个值目前作用不大，但是还是不建议大家改go源码，到时候出问题就坑了，而且go的包这么大本来就不会，我们是因为一些算法模型要打入包没办法而为之
+所以我才大胆改了`codehost.MaxZipFile`,这个值目前作用不大，但是还是不建议大家改go源码，到时候出问题就坑了，而且go的包这么大本来就不对
 
 
 
