@@ -7,10 +7,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 30 Apr 2019 11:47:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Sep 2019 16:58:00 +0800</lastBuildDate>
     
 	<atom:link href="https://bigpigeon.org/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go module无法拉取库的原因排查</title>
+      <link>https://bigpigeon.org/post/go-change-compile-source-code/</link>
+      <pubDate>Mon, 23 Sep 2019 16:58:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/go-change-compile-source-code/</guid>
+      <description>&lt;p&gt;有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package xxx.internel.io/lib/with-lfs: unknown import path &amp;quot;xxx.internel.io/lib/with-lfs&amp;quot;: downloaded zip file too large
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
+
+&lt;p&gt;在一番google我找到了 &lt;a href=&#34;https://github.com/golang/go/issues/29987&#34;&gt;issue&lt;/a&gt; 应该就是对应这个问题的，但一直没有close,看来是没解决&lt;/p&gt;
+
+&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>kubernetes官方kubeadm部署笔记</title>

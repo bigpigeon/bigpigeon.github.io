@@ -7,8 +7,169 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 30 Apr 2019 11:47:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Sep 2019 16:58:00 +0800</lastBuildDate>
     <atom:link href="https://bigpigeon.org/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>go module无法拉取库的原因排查</title>
+      <link>https://bigpigeon.org/post/go-change-compile-source-code/</link>
+      <pubDate>Mon, 23 Sep 2019 16:58:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/go-change-compile-source-code/</guid>
+      <description>&lt;p&gt;有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package xxx.internel.io/lib/with-lfs: unknown import path &amp;quot;xxx.internel.io/lib/with-lfs&amp;quot;: downloaded zip file too large
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
+
+&lt;p&gt;在一番google我找到了 &lt;a href=&#34;https://github.com/golang/go/issues/29987&#34;&gt;issue&lt;/a&gt; 应该就是对应这个问题的，但一直没有close,看来是没解决&lt;/p&gt;
+
+&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOROOT
+$ grep -I  -r -n &amp;quot;downloaded zip file too large&amp;quot;
+src/cmd/go/internal/modfetch/proxy.go:396:		return p.versionError(version, fmt.Errorf(&amp;quot;downloaded zip file too large&amp;quot;))
+src/cmd/go/internal/modfetch/coderepo.go:807:		return fmt.Errorf(&amp;quot;downloaded zip file too large&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找到后就好办了，首先使用&lt;code&gt;dlv&lt;/code&gt; debug看看&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 编译go之前把go module关掉
+$ export GO111MODULE=off
+$ go build -gcflags &amp;quot;all=-N -l&amp;quot; -o debug-go $GOROOT/src/cmd/go
+# 打开go module保证go使用module拉取项目
+$ export GO111MODULE=on
+$ dlv exec -- ./debug-go get xxx.internel.io/lib/with-lfs
+# 进入交互模式，打好断点就可以跑了
+(dlv) break src/cmd/go/internal/modfetch/proxy.go:396
+(dlv) break src/cmd/go/internal/modfetch/coderepo.go:807
+(dlv) continue
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;等待到达错误断点然后开始debug就好了&lt;/p&gt;
+
+&lt;p&gt;也可以使用一些IDE，比如goland,这样可以得到比较好的交互体验，因为我懒得截图，所以就用命令行来说明&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go: xxx.internel.io/lib/with-lfs v0.2.6
+&amp;gt; cmd/go/internal/modfetch.(*codeRepo).Zip() /home/benjamin/.go/src/cmd/go/internal/modfetch/coderepo.go:807 (hits goroutine(47):1 total:1) (PC: 0xa97844)
+   802:			dl.Close()
+   803:			return err
+   804:		}
+   805:		dl.Close()
+   806:		if lr.N &amp;lt;= 0 {
+=&amp;gt; 807:			return fmt.Errorf(&amp;quot;downloaded zip file too large&amp;quot;)
+   808:		}
+   809:		size := (maxSize + 1) - lr.N
+   810:		if _, err := f.Seek(0, 0); err != nil {
+   811:			return err
+   812:		}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们跳过debug步骤，直接来说结论吧，go module 拉取项目全部逻辑&lt;/p&gt;
+
+&lt;p&gt;通过 在 &lt;code&gt;src/cmd/go/internal/modfetch/codehost/codehost.go:253&lt;/code&gt; 打断点就可以看到go执行的所以exec&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;初始化项目&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;src/cmd/go/internal/modfetch/codehost/git.go:76
+# 其中hash值就是 sha256.Sum256([]byte(&amp;quot;git3:https://xxx.internel.io/lib/with-lfs&amp;quot;)
+cd $GOPATH/pkg/mod/cache/vcs/0f8908983e14c7e04862deff0f8df25b0a3477a4a53e91555891b8518004664d
+git init --bare 
+git remote add origin -- https://xxx.internel.io/lib/with-lfs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;列出所有git 远程分支名，用一套规则匹配最合适的tag&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;git tag -l
+git ls-remote -q origin 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;检查本地对应tag的分支存不存在，不存在则从远端拉取&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;git -c log.showsignature=false log -m --format=&amp;quot;format:%H %ct %D&amp;quot;  bf4fcb5a15f71ba8c5d50de10604048331ae94df --
+git fetch -f --depth=1 origin refs/tags/v0.2.6:refs/tags/v0.2.6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;再次查询tag信息&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;git -c log.showsignature=false log -n1 --format=&amp;quot;format:%H %ct %D&amp;quot; refs/tags/v0.2.6 --
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;查看该tag的&lt;code&gt;go.mod&lt;/code&gt;文件&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;git cat-file blob bf4fcb5a15f71ba8c5d50de10604048331ae94df:go.mod
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;把该分支整个打成zip包并解压(这一步git lfs才会真实下载需要的大文件),因为该Run函数执行的命令行返回值直接缓存到[]byte里，而不是一个Reader，于是乎相当于你的库有多大，该进程就得占多少内存&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;git -c core.autocrlf=input -c core.eol=lf archive --format=zip --prefix=prefix/ bf4fcb5a15f71ba8c5d50de10604048331ae94df
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;在TempDir下创建一个&lt;code&gt;go-codehost-&lt;/code&gt;前缀的文件并把刚刚的zip内容拷过去，当字节数大于&lt;code&gt;codehost.MaxZipFile&lt;/code&gt;时报错&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;该代码在src/cmd/go/internal/modfetch/coderepo.go:781-804&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将zip文件解压放入&lt;code&gt;$GOPATH/pkg/mod/cache/download&lt;/code&gt;对应的项目目录&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;该代码地址src/cmd/go/internal/modfetch/coderepo.go:820&lt;/p&gt;
+
+&lt;h3 id=&#34;解决方案&#34;&gt;解决方案&lt;/h3&gt;
+
+&lt;p&gt;好了，目前的问题就出在第7步这里，当文件大于&lt;code&gt;codehost.MaxZipFile&lt;/code&gt;时，就会报错导致无法下载，所以解决方案嘛，就是加大codehost.MaxZipFile的值，我真机智&lt;/p&gt;
+
+&lt;p&gt;首先将$GOROOT下面的代码拷贝到一个安全目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp -r $GOROOT /tmp/custom-go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后修改$GOROOT到安全目录去&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export GOROOT=/tmp/custom-go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入新目录对应的cmd/go 目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /tmp/custom-go/src/cmd/go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改codehost.MaxZipFile到一个合适的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vim internal/modfetch/codehost/codehost.go
+// edit 31 line MaxZipFile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新build go&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go build -o custom-go .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后使用这个custom-go去拉包就行了&lt;/p&gt;
+
+&lt;h3 id=&#34;吐槽&#34;&gt;吐槽&lt;/h3&gt;
+
+&lt;p&gt;看过源码，感觉go module这一块实现的很不好，首先在步骤6一定会把zip包写入内存，也就是说你限制只是针对拉下来后的包，不会减少进程内存使用，&lt;code&gt;func (r *gitRepo) ReadZip(rev, subdir string, maxSize int64)&lt;/code&gt; 的maxSize也没有使用&lt;/p&gt;
+
+&lt;p&gt;所以我才大胆改了&lt;code&gt;codehost.MaxZipFile&lt;/code&gt;,这个值目前作用不大，但是还是不建议大家改go源码，到时候出问题就坑了，而且go的包这么大本来就不对&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>kubernetes官方kubeadm部署笔记</title>
