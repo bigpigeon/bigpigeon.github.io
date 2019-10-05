@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://bigpigeon.org/post/go-text-template/</loc>
+    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://bigpigeon.org/post/go-change-compile-source-code/</loc>
     <lastmod>2019-09-23T16:58:00+08:00</lastmod>
   </url>
@@ -189,6 +194,18 @@
   </url>
   
   <url>
+    <loc>https://bigpigeon.org/categories/go/</loc>
+    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://bigpigeon.org/tags/go/</loc>
+    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://bigpigeon.org/categories/golang/</loc>
     <lastmod>2019-09-23T16:58:00+08:00</lastmod>
     <priority>0</priority>
@@ -244,7 +261,7 @@
   
   <url>
     <loc>https://bigpigeon.org/post/</loc>
-    <lastmod>2019-09-23T16:58:00+08:00</lastmod>
+    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -274,7 +291,7 @@
   
   <url>
     <loc>https://bigpigeon.org/</loc>
-    <lastmod>2019-09-23T16:58:00+08:00</lastmod>
+    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   

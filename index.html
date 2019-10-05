@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.48-DEV" />
+	<meta name="generator" content="Hugo 0.50" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -130,6 +130,40 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/go-text-template/">go的text/template源码解析 </a> </h2>
+<div class="post-meta">Sat, Oct 5, 2019 - Read in 12 Min </div>
+</header>
+<div class="summary">
+    <p>go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题</p>
+
+<p>为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍</p>
+
+<p>本篇只是粗略的讲解模板的各个模块，不会深入函数细节</p>
+
+<p>首先基本用法开始</p>
+
+<h4 id="基本用法">基本用法</h4>
+
+<p>我们这里用的是text_template中example_test的ExampleTemplate()作为例子</p>
+
+<p>通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中</p>
+
+<p>然后通过<code>t.Execute</code>把模板渲染出来</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-text-template/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/go-change-compile-source-code/">go module无法拉取库的原因排查 </a> </h2>
 <div class="post-meta">Mon, Sep 23, 2019 - Read in 2 Min </div>
 </header>
@@ -171,30 +205,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/kubernetes-deployment/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/go-ast-walk/">使用go/ast来解析go文件III </a> </h2>
-<div class="post-meta">Sun, Sep 23, 2018 - Read in 2 Min </div>
-</header>
-<div class="summary">
-    <p>可能很多人想问types中的Type和Object接口有什么区别</p>
-
-<p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
-
-<p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/go-ast-walk/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

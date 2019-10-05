@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.48-DEV" />
+	<meta name="generator" content="Hugo 0.50" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -130,6 +130,30 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/go-ast-walk/">使用go/ast来解析go文件III </a> </h2>
+<div class="post-meta">Sun, Sep 23, 2018 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <p>可能很多人想问types中的Type和Object接口有什么区别</p>
+
+<p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
+
+<p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-ast-walk/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/go-ast-type/">使用go/ast来解析go文件II </a> </h2>
 <div class="post-meta">Wed, May 23, 2018 - Read in 17 Min </div>
 </header>
@@ -211,47 +235,6 @@ func main() { //test1
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/go-ast-parser-file/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/gorm-tutorial-second/">gorm简介[中] </a> </h2>
-<div class="post-meta">Fri, Jun 23, 2017 - Read in 2 Min </div>
-</header>
-<div class="summary">
-    <p>上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块</p>
-
-<h3 id="scopes简介">scopes简介</h3>
-
-<p>scopes是需要一个自定义的函数<strong>func(db *gorm.DB) *gorm.DB</strong>作为参数，这样就可以在不破坏链式语法的情况下自定义操作了</p>
-
-<p>比如我要查询GreekAlphabet表中LatinName是&rdquo;Alpha&rdquo;或 &ldquo;Omega&rdquo;的条目可以这样</p>
-
-<pre><code class="language-golang">chars := []GreekAlphabet{}
-db.Model(&amp;GreekAlphabet{}).Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;}).Find(&amp;chars)
-</code></pre>
-
-<p>因为查询多个字段的值只能用 <strong>Where(&ldquo;field in (?)&rdquo;, fields)</strong> 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作</p>
-
-<pre><code class="language-golang">firstAndLast := func(db *gorm.DB) *gorm.DB {
-  return db.Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;})
-}
-chars := []GreekAlphabet{}
-db.Model(&amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;chars).Error
-</code></pre>
-
-<p>这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/gorm-tutorial-second/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

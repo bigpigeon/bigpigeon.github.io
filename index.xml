@@ -7,8 +7,736 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 23 Sep 2019 16:58:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 05 Oct 2019 13:24:00 +0800</lastBuildDate>
     <atom:link href="https://bigpigeon.org/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>go的text/template源码解析</title>
+      <link>https://bigpigeon.org/post/go-text-template/</link>
+      <pubDate>Sat, 05 Oct 2019 13:24:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/go-text-template/</guid>
+      <description>&lt;p&gt;go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题&lt;/p&gt;
+
+&lt;p&gt;为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍&lt;/p&gt;
+
+&lt;p&gt;本篇只是粗略的讲解模板的各个模块，不会深入函数细节&lt;/p&gt;
+
+&lt;p&gt;首先基本用法开始&lt;/p&gt;
+
+&lt;h4 id=&#34;基本用法&#34;&gt;基本用法&lt;/h4&gt;
+
+&lt;p&gt;我们这里用的是text_template中example_test的ExampleTemplate()作为例子&lt;/p&gt;
+
+&lt;p&gt;通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中&lt;/p&gt;
+
+&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;const letter = `
+Dear {{.Name}},
+{{if .Attended}}
+It was a pleasure to see you at the wedding.
+{{- else}}
+It is a shame you couldn&#39;t make it to the wedding.
+{{- end}}
+{{with .Gift -}}
+Thank you for the lovely {{.}}.
+{{end}}
+Best wishes,
+Josie
+`
+
+// Prepare some data to insert into the template.
+type Recipient struct {
+	Name, Gift string
+	Attended   bool
+}
+var recipients = []Recipient{
+	{&amp;quot;Aunt Mildred&amp;quot;, &amp;quot;bone china tea set&amp;quot;, true},
+	{&amp;quot;Uncle John&amp;quot;, &amp;quot;moleskin pants&amp;quot;, false},
+	{&amp;quot;Cousin Rodney&amp;quot;, &amp;quot;&amp;quot;, false},
+}
+
+t := template.Must(template.New(&amp;quot;letter&amp;quot;).Parse(letter))
+
+// Execute the template for each recipient.
+for _, r := range recipients {
+	err := t.Execute(os.Stdout, r)
+	if err != nil {
+		log.Println(&amp;quot;executing template:&amp;quot;, err)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;数据结构&#34;&gt;数据结构&lt;/h4&gt;
+
+&lt;p&gt;先看看text/template的Template结构，这个是整个template库最重要了结构了，也是我们通过&lt;code&gt;template.New(&amp;quot;letter&amp;quot;).Parse(letter)&lt;/code&gt;得到对象&lt;/p&gt;
+
+&lt;p&gt;下面我会加入自己的注释，以&lt;code&gt;// self&lt;/code&gt;开头&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// Template is the representation of a parsed template. The *parse.Tree
+// field is exported only for use by html/template and should be treated
+// as unexported by all other clients.
+type Template struct {
+	name string     // self 模板名字
+	*parse.Tree     // self 
+	*common
+	leftDelim  string  //self 左分隔符，一般是 {{ 
+	rightDelim string  //self 右分隔符, 一般是 }}
+}
+
+// common holds the information shared by related templates.
+type common struct {
+	tmpl   map[string]*Template // Map from name to defined templates. //self 模板的子模板，在文件中的 {{ define xxx }} {{ end }} 就会创建一个模板
+	option option
+	// We use two maps, one for parsing and one for execution.
+	// This separation makes the API cleaner since it doesn&#39;t
+	// expose reflection to the client.
+	muFuncs    sync.RWMutex // protects parseFuncs and execFuncs 
+	parseFuncs FuncMap      //self 以interface{}形式保存的函数对象
+	execFuncs  map[string]reflect.Value // self parseFuncs中的函数最终都会转换成reflect.Value形式
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Template中还有一个&lt;code&gt;parse.Tree&lt;/code&gt; 看看它长什么样子&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// Tree is the representation of a single parsed template.
+type Tree struct {
+	Name      string    // name of the template represented by the tree.
+	ParseName string    // name of the top-level template during parsing, for error messages.
+	Root      *ListNode // top-level root of the tree.
+	text      string    // text parsed to create the template (or its parent) //self 等待解析的文本
+	// Parsing only; cleared after parse.
+	funcs     []map[string]interface{}
+	lex       *lexer //self 词法解析器，用于解析模板中的关键字,比如 &#39;{{&#39; ,&#39;|&#39;, &#39;=&#39;, 函数名，表达式，等等
+	token     [3]item // three-token lookahead for parser.
+	peekCount int
+	vars      []string // variables defined at the moment.
+	treeSet   map[string]*Tree
+}
+
+// ListNode holds a sequence of nodes.
+type ListNode struct {
+	NodeType  //self 节点类型，没什么好说的
+	Pos       //self 该节点在文本中的位置，也可以理解为index
+	tr    *Tree //self 该节点在树中的位置
+	Nodes []Node // The element nodes in lexical order.
+}
+
+// A Node is an element in the parse tree. The interface is trivial.
+// The interface contains an unexported method so that only
+// types local to this package can satisfy it.
+type Node interface {
+	Type() NodeType
+	String() string
+	// Copy does a deep copy of the Node and all its components.
+	// To avoid type assertions, some XxxNodes also have specialized
+	// CopyXxx methods that return *XxxNode.
+	Copy() Node
+	Position() Pos // byte position of start of node in full original input string
+	// tree returns the containing *Tree.
+	// It is unexported so all implementations of Node are in this package.
+	tree() *Tree
+}
+
+
+const (
+	NodeText       NodeType = iota // Plain text.
+	NodeAction                     // A non-control action such as a field evaluation.
+	NodeBool                       // A boolean constant.
+	NodeChain                      // A sequence of field accesses.
+	NodeCommand                    // An element of a pipeline.
+	NodeDot                        // The cursor, dot.
+	nodeElse                       // An else action. Not added to tree.
+	nodeEnd                        // An end action. Not added to tree.
+	NodeField                      // A field or method name.
+	NodeIdentifier                 // An identifier; always a function name.
+	NodeIf                         // An if action.
+	NodeList                       // A list of Nodes.
+	NodeNil                        // An untyped nil constant.
+	NodeNumber                     // A numerical constant.
+	NodePipe                       // A pipeline of commands.
+	NodeRange                      // A range action.
+	NodeString                     // A string constant.
+	NodeTemplate                   // A template invocation action.
+	NodeVariable                   // A $ variable.
+	NodeWith                       // A with action.
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;创建模板&#34;&gt;创建模板&lt;/h4&gt;
+
+&lt;p&gt;我们从Parse函数作为入口看看它做了什么&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// Parse parses text as a template body for t.
+// Named template definitions ({{define ...}} or {{block ...}} statements) in text
+// define additional templates associated with t and are removed from the
+// definition of t itself.
+//
+// Templates can be redefined in successive calls to Parse.
+// A template definition with a body containing only white space and comments
+// is considered empty and will not replace an existing template&#39;s body.
+// This allows using Parse to add new named template definitions without
+// overwriting the main template body.
+func (t *Template) Parse(text string) (*Template, error) {
+	t.init()
+	t.muFuncs.RLock()
+	trees, err := parse.Parse(t.name, text, t.leftDelim, t.rightDelim, t.parseFuncs, builtins)
+	t.muFuncs.RUnlock()
+	if err != nil {
+		return nil, err
+	}
+	// Add the newly parsed trees, including the one for t, into our common structure.
+	for name, tree := range trees {
+		if _, err := t.AddParseTree(name, tree); err != nil {
+			return nil, err
+		}
+	}
+	return t, nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果在模板使用语法我就不讲了，从注释中我们还可以知道，该函数可以重复调用，新的模板会覆盖旧的，然后我们看看代码&lt;/p&gt;
+
+&lt;p&gt;代码大致含义 &lt;strong&gt;parse.Parse&lt;/strong&gt; 函数把文本解析成&lt;code&gt;map[string]*parse.Tree&lt;/code&gt;的树map对象,然后把它append到当前模板的t.temp中&lt;/p&gt;
+
+&lt;p&gt;然后看看&lt;strong&gt;parse.Parse&lt;/strong&gt;发生了什么&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;
+// Parse returns a map from template name to parse.Tree, created by parsing the
+// templates described in the argument string. The top-level template will be
+// given the specified name. If an error is encountered, parsing stops and an
+// empty map is returned with the error.
+func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interface{}) (map[string]*Tree, error) {
+	treeSet := make(map[string]*Tree)
+	t := New(name)
+	t.text = text
+	_, err := t.Parse(text, leftDelim, rightDelim, treeSet, funcs...)
+	return treeSet, err
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们接着往下看&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;
+// Parse parses the template definition string to construct a representation of
+// the template for execution. If either action delimiter string is empty, the
+// default (&amp;quot;{{&amp;quot; or &amp;quot;}}&amp;quot;) is used. Embedded template definitions are added to
+// the treeSet map.
+func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error) {
+	defer t.recover(&amp;amp;err)
+	t.ParseName = t.Name
+	t.startParse(funcs, lex(t.Name, text, leftDelim, rightDelim), treeSet)
+	t.text = text
+	t.parse()
+	t.add()
+	t.stopParse()
+	return t, nil
+}
+
+// lex creates a new scanner for the input string.
+func lex(name, input, left, right string) *lexer {
+	if left == &amp;quot;&amp;quot; {
+		left = leftDelim
+	}
+	if right == &amp;quot;&amp;quot; {
+		right = rightDelim
+	}
+	l := &amp;amp;lexer{
+		name:       name,
+		input:      input,
+		leftDelim:  left,
+		rightDelim: right,
+		items:      make(chan item),
+		line:       1,
+	}
+	go l.run()
+	return l
+}
+
+// startParse initializes the parser, using the lexer.
+func (t *Tree) startParse(funcs []map[string]interface{}, lex *lexer, treeSet map[string]*Tree) {
+	t.Root = nil
+	t.lex = lex
+	t.vars = []string{&amp;quot;$&amp;quot;}
+	t.funcs = funcs
+	t.treeSet = treeSet
+}
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;lex就是词法解析器，它不断的读取文本中的关键字，传给&lt;code&gt;Tree.parse&lt;/code&gt;来解析&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Tree.startParse&lt;/code&gt;并不是真的开始解析，它只是初始化&lt;code&gt;Tree&lt;/code&gt;的词法解析器等字段&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Tree.parse&lt;/code&gt;会读取从lex中解析的关键词，构建成不同的节点，保存到树中(这个源码我会在下面讲解时才贴)&lt;/p&gt;
+
+&lt;p&gt;我们先从lex开始看&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// lex creates a new scanner for the input string.
+func lex(name, input, left, right string) *lexer {
+	if left == &amp;quot;&amp;quot; {
+		left = leftDelim
+	}
+	if right == &amp;quot;&amp;quot; {
+		right = rightDelim
+	}
+	l := &amp;amp;lexer{
+		name:       name,
+		input:      input,
+		leftDelim:  left,
+		rightDelim: right,
+		items:      make(chan item),
+		line:       1,
+	}
+	go l.run()
+	return l
+}
+
+// run runs the state machine for the lexer.
+func (l *lexer) run() {
+	for state := lexText; state != nil; {
+		state = state(l)
+	}
+	close(l.items)
+}
+
+
+// lexText scans until an opening action delimiter, &amp;quot;{{&amp;quot;.
+func lexText(l *lexer) stateFn {
+	l.width = 0
+	if x := strings.Index(l.input[l.pos:], l.leftDelim); x &amp;gt;= 0 {
+		ldn := Pos(len(l.leftDelim))
+		l.pos += Pos(x)
+		trimLength := Pos(0)
+		if strings.HasPrefix(l.input[l.pos+ldn:], leftTrimMarker) {
+			trimLength = rightTrimLength(l.input[l.start:l.pos])
+		}
+		l.pos -= trimLength
+		if l.pos &amp;gt; l.start {
+			l.emit(itemText)
+		}
+		l.pos += trimLength
+		l.ignore()
+		return lexLeftDelim
+	} else {
+		l.pos = Pos(len(l.input))
+	}
+	// Correctly reached EOF.
+	if l.pos &amp;gt; l.start {
+		l.emit(itemText)
+	}
+	l.emit(itemEOF)
+	return nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;lex&lt;/code&gt;函数通过&lt;code&gt;go l.run&lt;/code&gt;异步执行单词解析，并通过&lt;code&gt;items chan&lt;/code&gt;传给外面&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;lexer.Run&lt;/code&gt;通过不断执行 &lt;code&gt;stateFn&lt;/code&gt;直到它返回一个空值&lt;/p&gt;
+
+&lt;p&gt;第一个被执行的&lt;code&gt;stateFn&lt;/code&gt;是lexText，它负责扫描遇到 &lt;code&gt;{{&lt;/code&gt;符号之前的所有字符，也就是模板语法之外的文本&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;l.emit&lt;/code&gt;就是往 &lt;code&gt;l.items&lt;/code&gt;发送一个 item，我们看看l.emit是怎么样的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// emit passes an item back to the client.
+func (l *lexer) emit(t itemType) {
+	l.items &amp;lt;- item{t, l.start, l.input[l.start:l.pos], l.line}
+	// Some items contain text internally. If so, count their newlines.
+	switch t {
+	case itemText, itemRawString, itemLeftDelim, itemRightDelim:
+		l.line += strings.Count(l.input[l.start:l.pos], &amp;quot;\n&amp;quot;)
+	}
+	l.start = l.pos
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 &lt;code&gt;l.input[l.start:l.pos]&lt;/code&gt; 表示这次分析的 “词” 对应的位置   (&lt;code&gt;{{,/*,:=&lt;/code&gt;等等也是属于词 )&lt;/p&gt;
+
+&lt;p&gt;lex函数解析顺序(TODO)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;lexText -&amp;gt; lexLeftDelim -&amp;gt;  lexComment -&amp;gt; lexText
+						-&amp;gt; lexInsideAction -&amp;gt; 	
+
+lexText -&amp;gt; EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们来开开&lt;code&gt;Tree.parse&lt;/code&gt;拿到item后怎么处理&lt;/p&gt;
+
+&lt;h5 id=&#34;tree-parse&#34;&gt;Tree.parse&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// parse is the top-level parser for a template, essentially the same
+// as itemList except it also parses {{define}} actions.
+// It runs to EOF.
+func (t *Tree) parse() {
+	t.Root = t.newList(t.peek().pos)
+	for t.peek().typ != itemEOF {
+		if t.peek().typ == itemLeftDelim {
+			delim := t.next()
+			if t.nextNonSpace().typ == itemDefine {
+				newT := New(&amp;quot;definition&amp;quot;) // name will be updated once we know it.
+				newT.text = t.text
+				newT.ParseName = t.ParseName
+				newT.startParse(t.funcs, t.lex, t.treeSet)
+				newT.parseDefinition()
+				continue
+			}
+			t.backup2(delim)
+		}
+		switch n := t.textOrAction(); n.Type() {
+		case nodeEnd, nodeElse:
+			t.errorf(&amp;quot;unexpected %s&amp;quot;, n)
+		default:
+			t.Root.append(n)
+		}
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;首先parse这个函数的目的是把lex解析出来的item进一步解析成&lt;code&gt;parse.Node&lt;/code&gt;然后放入t.Root中&lt;/p&gt;
+
+&lt;p&gt;在解释这个函数之前我也简单说说 &lt;code&gt;peek&lt;/code&gt;,&lt;code&gt;next&lt;/code&gt;,&lt;code&gt;backup&lt;/code&gt;,&lt;code&gt;backup2&lt;/code&gt; 这几个函数的含义&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;peek: 查看栈的最后一个item&lt;/li&gt;
+&lt;li&gt;next: 拿出栈的最后一个item&lt;/li&gt;
+&lt;li&gt;backend: 把最后一个拿出来的item塞到栈尾&lt;/li&gt;
+&lt;li&gt;backend2: 把最后一个拿出来的item塞到栈尾，并额外塞一个进去&lt;/li&gt;
+&lt;li&gt;backend3: 和backend2同理，塞2个进去&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;好了理解了这些我们就基本能看到这个函数在干什么了&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;用第0个item.pos来初始化&lt;code&gt;t.Root&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;for循环遍历item，直到遇到&lt;code&gt;itemEOF&lt;/code&gt;这个结束符item为止&lt;/li&gt;
+&lt;li&gt;遇到 左分隔符(也就是&amp;rdquo;{{&amp;ldquo;)判断这个分隔符中的是不是 itemDefine(也就是{{define subTemp}}来定义额外的模板树)，如果是，开始解析子模板树并跳过这一轮循环，如果不是回到itemLeftDelim之前从新解析&lt;/li&gt;
+&lt;li&gt;通过&lt;code&gt;Tree.textOrAction&lt;/code&gt;返回下一个Node放入&lt;code&gt;t.Root&lt;/code&gt;中&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;下一步我们来看看textOrAction干了什么&lt;/p&gt;
+
+&lt;h5 id=&#34;textoraction&#34;&gt;textOrAction&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// textOrAction:
+//	text | action
+func (t *Tree) textOrAction() Node {
+	switch token := t.nextNonSpace(); token.typ {
+	case itemText:
+		return t.newText(token.pos, token.val)
+	case itemLeftDelim:
+		return t.action()
+	default:
+		t.unexpected(token, &amp;quot;input&amp;quot;)
+	}
+	return nil
+}
+
+
+func (t *Tree) newText(pos Pos, text string) *TextNode {
+	return &amp;amp;TextNode{tr: t, NodeType: NodeText, Pos: pos, Text: []byte(text)}
+}
+
+// Action:
+//	control
+//	command (&amp;quot;|&amp;quot; command)*
+// Left delim is past. Now get actions.
+// First word could be a keyword such as range.
+func (t *Tree) action() (n Node) {
+	switch token := t.nextNonSpace(); token.typ {
+	case itemBlock:
+		return t.blockControl()
+	case itemElse:
+		return t.elseControl()
+	case itemEnd:
+		return t.endControl()
+	case itemIf:
+		return t.ifControl()
+	case itemRange:
+		return t.rangeControl()
+	case itemTemplate:
+		return t.templateControl()
+	case itemWith:
+		return t.withControl()
+	}
+	t.backup()
+	token := t.peek()
+	// Do not pop variables; they persist until &amp;quot;end&amp;quot;.
+	return t.newAction(token.pos, token.line, t.pipeline(&amp;quot;command&amp;quot;))
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;textOrAction非常简单，就是把item分成2部分，遇到itemText就解析成&lt;code&gt;TextNode&lt;/code&gt;遇到&lt;code&gt;{{&lt;/code&gt;就开始action解析&lt;/p&gt;
+
+&lt;p&gt;所以继续看几个关键的action函数这部分就算完成了&lt;/p&gt;
+
+&lt;h5 id=&#34;ifnode&#34;&gt;IfNode&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// If:
+//	{{if pipeline}} itemList {{end}}
+//	{{if pipeline}} itemList {{else}} itemList {{end}}
+// If keyword is past.
+func (t *Tree) ifControl() Node {
+	return t.newIf(t.parseControl(true, &amp;quot;if&amp;quot;))
+}
+
+func (t *Tree) newIf(pos Pos, line int, pipe *PipeNode, list, elseList *ListNode) *IfNode {
+	return &amp;amp;IfNode{BranchNode{tr: t, NodeType: NodeIf, Pos: pos, Line: line, Pipe: pipe, List: list, ElseList: elseList}}
+}
+
+func (t *Tree) parseControl(allowElseIf bool, context string) (pos Pos, line int, pipe *PipeNode, list, elseList *ListNode) {
+	defer t.popVars(len(t.vars))
+	pipe = t.pipeline(context)
+	var next Node
+	list, next = t.itemList()
+	switch next.Type() {
+	case nodeEnd: //done
+	case nodeElse:
+		if allowElseIf {
+			// Special case for &amp;quot;else if&amp;quot;. If the &amp;quot;else&amp;quot; is followed immediately by an &amp;quot;if&amp;quot;,
+			// the elseControl will have left the &amp;quot;if&amp;quot; token pending. Treat
+			//	{{if a}}_{{else if b}}_{{end}}
+			// as
+			//	{{if a}}_{{else}}{{if b}}_{{end}}{{end}}.
+			// To do this, parse the if as usual and stop at it {{end}}; the subsequent{{end}}
+			// is assumed. This technique works even for long if-else-if chains.
+			// TODO: Should we allow else-if in with and range?
+			if t.peek().typ == itemIf {
+				t.next() // Consume the &amp;quot;if&amp;quot; token.
+				elseList = t.newList(next.Position())
+				elseList.append(t.ifControl())
+				// Do not consume the next item - only one {{end}} required.
+				break
+			}
+		}
+		elseList, next = t.itemList()
+		if next.Type() != nodeEnd {
+			t.errorf(&amp;quot;expected end; found %s&amp;quot;, next)
+		}
+	}
+	return pipe.Position(), pipe.Line, pipe, list, elseList
+}
+
+// itemList:
+//	textOrAction*
+// Terminates at {{end}} or {{else}}, returned separately.
+func (t *Tree) itemList() (list *ListNode, next Node) {
+	list = t.newList(t.peekNonSpace().pos)
+	for t.peekNonSpace().typ != itemEOF {
+		n := t.textOrAction()
+		switch n.Type() {
+		case nodeEnd, nodeElse:
+			return list, n
+		}
+		list.append(n)
+	}
+	t.errorf(&amp;quot;unexpected EOF&amp;quot;)
+	return
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个函数内容太多我就跳过细节了&lt;/p&gt;
+
+&lt;p&gt;首先ifControl/rangeControl/withControl/rangeControl需要调用parseControl，也可以理解为所有&lt;code&gt;{{ }}&lt;/code&gt;可以支持语句的都需要通过该函数来解析，比如pipeline &lt;code&gt;|&lt;/code&gt; 或者函数调用等&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;parseControl&lt;/code&gt;逻辑&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;把 &lt;code&gt;{{}}&lt;/code&gt;中所有内容解析成&lt;code&gt;PipeNode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;Tree.itemList&lt;/code&gt;尝试获取ElseNode和EndNode&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在最后，我们来看看下面例子生成的node是怎么样的,以下是letter模板生成的Node结构，缩进表示层级&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;testdata/letter.tmpl:1:0 (NodeList)
+ testdata/letter.tmpl:1:0 (NodeText)
+ testdata/letter.tmpl:1:7 (NodeAction)
+  testdata/letter.tmpl:1:7 (NodePipe)
+   testdata/letter.tmpl:1:7 (NodeCommand)
+    testdata/letter.tmpl:1:7 (NodeField)
+ testdata/letter.tmpl:1:14 (NodeText)
+ testdata/letter.tmpl:2:5 (NodeIf)
+  testdata/letter.tmpl:2:5 (NodePipe)
+   testdata/letter.tmpl:2:5 (NodeCommand)
+    testdata/letter.tmpl:2:5 (NodeField)
+  testdata/letter.tmpl:2:16 (NodeList)
+   testdata/letter.tmpl:2:16 (NodeText)
+  testdata/letter.tmpl:4:10 (NodeList)
+   testdata/letter.tmpl:4:10 (NodeText)
+ testdata/letter.tmpl:6:9 (NodeText)
+ testdata/letter.tmpl:7:7 (NodeWith)
+  testdata/letter.tmpl:7:7 (NodePipe)
+   testdata/letter.tmpl:7:7 (NodeCommand)
+    testdata/letter.tmpl:7:7 (NodeField)
+  testdata/letter.tmpl:8:4 (NodeList)
+   testdata/letter.tmpl:8:4 (NodeText)
+   testdata/letter.tmpl:8:31 (NodeAction)
+    testdata/letter.tmpl:8:31 (NodePipe)
+     testdata/letter.tmpl:8:31 (NodeCommand)
+      testdata/letter.tmpl:8:31 (NodeDot)
+   testdata/letter.tmpl:8:34 (NodeText)
+ testdata/letter.tmpl:9:7 (NodeText)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;总结一下&lt;/p&gt;
+
+&lt;p&gt;text/template通过 lex 将文本解析成一个个item,然后通过&lt;code&gt;Tree.parse&lt;/code&gt;生成一个有层级关系的node，最后通过 &lt;code&gt;Execute&lt;/code&gt;生成文本，下面来介绍模板Execute&lt;/p&gt;
+
+&lt;p&gt;其实和语言编译原理有点像，词法解析器-&amp;gt;语法解析器-&amp;gt;编译成一个对象-&amp;gt;根据执行参数的不同输出不同结果&lt;/p&gt;
+
+&lt;h4 id=&#34;模板execute&#34;&gt;模板Execute&lt;/h4&gt;
+
+&lt;p&gt;execute就很简单了，基本就是该循环循环，该打印打印，&lt;/p&gt;
+
+&lt;p&gt;Pipe里面只有当node.Pipe.Decl为0才会把Pipe中的值渲染出来，不然只是一次赋值，&lt;/p&gt;
+
+&lt;p&gt;稍微能讲讲的就是node.Pipe&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// Execute applies a parsed template to the specified data object,
+// and writes the output to wr.
+// If an error occurs executing the template or writing its output,
+// execution stops, but partial results may already have been written to
+// the output writer.
+// A template may be executed safely in parallel, although if parallel
+// executions share a Writer the output may be interleaved.
+//
+// If data is a reflect.Value, the template applies to the concrete
+// value that the reflect.Value holds, as in fmt.Print.
+func (t *Template) Execute(wr io.Writer, data interface{}) error {
+	return t.execute(wr, data)
+}
+
+func (t *Template) execute(wr io.Writer, data interface{}) (err error) {
+	defer errRecover(&amp;amp;err)
+	value, ok := data.(reflect.Value)
+	if !ok {
+		value = reflect.ValueOf(data)
+	}
+	state := &amp;amp;state{
+		tmpl: t,
+		wr:   wr,
+		vars: []variable{{&amp;quot;$&amp;quot;, value}},
+	}
+	if t.Tree == nil || t.Root == nil {
+		state.errorf(&amp;quot;%q is an incomplete or empty template&amp;quot;, t.Name())
+	}
+	state.walk(value, t.Root)
+	return
+}
+
+// Walk functions step through the major pieces of the template structure,
+// generating output as they go.
+func (s *state) walk(dot reflect.Value, node parse.Node) {
+	s.at(node)
+	switch node := node.(type) {
+	case *parse.ActionNode:
+		// Do not pop variables so they persist until next end.
+		// Also, if the action declares variables, don&#39;t print the result.
+		val := s.evalPipeline(dot, node.Pipe)
+		if len(node.Pipe.Decl) == 0 {
+			s.printValue(node, val)
+		}
+	case *parse.IfNode:
+		s.walkIfOrWith(parse.NodeIf, dot, node.Pipe, node.List, node.ElseList)
+	case *parse.ListNode:
+		for _, node := range node.Nodes {
+			s.walk(dot, node)
+		}
+	case *parse.RangeNode:
+		s.walkRange(dot, node)
+	case *parse.TemplateNode:
+		s.walkTemplate(dot, node)
+	case *parse.TextNode:
+		if _, err := s.wr.Write(node.Text); err != nil {
+			s.writeError(err)
+		}
+	case *parse.WithNode:
+		s.walkIfOrWith(parse.NodeWith, dot, node.Pipe, node.List, node.ElseList)
+	default:
+		s.errorf(&amp;quot;unknown node: %s&amp;quot;, node)
+	}
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们来看看Pipe的解析时怎么样的&lt;/p&gt;
+
+&lt;p&gt;执行里面的cmds，然后跳过&lt;code&gt;interface{}&lt;/code&gt;对象拿里面的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;// Eval functions evaluate pipelines, commands, and their elements and extract
+// values from the data structure by examining fields, calling methods, and so on.
+// The printing of those values happens only through walk functions.
+
+// evalPipeline returns the value acquired by evaluating a pipeline. If the
+// pipeline has a variable declaration, the variable will be pushed on the
+// stack. Callers should therefore pop the stack after they are finished
+// executing commands depending on the pipeline value.
+func (s *state) evalPipeline(dot reflect.Value, pipe *parse.PipeNode) (value reflect.Value) {
+	if pipe == nil {
+		return
+	}
+	s.at(pipe)
+	value = missingVal
+	for _, cmd := range pipe.Cmds {
+		value = s.evalCommand(dot, cmd, value) // previous value is this one&#39;s final arg.
+		// If the object has type interface{}, dig down one level to the thing inside.
+		if value.Kind() == reflect.Interface &amp;amp;&amp;amp; value.Type().NumMethod() == 0 {
+			value = reflect.ValueOf(value.Interface()) // lovely!
+		}
+	}
+	for _, variable := range pipe.Decl {
+		if pipe.IsAssign {
+			s.setVar(variable.Ident[0], value)
+		} else {
+			s.push(variable.Ident[0], value)
+		}
+	}
+	return value
+}
+
+
+func (s *state) evalCommand(dot reflect.Value, cmd *parse.CommandNode, final reflect.Value) reflect.Value {
+	firstWord := cmd.Args[0]
+	switch n := firstWord.(type) {
+	case *parse.FieldNode:
+		return s.evalFieldNode(dot, n, cmd.Args, final)
+	case *parse.ChainNode:
+		return s.evalChainNode(dot, n, cmd.Args, final)
+	case *parse.IdentifierNode:
+		// Must be a function.
+		return s.evalFunction(dot, n, cmd, cmd.Args, final)
+	case *parse.PipeNode:
+		// Parenthesized pipeline. The arguments are all inside the pipeline; final is ignored.
+		return s.evalPipeline(dot, n)
+	case *parse.VariableNode:
+		return s.evalVariableNode(dot, n, cmd.Args, final)
+	}
+	s.at(firstWord)
+	s.notAFunction(cmd.Args, final)
+	switch word := firstWord.(type) {
+	case *parse.BoolNode:
+		return reflect.ValueOf(word.True)
+	case *parse.DotNode:
+		return dot
+	case *parse.NilNode:
+		s.errorf(&amp;quot;nil is not a command&amp;quot;)
+	case *parse.NumberNode:
+		return s.idealConstant(word)
+	case *parse.StringNode:
+		return reflect.ValueOf(word.Text)
+	}
+	s.errorf(&amp;quot;can&#39;t evaluate command %q&amp;quot;, firstWord)
+	panic(&amp;quot;not reached&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;go模板就写到这里，里面代码给人一种零乱的感觉，但是代码意图和注释还是很清晰的，看函数名和注释能猜到个大概&lt;/p&gt;
+
+&lt;p&gt;抛开代码结构不说，go的template的语法自成一派让人用起来很不舒服，每次使用都得查查文档，如果能和go语法统一就好了&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>go module无法拉取库的原因排查</title>

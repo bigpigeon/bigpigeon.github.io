@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.48-DEV" />
+	<meta name="generator" content="Hugo 0.50" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -126,6 +126,43 @@
             <div class="content-wrapper__inner">
                 <section id="main">
                     <div>
+                        
+
+                            <article class="post">
+<header>
+<h2><a href="https://bigpigeon.org/post/switchy-proxy-pac-optimization/">pac脚本优化 </a> </h2>
+<div class="post-meta">Sat, Dec 19, 2015 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <p>最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.</p>
+
+<p>于是我翻看了它们的实现</p>
+
+<ul>
+<li>lantern
+
+<ul>
+<li>把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理</li>
+</ul></li>
+<li>shadowsocks
+
+<ul>
+<li>把domain做成一个{domain:1,&hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&rsquo;.&lsquo;和之前的内容 继续做domains.hasOwnProperty判断</li>
+</ul></li>
+</ul>
+
+<p>可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
+
+于是我自己实现一个pac优化FindProxyForURL匹配速度</p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/switchy-proxy-pac-optimization/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
                         
 
                             <article class="post">

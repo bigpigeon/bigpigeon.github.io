@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on bigpigeon</title>
+    <link>https://bigpigeon.org/categories/go/</link>
+    <description>Recent content in Go on bigpigeon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn-zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 05 Oct 2019 13:24:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bigpigeon.org/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>go的text/template源码解析</title>
+      <link>https://bigpigeon.org/post/go-text-template/</link>
+      <pubDate>Sat, 05 Oct 2019 13:24:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/go-text-template/</guid>
+      <description>&lt;p&gt;go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题&lt;/p&gt;
+
+&lt;p&gt;为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍&lt;/p&gt;
+
+&lt;p&gt;本篇只是粗略的讲解模板的各个模块，不会深入函数细节&lt;/p&gt;
+
+&lt;p&gt;首先基本用法开始&lt;/p&gt;
+
+&lt;h4 id=&#34;基本用法&#34;&gt;基本用法&lt;/h4&gt;
+
+&lt;p&gt;我们这里用的是text_template中example_test的ExampleTemplate()作为例子&lt;/p&gt;
+
+&lt;p&gt;通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中&lt;/p&gt;
+
+&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
