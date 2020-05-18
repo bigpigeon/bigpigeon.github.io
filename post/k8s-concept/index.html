@@ -1,10 +1,10 @@
-    <!DOCTYPE html>
+  <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> Golang &middot; bigpigeon </title>
+    <title> 当在k8s创建一个实体时会发生什么 &middot; bigpigeon </title>
     
     <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
     <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
@@ -12,9 +12,6 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
     <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
     
-    
-      <link href="https://bigpigeon.org/tags/golang/index.xml" rel="alternate" type="application/rss+xml" title="bigpigeon" />
-      <link href="https://bigpigeon.org/tags/golang/index.xml" rel="feed" type="application/rss+xml" title="bigpigeon" />
     
     
     <script src="https://bigpigeon.org/js/jquery.min.js"></script>
@@ -25,8 +22,8 @@
 
 </head>
 
-    <body>
-        <div id="scriptHeader">
+  <body>
+    <div id="scriptHeader">
     <span class="mobile btn-mobile-menu">
             <i class="fa fa-bars btn-mobile-menu__icon"></i>
             <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
@@ -120,94 +117,82 @@
     </header>
 </noscript>
 
-        <div class="content-wrapper">
-            <div class="content-wrapper__inner">
-                
-                <h2>2020</h2>
-                <ul id="list">
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/post/k8s-concept/">当在k8s创建一个实体时会发生什么 </a>
-                        <div class="meta">Wed, Apr 15, 2020</div>
-                    </li>
-                    
-                </ul>
-                
-                <h2>2017</h2>
-                <ul id="list">
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/concurrent/">并发测试 </a>
-                        <div class="meta">Fri, Jan 20, 2017</div>
-                    </li>
-                    
-                </ul>
-                
-                <h2>2016</h2>
-                <ul id="list">
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/post/jekyll-to-hugo/">从jekyll到hugo，搬运经验总结 </a>
-                        <div class="meta">Wed, Oct 12, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/gostruct/">go struct </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/goselect/">go select </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/gosched/">go sched </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/gointerface/">go interface </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/gohelloworld/">go hello </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/goclone/">go clone </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/goarray/">go array and slice </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/demo/defer/">defer测试 </a>
-                        <div class="meta">Sat, Jan 16, 2016</div>
-                    </li>
-                    
-                </ul>
-                
-                <h2>2015</h2>
-                <ul id="list">
-                    
-                    <li>
-                        <a href="https://bigpigeon.org/post/gin-framework/">gin框架介绍 </a>
-                        <div class="meta">Thu, Dec 24, 2015</div>
-                    </li>
-                    
-                </ul>
-                
-            </div>
-        </div>
-    </body>
-    <footer class="footer"></footer>
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>当在k8s创建一个实体时会发生什么</h2>
+          <span class="post-date">Wed, Apr 15, 2020</span>
+          <h3 id="前置条件">前置条件</h3>
 
-    <script>hljs.initHighlightingOnLoad();</script>
+<p>容器: docker</p>
+
+<p>kubernetes: 1.14.2</p>
+
+<p>当在k8s中创建一个deployments,注意kubeapi会通知到每一个controller，多个controll同时对一个deployment增加replicaSet只有一个会成功</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  kubectl-&gt;kubeapi: 创建一个deployment
+  kubeapi-&gt;etcd: 持久化这次修改
+  kubeapi-&gt;kubectl: 告知客户端创建成功
+  deploymentController-&gt;kubeapi: 获取该deployment，创建对应的replicationSet并绑定该deployment
+  replicationSetController-&gt;kubeapi: 获取该replicationSet，根据实例数创建pod
+  kube_schedule-&gt;kubeapi: 获取新的pod，通过权重为它分配节点信息
+  kubelet-&gt;kubeapi: 获取pod信息，通过cri发送给本地docker，创建container
+  kubelet-&gt;container: 通知docker创建pod中的container
+  kubelet-&gt;kubeapi: 收集container状态，更新pod状态
+</code></pre>
+
+<p></p>
+
+<p>当k8s中创建一个service</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  kubectl-&gt;kubeapi: 创建一个service
+  kubeapi-&gt;etcd: 持久化这次修改
+  kubeapi-&gt;kubectl: 告知客户端创建成功
+  endpointController-&gt;kubeapi: 获取service更新，更新当前endpoint
+  kube-proxy-&gt;kubeapi: 获取endpoint信息，根据网络plugin修改规则
+</code></pre>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e5%bd%93%e5%9c%a8k8s%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa%e5%ae%9e%e4%bd%93%e6%97%b6%e4%bc%9a%e5%8f%91%e7%94%9f%e4%bb%80%e4%b9%88-https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f&title=%e5%bd%93%e5%9c%a8k8s%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa%e5%ae%9e%e4%bd%93%e6%97%b6%e4%bc%9a%e5%8f%91%e7%94%9f%e4%bb%80%e4%b9%88" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-concept%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
 
 </html>

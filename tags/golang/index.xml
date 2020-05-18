@@ -7,10 +7,39 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 20 Jan 2017 17:59:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 15 Apr 2020 18:43:37 +0800</lastBuildDate>
     
 	<atom:link href="https://bigpigeon.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>当在k8s创建一个实体时会发生什么</title>
+      <link>https://bigpigeon.org/post/k8s-concept/</link>
+      <pubDate>Wed, 15 Apr 2020 18:43:37 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/k8s-concept/</guid>
+      <description>&lt;h3 id=&#34;前置条件&#34;&gt;前置条件&lt;/h3&gt;
+
+&lt;p&gt;容器: docker&lt;/p&gt;
+
+&lt;p&gt;kubernetes: 1.14.2&lt;/p&gt;
+
+&lt;p&gt;当在k8s中创建一个deployments,注意kubeapi会通知到每一个controller，多个controll同时对一个deployment增加replicaSet只有一个会成功&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;sequenceDiagram
+  kubectl-&amp;gt;kubeapi: 创建一个deployment
+  kubeapi-&amp;gt;etcd: 持久化这次修改
+  kubeapi-&amp;gt;kubectl: 告知客户端创建成功
+  deploymentController-&amp;gt;kubeapi: 获取该deployment，创建对应的replicationSet并绑定该deployment
+  replicationSetController-&amp;gt;kubeapi: 获取该replicationSet，根据实例数创建pod
+  kube_schedule-&amp;gt;kubeapi: 获取新的pod，通过权重为它分配节点信息
+  kubelet-&amp;gt;kubeapi: 获取pod信息，通过cri发送给本地docker，创建container
+  kubelet-&amp;gt;container: 通知docker创建pod中的container
+  kubelet-&amp;gt;kubeapi: 收集container状态，更新pod状态
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>并发测试</title>

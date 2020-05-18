@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.50" />
+	<meta name="generator" content="Hugo 0.48-DEV" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -130,6 +130,44 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/k8s-concept/">当在k8s创建一个实体时会发生什么 </a> </h2>
+<div class="post-meta">Wed, Apr 15, 2020 - Read in 1 Min </div>
+</header>
+<div class="summary">
+    <h3 id="前置条件">前置条件</h3>
+
+<p>容器: docker</p>
+
+<p>kubernetes: 1.14.2</p>
+
+<p>当在k8s中创建一个deployments,注意kubeapi会通知到每一个controller，多个controll同时对一个deployment增加replicaSet只有一个会成功</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  kubectl-&gt;kubeapi: 创建一个deployment
+  kubeapi-&gt;etcd: 持久化这次修改
+  kubeapi-&gt;kubectl: 告知客户端创建成功
+  deploymentController-&gt;kubeapi: 获取该deployment，创建对应的replicationSet并绑定该deployment
+  replicationSetController-&gt;kubeapi: 获取该replicationSet，根据实例数创建pod
+  kube_schedule-&gt;kubeapi: 获取新的pod，通过权重为它分配节点信息
+  kubelet-&gt;kubeapi: 获取pod信息，通过cri发送给本地docker，创建container
+  kubelet-&gt;container: 通知docker创建pod中的container
+  kubelet-&gt;kubeapi: 收集container状态，更新pod状态
+</code></pre>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/k8s-concept/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/go-text-template/">go的text/template源码解析 </a> </h2>
 <div class="post-meta">Sat, Oct 5, 2019 - Read in 12 Min </div>
 </header>
@@ -183,28 +221,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/go-change-compile-source-code/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/kubernetes-deployment/">kubernetes官方kubeadm部署笔记 </a> </h2>
-<div class="post-meta">Tue, Apr 30, 2019 - Read in 3 Min </div>
-</header>
-<div class="summary">
-    <p>老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来</p>
-
-<p>这里做一个k8s部署(踩坑)笔记</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/kubernetes-deployment/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

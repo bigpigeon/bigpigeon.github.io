@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://bigpigeon.org/post/k8s-concept/</loc>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://bigpigeon.org/post/go-text-template/</loc>
     <lastmod>2019-10-05T13:24:00+08:00</lastmod>
   </url>
@@ -170,6 +175,12 @@
   </url>
   
   <url>
+    <loc>https://bigpigeon.org/tags/deployment/</loc>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://bigpigeon.org/categories/develop/</loc>
     <lastmod>2019-09-23T16:58:00+08:00</lastmod>
     <priority>0</priority>
@@ -213,7 +224,7 @@
   
   <url>
     <loc>https://bigpigeon.org/tags/golang/</loc>
-    <lastmod>2017-01-20T17:59:00+08:00</lastmod>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -261,7 +272,7 @@
   
   <url>
     <loc>https://bigpigeon.org/post/</loc>
-    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -285,13 +296,13 @@
   
   <url>
     <loc>https://bigpigeon.org/tags/</loc>
-    <lastmod>2016-10-12T11:43:37+08:00</lastmod>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://bigpigeon.org/</loc>
-    <lastmod>2019-10-05T13:24:00+08:00</lastmod>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -303,7 +314,7 @@
   
   <url>
     <loc>https://bigpigeon.org/categories/%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2016-10-12T11:43:37+08:00</lastmod>
+    <lastmod>2020-04-15T18:43:37+08:00</lastmod>
     <priority>0</priority>
   </url>
   
