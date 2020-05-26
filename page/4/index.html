@@ -130,6 +130,36 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/go-reflect-talk/">谈谈go的relfect </a> </h2>
+<div class="post-meta">Tue, Jun 6, 2017 - Read in 4 Min </div>
+</header>
+<div class="summary">
+    <p>go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象</p>
+
+<p>reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type</p>
+
+<p>reflect.Type.Field模块可以获得<strong>struct</strong>或者<strong>interface</strong>中的字段名，字段类型，字段的tag等信息</p>
+
+<p>reflect.ValueOf可以获得一个对象的值信息，比如它是指针还是实体，值的类型和interface类型下的值，它返回一个reflect.Value</p>
+
+<p>我这里简单谈谈reflect的用法和哪些能做到哪些不能做到</p>
+
+<p>Ps:以下所有代码都包含在这个<a href="https://github.com/bigpigeon/Test/tree/master/go/reflect_demo">测试项目</a>中</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-reflect-talk/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/gorm-tutorial-first/">gorm简介[前] </a> </h2>
 <div class="post-meta">Mon, May 29, 2017 - Read in 4 Min </div>
 </header>
@@ -165,34 +195,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/git-push-recover-way/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/my-skip-gfw-stack/">我的翻墙技术栈 </a> </h2>
-<div class="post-meta">Tue, Dec 27, 2016 - Read in 3 Min </div>
-</header>
-<div class="summary">
-    <p>谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。</p>
-
-<p>这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。</p>
-
-<p>linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题</p>
-
-<p>也可以通过其他协议工具比如:<a href="https://github.com/xtaci/kcptun">kcptun</a></p>
-
-<p>kcptun可以提供双边加速和窗口控制，效果可能比bbr好</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/my-skip-gfw-stack/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

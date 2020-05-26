@@ -1,0 +1,351 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> 实现一个k8s的节点本地服务 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>实现一个k8s的节点本地服务</h2>
+          <span class="post-date">Thu, May 21, 2020</span>
+          <p>k8s的service实体的路由规则太简单，无法设置路由节点信息，于是我通过crd扩展一个LocalService的种类来控制节点的路由</p>
+
+<p>它的结构如下,创建LocalService会创建对应的节点service,通过<code>服务名-节点名</code>就可以很方便的路由到该节点的上</p>
+
+<pre><code>demo-service(kind:LocalService)
+  \- demo-service-node1(kind:service)
+  \- demo-service-node2(kind:service)
+  ...
+</code></pre>
+
+<p></p>
+
+<p>如何扩展k8s可以看<a href="https://kubernetes.io/zh/docs/concepts/extend-kubernetes/extend-cluster/">extend-cluster</a>,下面开始讲解</p>
+
+<p>先来看下目录结构，这个目录是依照sample-controller来改的</p>
+
+<h3 id="项目结构">项目结构</h3>
+
+<pre><code>├── artifacts 
+│   └── examples // k8s的资源
+│       ├── crd.yaml    //custom resource definition 资源
+│       └── example-foo.yaml // LocalService 资源
+├── controller.go // LocalService controller模块,根据LocalService生成service
+├── pod_controller.go // pod controller模块,用于帮pod增加node信息label
+├── hack          // 生成器工具
+│   ├── boilerplate.go.txt
+│   ├── custom-boilerplate.go.txt
+│   ├── tools.go
+│   ├── update-codegen.sh
+│   └── verify-codegen.sh
+├── main.go // main入口
+├── pkg // k8s资源代码
+│   ├── apis 
+│   │   └── localservice_controller // LocalService自定义的crd类型
+│   │       ├── register.go
+│   │       └── v1alpha1
+│   │           ├── doc.go
+│   │           ├── register.go 
+│   │           ├── types.go       // LocalService实体相关类型信息
+│   │           └── zz_generated.deepcopy.go // update-codegen.sh生成相关类型的拷贝方法
+│   ├── generated //生产的代码
+│   │   ├── clientset // LocalService的客户端api，所有对该资源的操作都可以通过这个api
+│   │   ├── informers // LocalService的资源查看，因为该库会缓存LocalService的资源，所以更效率并且不占用apiserver资源
+│   │   └── listers   // 为informers提供list和get方法
+│   └── signals // 退出信号的控制
+│       ├── signal.go
+│       ├── signal_posix.go
+│       └── signal_windows.go
+</code></pre>
+
+<h3 id="apis准备">apis准备</h3>
+
+<p>k8s有一套生成工具可以生成一系列辅助函数，我们只需要把crd的数据类型定义好，注册到scheme.AddKnownTypes中</p>
+
+<p>生成代码之前注意以下几点</p>
+
+<ul>
+<li>拉取的项目必须放到$GOPATH/src下，并且项目路径必须和项目地址路径相匹配</li>
+<li>pkg/apis/localservice_controller/v1alpha1/register.go下的SchemeGroupVersion决定apiVersion信息</li>
+<li>非go module模式请将k8s.io/code-generator项目拷贝到项目根目录下</li>
+</ul>
+
+<p>首先 定义LocalService相关类型，LocalService和LocalServiceList上面必须有 <code>+k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object</code> 不然生产的代码会缺少<code>DeepCopyObject</code> 方法</p>
+
+<p><a href="https://github.com/bigpigeon/local-service-controller/blob/master/pkg/apis/localservice_controller/v1alpha1/types.go">types.go代码</a></p>
+
+<p>注册到scheme中</p>
+
+<p><a href="https://github.com/bigpigeon/local-service-controller/blob/master/pkg/apis/localservice_controller/v1alpha1/register.go">register.go代码</a></p>
+
+<p>修改完成执行update-codegen.sh生产相关代码</p>
+
+<pre><code class="language-bash">$ ./hack/update-codegen.sh
+...
+
+</code></pre>
+
+<h3 id="创建controller">创建controller</h3>
+
+<p>controller能做许多不同的事情，但是它们都是通过api-server监听资源变更，修改/增加对应资源,将资源实际状态调整为其期望状态</p>
+
+<p>默认操作流程:</p>
+
+<ul>
+<li>通过informer().AddEventHandler增加相应资源的监听函数，informer会监听特定类型资源的变更事件</li>
+<li>在监听函数中对资源进行筛选，将匹配的资源的key放入workqueue队列</li>
+<li>worker从队列获取task交给实际的syncHandler函数处理</li>
+<li>syncHandler开始处理task</li>
+<li>任务完成后修改资源status,并增加相应的event</li>
+<li>task处理成功调用会调用<code>workqueue.Forget(obj)</code>，否则任务会重新回到队列中</li>
+<li>worker调用<code>workqueue.Done(obj)</code>释放对该任务的占用，无论成功与否该函数都会被调用</li>
+</ul>
+
+<p>了解流程后再来看看<code>controller.go</code>的代码</p>
+
+<p><a href="https://github.com/bigpigeon/local-service-controller/blob/master/controller.go">controller.go</a></p>
+
+<p><em>这代码看似很多，其实做的事情很简单，分为以下部分</em></p>
+
+<p>创建controller并开始</p>
+
+<ul>
+<li>NewController-&gt; Controller.Run</li>
+</ul>
+
+<p>监听LocalService资源</p>
+
+<ul>
+<li>创建对localService的监听，触发controller.enqueueLocalServer回调函数</li>
+<li>将任务放入Controller.workqueue队列</li>
+<li>processNextWorkItem获取任务并调用syncHandler处理任务</li>
+<li>找出所有k8s的Node和属于该LocalService的Service资源</li>
+<li>匹配Service和Node，对缺失的Node创建Service，删除不存在的node上的Service</li>
+<li>创建一个Event</li>
+<li>task处理成功调用会调用<code>workqueue.Forget(obj)</code>，否则任务会重新回到队列中</li>
+<li>worker调用<code>workqueue.Done(obj)</code>释放对该任务的占用，无论成功与否该函数都会被调用</li>
+</ul>
+
+<h3 id="创建pod-controller">创建pod-controller</h3>
+
+<p>因为Service只能通过label来匹配pod，于是我们需要创建一个pod-controller，将pod的<code>Spec.NodeName</code>同步到Labels</p>
+
+<p><a href="https://github.com/bigpigeon/local-service-controller/blob/master/pod_controller.go">pod_controller.go</a></p>
+
+<h3 id="main函数">main函数</h3>
+
+<p>main函数做了以下几件事情</p>
+
+<ul>
+<li>需要处理退出信号</li>
+<li>初始化资源的clientset</li>
+<li>初始化资源的informer</li>
+<li>启动controller</li>
+</ul>
+
+<p>所有工作准备完成，可以启动controller了</p>
+
+<h3 id="创建crd资源-并启动服务">创建Crd资源，并启动服务</h3>
+
+<p>如果我们现在启动服务则会得到<code>Failed to list *v1alpha1.LocalService: the server could not find the requested resource</code>错误信息，这是因为k8s 的api-server还不知道该资源是什么，我们需要创建一个crd来告诉k8s apiserver</p>
+
+<pre><code>kubectl create -f artifacts/examples/crd.yaml
+</code></pre>
+
+<p>这里需要注意：</p>
+
+<ul>
+<li>crd声明的资源类型<code>spec.names.kind</code>必须对应go里面定义的类型<code>pkg/apis/localservice_controller/v1alpha1/types.go.LocalService</code>,所以这里只能是LocalService，如果想修改kind名，注册的时候用<code>scheme.AddKnownTypeWithName</code>方法</li>
+</ul>
+
+<p>启动controller
+    go build .
+    ./local-service-controller -kubeconfig=your/kubernetes/config</p>
+
+<h3 id="创建localservice验证controller">创建LocalService验证controller</h3>
+
+<p>创建LocalService和Deployments</p>
+
+<pre><code>kubectl create -f artifacts/examples/example.yaml
+</code></pre>
+
+<p>等待一段k8s创建完成,查看各个资源</p>
+
+<pre><code>kubectl get LocalService 
+
+kubectl get service -l owner
+
+kubectl get pod -l kind=localservice-app
+kubectl get pod -l vm/rack=k8s03
+</code></pre>
+
+<p>连接到k8s环境，使用curl调用服务(你可以用kube-vpn或者kubectl exec连如该k8s环境)</p>
+
+<pre><code>curl http://localservice-app-k8s03:8080
+</code></pre>
+
+<p>你将看到，这消息永远来自k8s03节点</p>
+
+<pre><code>hello  this message from mylocalservice-app-586ffc555f-dgfp8/k8s03
+</code></pre>
+
+<h3 id="附录">附录</h3>
+
+<p>local-service-controller项目地址: <a href="https://github.com/bigpigeon/local-service-controller">https://github.com/bigpigeon/local-service-controller</a></p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aak8s%e7%9a%84%e8%8a%82%e7%82%b9%e6%9c%ac%e5%9c%b0%e6%9c%8d%e5%8a%a1-https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f&title=%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aak8s%e7%9a%84%e8%8a%82%e7%82%b9%e6%9c%ac%e5%9c%b0%e6%9c%8d%e5%8a%a1" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fk8s-crd%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

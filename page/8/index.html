@@ -130,79 +130,18 @@
 
                             <article class="post">
 <header>
-<h2><a href="https://bigpigeon.org/post/docker-and-jekyll/">使用docker部署jekyll </a> </h2>
-<div class="post-meta">Sat, Feb 6, 2016 - Read in 3 Min </div>
+<h2><a href="https://bigpigeon.org/post/jekyll-deploy/">jekyll部署总结 </a> </h2>
+<div class="post-meta">Wed, Dec 9, 2015 - Read in 1 Min </div>
 </header>
 <div class="summary">
-    <p>关于在docker部署jekyll在<a href="http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf">The.Docker.Book</a>中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了</p>
-
-<p>所以我在这记录一下部署过程以免将来再次踩坑</p>
-
-<p></p>
+    <ul>
+<li>在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况</li>
+<li>把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件</li>
+<li>这个博客的模板我是fork <a href="https://github.com/Gaohaoyang">浩阳 Gaohaoyang</a> 的 <a href="https://github.com/Gaohaoyang/gaohaoyang.github.io">博客模板</a></li>
+<li>其实我还是希望设计一个有特色点的博客，但毕竟我前端技能很烂，只能先用别人的了.
 </div>
 <footer>
-<a href='https://bigpigeon.org/post/docker-and-jekyll/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/gin-framework/">gin框架介绍 </a> </h2>
-<div class="post-meta">Thu, Dec 24, 2015 - Read in 4 Min </div>
-</header>
-<div class="summary">
-    <h3 id="为何用gin">为何用gin</h3>
-
-<p>它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够</p>
-
-<p>而因为它的简单我们也能很好的在它上面增加功能或再开发</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/gin-framework/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/switchy-proxy-pac-optimization/">pac脚本优化 </a> </h2>
-<div class="post-meta">Sat, Dec 19, 2015 - Read in 2 Min </div>
-</header>
-<div class="summary">
-    <p>最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.</p>
-
-<p>于是我翻看了它们的实现</p>
-
-<ul>
-<li>lantern
-
-<ul>
-<li>把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理</li>
-</ul></li>
-<li>shadowsocks
-
-<ul>
-<li>把domain做成一个{domain:1,&hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&rsquo;.&lsquo;和之前的内容 继续做domains.hasOwnProperty判断</li>
-</ul></li>
-</ul>
-
-<p>可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
-
-于是我自己实现一个pac优化FindProxyForURL匹配速度</p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/switchy-proxy-pac-optimization/'><nobr>继续阅读 →</nobr></a>
+<a href='https://bigpigeon.org/post/jekyll-deploy/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -214,11 +153,11 @@
                     </br>
                     <h4 class="space-between">
                         
-                        <a href="https://bigpigeon.org/page/6/">上一页</a>
+                        <a href="https://bigpigeon.org/page/7/">上一页</a>
                         
                         <a href="https://bigpigeon.org/post/">归档</a>
                         
-                        <a href="https://bigpigeon.org/page/8/">下一页</a>
+                        <a></a>
                         
                     </h4>
                     <h4>

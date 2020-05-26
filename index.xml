@@ -7,8 +7,200 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 15 Apr 2020 18:43:37 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate>
     <atom:link href="https://bigpigeon.org/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>实现一个k8s的节点本地服务</title>
+      <link>https://bigpigeon.org/post/k8s-crd/</link>
+      <pubDate>Thu, 21 May 2020 12:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/k8s-crd/</guid>
+      <description>&lt;p&gt;k8s的service实体的路由规则太简单，无法设置路由节点信息，于是我通过crd扩展一个LocalService的种类来控制节点的路由&lt;/p&gt;
+
+&lt;p&gt;它的结构如下,创建LocalService会创建对应的节点service,通过&lt;code&gt;服务名-节点名&lt;/code&gt;就可以很方便的路由到该节点的上&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;demo-service(kind:LocalService)
+  \- demo-service-node1(kind:service)
+  \- demo-service-node2(kind:service)
+  ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;如何扩展k8s可以看&lt;a href=&#34;https://kubernetes.io/zh/docs/concepts/extend-kubernetes/extend-cluster/&#34;&gt;extend-cluster&lt;/a&gt;,下面开始讲解&lt;/p&gt;
+
+&lt;p&gt;先来看下目录结构，这个目录是依照sample-controller来改的&lt;/p&gt;
+
+&lt;h3 id=&#34;项目结构&#34;&gt;项目结构&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;├── artifacts 
+│   └── examples // k8s的资源
+│       ├── crd.yaml    //custom resource definition 资源
+│       └── example-foo.yaml // LocalService 资源
+├── controller.go // LocalService controller模块,根据LocalService生成service
+├── pod_controller.go // pod controller模块,用于帮pod增加node信息label
+├── hack          // 生成器工具
+│   ├── boilerplate.go.txt
+│   ├── custom-boilerplate.go.txt
+│   ├── tools.go
+│   ├── update-codegen.sh
+│   └── verify-codegen.sh
+├── main.go // main入口
+├── pkg // k8s资源代码
+│   ├── apis 
+│   │   └── localservice_controller // LocalService自定义的crd类型
+│   │       ├── register.go
+│   │       └── v1alpha1
+│   │           ├── doc.go
+│   │           ├── register.go 
+│   │           ├── types.go       // LocalService实体相关类型信息
+│   │           └── zz_generated.deepcopy.go // update-codegen.sh生成相关类型的拷贝方法
+│   ├── generated //生产的代码
+│   │   ├── clientset // LocalService的客户端api，所有对该资源的操作都可以通过这个api
+│   │   ├── informers // LocalService的资源查看，因为该库会缓存LocalService的资源，所以更效率并且不占用apiserver资源
+│   │   └── listers   // 为informers提供list和get方法
+│   └── signals // 退出信号的控制
+│       ├── signal.go
+│       ├── signal_posix.go
+│       └── signal_windows.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;apis准备&#34;&gt;apis准备&lt;/h3&gt;
+
+&lt;p&gt;k8s有一套生成工具可以生成一系列辅助函数，我们只需要把crd的数据类型定义好，注册到scheme.AddKnownTypes中&lt;/p&gt;
+
+&lt;p&gt;生成代码之前注意以下几点&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;拉取的项目必须放到$GOPATH/src下，并且项目路径必须和项目地址路径相匹配&lt;/li&gt;
+&lt;li&gt;pkg/apis/localservice_controller/v1alpha1/register.go下的SchemeGroupVersion决定apiVersion信息&lt;/li&gt;
+&lt;li&gt;非go module模式请将k8s.io/code-generator项目拷贝到项目根目录下&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;首先 定义LocalService相关类型，LocalService和LocalServiceList上面必须有 &lt;code&gt;+k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object&lt;/code&gt; 不然生产的代码会缺少&lt;code&gt;DeepCopyObject&lt;/code&gt; 方法&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/bigpigeon/local-service-controller/blob/master/pkg/apis/localservice_controller/v1alpha1/types.go&#34;&gt;types.go代码&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;注册到scheme中&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/bigpigeon/local-service-controller/blob/master/pkg/apis/localservice_controller/v1alpha1/register.go&#34;&gt;register.go代码&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;修改完成执行update-codegen.sh生产相关代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ./hack/update-codegen.sh
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;创建controller&#34;&gt;创建controller&lt;/h3&gt;
+
+&lt;p&gt;controller能做许多不同的事情，但是它们都是通过api-server监听资源变更，修改/增加对应资源,将资源实际状态调整为其期望状态&lt;/p&gt;
+
+&lt;p&gt;默认操作流程:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;通过informer().AddEventHandler增加相应资源的监听函数，informer会监听特定类型资源的变更事件&lt;/li&gt;
+&lt;li&gt;在监听函数中对资源进行筛选，将匹配的资源的key放入workqueue队列&lt;/li&gt;
+&lt;li&gt;worker从队列获取task交给实际的syncHandler函数处理&lt;/li&gt;
+&lt;li&gt;syncHandler开始处理task&lt;/li&gt;
+&lt;li&gt;任务完成后修改资源status,并增加相应的event&lt;/li&gt;
+&lt;li&gt;task处理成功调用会调用&lt;code&gt;workqueue.Forget(obj)&lt;/code&gt;，否则任务会重新回到队列中&lt;/li&gt;
+&lt;li&gt;worker调用&lt;code&gt;workqueue.Done(obj)&lt;/code&gt;释放对该任务的占用，无论成功与否该函数都会被调用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;了解流程后再来看看&lt;code&gt;controller.go&lt;/code&gt;的代码&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/bigpigeon/local-service-controller/blob/master/controller.go&#34;&gt;controller.go&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;这代码看似很多，其实做的事情很简单，分为以下部分&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;创建controller并开始&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;NewController-&amp;gt; Controller.Run&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;监听LocalService资源&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建对localService的监听，触发controller.enqueueLocalServer回调函数&lt;/li&gt;
+&lt;li&gt;将任务放入Controller.workqueue队列&lt;/li&gt;
+&lt;li&gt;processNextWorkItem获取任务并调用syncHandler处理任务&lt;/li&gt;
+&lt;li&gt;找出所有k8s的Node和属于该LocalService的Service资源&lt;/li&gt;
+&lt;li&gt;匹配Service和Node，对缺失的Node创建Service，删除不存在的node上的Service&lt;/li&gt;
+&lt;li&gt;创建一个Event&lt;/li&gt;
+&lt;li&gt;task处理成功调用会调用&lt;code&gt;workqueue.Forget(obj)&lt;/code&gt;，否则任务会重新回到队列中&lt;/li&gt;
+&lt;li&gt;worker调用&lt;code&gt;workqueue.Done(obj)&lt;/code&gt;释放对该任务的占用，无论成功与否该函数都会被调用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;创建pod-controller&#34;&gt;创建pod-controller&lt;/h3&gt;
+
+&lt;p&gt;因为Service只能通过label来匹配pod，于是我们需要创建一个pod-controller，将pod的&lt;code&gt;Spec.NodeName&lt;/code&gt;同步到Labels&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/bigpigeon/local-service-controller/blob/master/pod_controller.go&#34;&gt;pod_controller.go&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;main函数&#34;&gt;main函数&lt;/h3&gt;
+
+&lt;p&gt;main函数做了以下几件事情&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;需要处理退出信号&lt;/li&gt;
+&lt;li&gt;初始化资源的clientset&lt;/li&gt;
+&lt;li&gt;初始化资源的informer&lt;/li&gt;
+&lt;li&gt;启动controller&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;所有工作准备完成，可以启动controller了&lt;/p&gt;
+
+&lt;h3 id=&#34;创建crd资源-并启动服务&#34;&gt;创建Crd资源，并启动服务&lt;/h3&gt;
+
+&lt;p&gt;如果我们现在启动服务则会得到&lt;code&gt;Failed to list *v1alpha1.LocalService: the server could not find the requested resource&lt;/code&gt;错误信息，这是因为k8s 的api-server还不知道该资源是什么，我们需要创建一个crd来告诉k8s apiserver&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl create -f artifacts/examples/crd.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里需要注意：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;crd声明的资源类型&lt;code&gt;spec.names.kind&lt;/code&gt;必须对应go里面定义的类型&lt;code&gt;pkg/apis/localservice_controller/v1alpha1/types.go.LocalService&lt;/code&gt;,所以这里只能是LocalService，如果想修改kind名，注册的时候用&lt;code&gt;scheme.AddKnownTypeWithName&lt;/code&gt;方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;启动controller
+    go build .
+    ./local-service-controller -kubeconfig=your/kubernetes/config&lt;/p&gt;
+
+&lt;h3 id=&#34;创建localservice验证controller&#34;&gt;创建LocalService验证controller&lt;/h3&gt;
+
+&lt;p&gt;创建LocalService和Deployments&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl create -f artifacts/examples/example.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;等待一段k8s创建完成,查看各个资源&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get LocalService 
+
+kubectl get service -l owner
+
+kubectl get pod -l kind=localservice-app
+kubectl get pod -l vm/rack=k8s03
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;连接到k8s环境，使用curl调用服务(你可以用kube-vpn或者kubectl exec连如该k8s环境)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl http://localservice-app-k8s03:8080
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;你将看到，这消息永远来自k8s03节点&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hello  this message from mylocalservice-app-586ffc555f-dgfp8/k8s03
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;附录&#34;&gt;附录&lt;/h3&gt;
+
+&lt;p&gt;local-service-controller项目地址: &lt;a href=&#34;https://github.com/bigpigeon/local-service-controller&#34;&gt;https://github.com/bigpigeon/local-service-controller&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>当在k8s创建一个实体时会发生什么</title>
