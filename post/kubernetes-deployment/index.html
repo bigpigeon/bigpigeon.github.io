@@ -1,491 +1,491 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> kubernetes官方kubeadm部署笔记 &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>kubernetes官方kubeadm部署笔记 • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="kubernetes官方kubeadm部署笔记"/>
+<meta name="twitter:description" content="kubernetes官方部署方案踩坑记录"/>
+
+<meta property="og:title" content="kubernetes官方kubeadm部署笔记" />
+<meta property="og:description" content="kubernetes官方部署方案踩坑记录" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/kubernetes-deployment/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-04-30T11:47:00&#43;08:00" />
+<meta property="article:modified_time" content="2019-04-30T11:47:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
-
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>kubernetes官方kubeadm部署笔记</h2>
-          <span class="post-date">Tue, Apr 30, 2019</span>
-          <p>老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来</p>
-
-<p>这里做一个k8s部署(踩坑)笔记</p>
-
-<p></p>
-
-<h2 id="准备阶段">准备阶段</h2>
-
-<h4 id="3台机器">3台机器</h4>
-
-<p>需要准备至少3台机器，我这里用的是<a href="https://linux.die.net/man/1/virsh">virsh</a>虚拟出3台ubuntu-18.04</p>
-
-<p>这是我其中一台机器的配置，其他机器也是类似配置</p>
-
-<pre><code class="language-xml">&lt;domain type='kvm' id='1'&gt;
-  &lt;name&gt;k8s-01&lt;/name&gt;
-  &lt;uuid&gt;eec00f24-7b85-4032-93c8-121d1abd5ee9&lt;/uuid&gt;
-  &lt;memory unit='KiB'&gt;8388608&lt;/memory&gt;
-  &lt;currentMemory unit='KiB'&gt;8388608&lt;/currentMemory&gt;
-  &lt;vcpu placement='static'&gt;8&lt;/vcpu&gt;
-  &lt;resource&gt;
-    &lt;partition&gt;/machine&lt;/partition&gt;
-  &lt;/resource&gt;
-  &lt;os&gt;
-    &lt;type arch='x86_64' machine='pc-i440fx-xenial'&gt;hvm&lt;/type&gt;
-  &lt;/os&gt;
-  &lt;features&gt;
-    &lt;acpi/&gt;
-    &lt;apic/&gt;
-  &lt;/features&gt;
-  &lt;clock offset='utc'&gt;
-    &lt;timer name='rtc' tickpolicy='catchup'/&gt;
-    &lt;timer name='pit' tickpolicy='delay'/&gt;
-    &lt;timer name='hpet' present='no'/&gt;
-  &lt;/clock&gt;
-  &lt;on_poweroff&gt;destroy&lt;/on_poweroff&gt;
-  &lt;on_reboot&gt;restart&lt;/on_reboot&gt;
-  &lt;on_crash&gt;restart&lt;/on_crash&gt;
-  &lt;pm&gt;
-    &lt;suspend-to-mem enabled='no'/&gt;
-    &lt;suspend-to-disk enabled='no'/&gt;
-  &lt;/pm&gt;
-  &lt;devices&gt;
-    &lt;emulator&gt;/usr/bin/kvm-spice&lt;/emulator&gt;
-    &lt;disk type='block' device='disk'&gt;
-      &lt;driver name='qemu' type='raw'/&gt;
-      &lt;source dev='/dev/sdb2'/&gt;
-      &lt;backingStore/&gt;
-      &lt;target dev='vdb' bus='virtio'/&gt;
-      &lt;boot order='1'/&gt;
-      &lt;alias name='virtio-disk1'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/&gt;
-    &lt;/disk&gt;
-    &lt;disk type='file' device='cdrom'&gt;
-      &lt;driver name='qemu' type='raw'/&gt;
-      &lt;source file='/home/speakin/ubuntu-18.04.2-live-server-amd64.iso'/&gt;
-      &lt;backingStore/&gt;
-      &lt;target dev='hda' bus='ide'/&gt;
-      &lt;readonly/&gt;
-      &lt;alias name='ide0-0-0'/&gt;
-      &lt;address type='drive' controller='0' bus='0' target='0' unit='0'/&gt;
-    &lt;/disk&gt;
-    &lt;controller type='pci' index='0' model='pci-root'&gt;
-      &lt;alias name='pci.0'/&gt;
-    &lt;/controller&gt;
-    &lt;controller type='ide' index='0'&gt;
-      &lt;alias name='ide'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/&gt;
-    &lt;/controller&gt;
-    &lt;controller type='virtio-serial' index='0'&gt;
-      &lt;alias name='virtio-serial0'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/&gt;
-    &lt;/controller&gt;
-    &lt;controller type='usb' index='0'&gt;
-      &lt;alias name='usb'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/&gt;
-    &lt;/controller&gt;
-    &lt;interface type='bridge'&gt;
-      &lt;mac address='52:54:00:e7:53:84'/&gt;
-      &lt;source bridge='br0'/&gt;
-      &lt;target dev='vnet0'/&gt;
-      &lt;model type='virtio'/&gt;
-      &lt;alias name='net0'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/&gt;
-    &lt;/interface&gt;
-    &lt;serial type='pty'&gt;
-      &lt;source path='/dev/pts/0'/&gt;
-      &lt;target port='0'/&gt;
-      &lt;alias name='serial0'/&gt;
-    &lt;/serial&gt;
-    &lt;console type='pty' tty='/dev/pts/0'&gt;
-      &lt;source path='/dev/pts/0'/&gt;
-      &lt;target type='serial' port='0'/&gt;
-      &lt;alias name='serial0'/&gt;
-    &lt;/console&gt;
-    &lt;channel type='spicevmc'&gt;
-      &lt;target type='virtio' name='com.redhat.spice.0' state='disconnected'/&gt;
-      &lt;alias name='channel0'/&gt;
-      &lt;address type='virtio-serial' controller='0' bus='0' port='1'/&gt;
-    &lt;/channel&gt;
-    &lt;input type='mouse' bus='ps2'/&gt;
-    &lt;input type='keyboard' bus='ps2'/&gt;
-    &lt;graphics type='spice' port='5900' autoport='yes' listen='127.0.0.1'&gt;
-      &lt;listen type='address' address='127.0.0.1'/&gt;
-    &lt;/graphics&gt;
-    &lt;graphics type='vnc' port='5901' autoport='yes' listen='127.0.0.1'&gt;
-      &lt;listen type='address' address='127.0.0.1'/&gt;
-    &lt;/graphics&gt;
-    &lt;sound model='ich6'&gt;
-      &lt;alias name='sound0'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/&gt;
-    &lt;/sound&gt;
-    &lt;video&gt;
-      &lt;model type='qxl' ram='65536' vram='65536' vgamem='16384' heads='1'/&gt;
-      &lt;alias name='video0'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
-    &lt;/video&gt;
-    &lt;redirdev bus='usb' type='spicevmc'&gt;
-      &lt;alias name='redir0'/&gt;
-    &lt;/redirdev&gt;
-    &lt;redirdev bus='usb' type='spicevmc'&gt;
-      &lt;alias name='redir1'/&gt;
-    &lt;/redirdev&gt;
-    &lt;memballoon model='virtio'&gt;
-      &lt;alias name='balloon0'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/&gt;
-    &lt;/memballoon&gt;
-  &lt;/devices&gt;
-  &lt;seclabel type='dynamic' model='apparmor' relabel='yes'&gt;
-    &lt;label&gt;libvirt-eec00f24-7b85-4032-93c8-121d1abd5ee9&lt;/label&gt;
-    &lt;imagelabel&gt;libvirt-eec00f24-7b85-4032-93c8-121d1abd5ee9&lt;/imagelabel&gt;
-  &lt;/seclabel&gt;
-&lt;/domain&gt;
-</code></pre>
-
-<h4 id="一个vpn用来科学上网">一个vpn用来科学上网</h4>
-
-<p>部署k8s最好用vpn而不是代理，因为k8s里面很多工具可能使用的代理方式都不一样，而且有些命令是在docker里面跑的，你还得跑进去配置</p>
-
-<p>vpn要确保网段不与k8s的网段冲突</p>
-
-<h2 id="部署master机器">部署master机器</h2>
-
-<h4 id="使用docker作为k8s的cri">使用docker作为k8s的cri</h4>
-
-<p>以下代码都是照抄k8s官网,只把docker的<strong>&ldquo;exec-opts&rdquo;: [&ldquo;native.cgroupdriver=systemd&rdquo;],</strong> 改成 <strong>&ldquo;exec-opts&rdquo;: [&ldquo;native.cgroupdriver=cgroupfs&rdquo;],</strong></p>
-
-<pre><code class="language-bash"># Install Docker CE
-## Set up the repository:
-### Install packages to allow apt to use a repository over HTTPS
-apt-get update &amp;&amp; apt-get install apt-transport-https ca-certificates curl software-properties-common
-
-### Add Docker’s official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-
-### Add Docker apt repository.
-add-apt-repository \
-  &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) \
-  stable&quot;
-
-## Install Docker CE.
-apt-get update &amp;&amp; apt-get install docker-ce=18.06.2~ce~3-0~ubuntu
-
-# Setup daemon.
-cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
-{
-  &quot;exec-opts&quot;: [&quot;native.cgroupdriver=cgroupfs&quot;],
-  &quot;log-driver&quot;: &quot;json-file&quot;,
-  &quot;log-opts&quot;: {
-    &quot;max-size&quot;: &quot;100m&quot;
-  },
-  &quot;storage-driver&quot;: &quot;overlay2&quot;
-}
-EOF
-
-mkdir -p /etc/systemd/system/docker.service.d
-
-# Restart docker.
-systemctl daemon-reload
-systemctl restart docker
-</code></pre>
-
-<h4 id="安装k8s三件套">安装k8s三件套</h4>
-
-<pre><code class="language-bash">apt-get update &amp;&amp; apt-get install -y apt-transport-https curl
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-cat &lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-apt-get update
-apt-get install -y kubelet kubeadm kubectl
-apt-mark hold kubelet kubeadm kubectl
-</code></pre>
-
-<h4 id="修改kubelet的env参数">修改kubelet的Env参数</h4>
-
-<p>这里使用cgroupfs是 因为这个 issue <a href="https://github.com/kubernetes/kubernetes/issues/71887">https://github.com/kubernetes/kubernetes/issues/71887</a></p>
-
-<pre><code class="language-bash">cat &gt; /var/lib/kubelet/kubeadm-flags.env &lt;&lt;EOF
-KUBELET_KUBEADM_ARGS=--cgroup-driver=cgroupfs --network-plugin=cni --resolv-conf=/run/systemd/resolve/resolv.conf
-EOF
-
-cat &gt; /etc/default/kubelet &lt;&lt;EOF
-KUBELET_EXTRA_ARGS=--cgroup-driver=cgroupfs
-EOF
-</code></pre>
-
-<h4 id="使用kubeadm初始化master节点">使用kubeadm初始化master节点</h4>
-
-<p>因为我们用flannel作为我们的cni，所以要指定一个network-cidr</p>
-
-<pre><code>kubeadm init --pod-network-cidr=10.244.0.0/16
-</code></pre>
-
-<h4 id="配置kubectl">配置kubectl</h4>
-
-<p>参照官方文档，只要吧/etc/kubernetes/admin.conf放到你机器对应的$HOME/.kube/config 目录,kubectl就能连上k8s了</p>
-
-<p>多个k8s,也可以使用kubectl &ndash;kubeconfig config 指定对应k8s</p>
-
-<pre><code class="language-bash">mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-</code></pre>
-
-<h4 id="使用kubectl-安装flannel">使用kubectl 安装flannel</h4>
-
-<p>k8s必须在部署app之前安装cni，不然k8s的网络和dns无法使用</p>
-
-<pre><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
-</code></pre>
-
-<p>等待安装完成</p>
-
-<h4 id="使用kubectl-安装dashboard">使用kubectl 安装dashboard</h4>
-
-<p>安装 dashboard</p>
-
-<pre><code>kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
-</code></pre>
-
-<p>通过kubelet创建service account</p>
-
-<pre><code class="language-yaml">apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kube-system
-</code></pre>
-
-<p>创建cluster role binding 绑定admin-user</p>
-
-<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kube-system
-</code></pre>
-
-<p>获取登录授权token</p>
-
-<pre><code>kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
-</code></pre>
-
-<p>使用proxy代理k8s</p>
-
-<pre><code> kubectl proxy
-</code></pre>
-
-<p>在浏览器访问dashboard,在里面使用token登录</p>
-
-<pre><code>http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
-</code></pre>
-
-<h4 id="创建一个k8s的token">创建一个k8s的token</h4>
-
-<p>每个k8s cluster要加入master都需要创建一个token，可以使用下面命令创建</p>
-
-<pre><code>kubeadm token create
-// 5didvk.d09sbcov8ph2amjw 
-</code></pre>
-
-<p>可以通过下面命令查看已有的token</p>
-
-<pre><code>kubeadm token list
-</code></pre>
-
-<h4 id="查看ca证书的hash值">查看ca证书的hash值</h4>
-
-<p>cluster机器加入时需要该值</p>
-
-<pre><code>openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
-</code></pre>
-
-<h2 id="部署cluster机器">部署cluster机器</h2>
-
-<p>cluster机器比较简单，只需要安装docker和k8s三件套，然后使用token加入master即可</p>
-
-<ul>
-<li><a href="#使用docker作为k8s的cri">安装docker</a></li>
-<li><a href="#安装k8s三件套">安装k8s三件套</a></li>
-</ul>
-
-<h4 id="加入k8s-master节点">加入k8s master节点</h4>
-
-<p>加入节点需要一个刚才在master的token和ca证书hash值，<strong>master-port</strong>默认是6443</p>
-
-<pre><code>kubeadm join &lt;master-ip&gt;:&lt;master-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
-</code></pre>
-
-<h2 id="重置k8s">重置k8s</h2>
-
-<p>如果你在安装k8s过程中某些改动或者网络情况导致不可用，可以使用下面命令，然后重新安装</p>
-
-<pre><code>kubeadm reset 
-</code></pre>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=kubernetes%e5%ae%98%e6%96%b9kubeadm%e9%83%a8%e7%bd%b2%e7%ac%94%e8%ae%b0-https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f&title=kubernetes%e5%ae%98%e6%96%b9kubeadm%e9%83%a8%e7%bd%b2%e7%ac%94%e8%ae%b0" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fkubernetes-deployment%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
-</div>
-        
-
-
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
       </div>
     </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
+  </div>
+</div>
 
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>kubernetes官方kubeadm部署笔记</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Apr 30, 2019
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/deployment">DEPLOYMENT</a>
+              •
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/golang">GOLANG</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91">开发</a>
+           
+      
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80">go语言</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 3 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p>老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来</p>
+<p>这里做一个k8s部署(踩坑)笔记</p>
+<h2 id="准备阶段">准备阶段</h2>
+<h4 id="3台机器">3台机器</h4>
+<p>需要准备至少3台机器，我这里用的是<a href="https://linux.die.net/man/1/virsh">virsh</a>虚拟出3台ubuntu-18.04</p>
+<p>这是我其中一台机器的配置，其他机器也是类似配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;domain</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;kvm&#39;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;name&gt;</span>k8s-01<span style="color:#f92672">&lt;/name&gt;</span>
+  <span style="color:#f92672">&lt;uuid&gt;</span>eec00f24-7b85-4032-93c8-121d1abd5ee9<span style="color:#f92672">&lt;/uuid&gt;</span>
+  <span style="color:#f92672">&lt;memory</span> <span style="color:#a6e22e">unit=</span><span style="color:#e6db74">&#39;KiB&#39;</span><span style="color:#f92672">&gt;</span>8388608<span style="color:#f92672">&lt;/memory&gt;</span>
+  <span style="color:#f92672">&lt;currentMemory</span> <span style="color:#a6e22e">unit=</span><span style="color:#e6db74">&#39;KiB&#39;</span><span style="color:#f92672">&gt;</span>8388608<span style="color:#f92672">&lt;/currentMemory&gt;</span>
+  <span style="color:#f92672">&lt;vcpu</span> <span style="color:#a6e22e">placement=</span><span style="color:#e6db74">&#39;static&#39;</span><span style="color:#f92672">&gt;</span>8<span style="color:#f92672">&lt;/vcpu&gt;</span>
+  <span style="color:#f92672">&lt;resource&gt;</span>
+    <span style="color:#f92672">&lt;partition&gt;</span>/machine<span style="color:#f92672">&lt;/partition&gt;</span>
+  <span style="color:#f92672">&lt;/resource&gt;</span>
+  <span style="color:#f92672">&lt;os&gt;</span>
+    <span style="color:#f92672">&lt;type</span> <span style="color:#a6e22e">arch=</span><span style="color:#e6db74">&#39;x86_64&#39;</span> <span style="color:#a6e22e">machine=</span><span style="color:#e6db74">&#39;pc-i440fx-xenial&#39;</span><span style="color:#f92672">&gt;</span>hvm<span style="color:#f92672">&lt;/type&gt;</span>
+  <span style="color:#f92672">&lt;/os&gt;</span>
+  <span style="color:#f92672">&lt;features&gt;</span>
+    <span style="color:#f92672">&lt;acpi/&gt;</span>
+    <span style="color:#f92672">&lt;apic/&gt;</span>
+  <span style="color:#f92672">&lt;/features&gt;</span>
+  <span style="color:#f92672">&lt;clock</span> <span style="color:#a6e22e">offset=</span><span style="color:#e6db74">&#39;utc&#39;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;timer</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;rtc&#39;</span> <span style="color:#a6e22e">tickpolicy=</span><span style="color:#e6db74">&#39;catchup&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;timer</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;pit&#39;</span> <span style="color:#a6e22e">tickpolicy=</span><span style="color:#e6db74">&#39;delay&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;timer</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;hpet&#39;</span> <span style="color:#a6e22e">present=</span><span style="color:#e6db74">&#39;no&#39;</span><span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/clock&gt;</span>
+  <span style="color:#f92672">&lt;on_poweroff&gt;</span>destroy<span style="color:#f92672">&lt;/on_poweroff&gt;</span>
+  <span style="color:#f92672">&lt;on_reboot&gt;</span>restart<span style="color:#f92672">&lt;/on_reboot&gt;</span>
+  <span style="color:#f92672">&lt;on_crash&gt;</span>restart<span style="color:#f92672">&lt;/on_crash&gt;</span>
+  <span style="color:#f92672">&lt;pm&gt;</span>
+    <span style="color:#f92672">&lt;suspend-to-mem</span> <span style="color:#a6e22e">enabled=</span><span style="color:#e6db74">&#39;no&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;suspend-to-disk</span> <span style="color:#a6e22e">enabled=</span><span style="color:#e6db74">&#39;no&#39;</span><span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/pm&gt;</span>
+  <span style="color:#f92672">&lt;devices&gt;</span>
+    <span style="color:#f92672">&lt;emulator&gt;</span>/usr/bin/kvm-spice<span style="color:#f92672">&lt;/emulator&gt;</span>
+    <span style="color:#f92672">&lt;disk</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;block&#39;</span> <span style="color:#a6e22e">device=</span><span style="color:#e6db74">&#39;disk&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;driver</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;qemu&#39;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;raw&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;source</span> <span style="color:#a6e22e">dev=</span><span style="color:#e6db74">&#39;/dev/sdb2&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;backingStore/&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">dev=</span><span style="color:#e6db74">&#39;vdb&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;virtio&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;boot</span> <span style="color:#a6e22e">order=</span><span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;virtio-disk1&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x06&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/disk&gt;</span>
+    <span style="color:#f92672">&lt;disk</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;file&#39;</span> <span style="color:#a6e22e">device=</span><span style="color:#e6db74">&#39;cdrom&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;driver</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;qemu&#39;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;raw&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;source</span> <span style="color:#a6e22e">file=</span><span style="color:#e6db74">&#39;/home/speakin/ubuntu-18.04.2-live-server-amd64.iso&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;backingStore/&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">dev=</span><span style="color:#e6db74">&#39;hda&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;ide&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;readonly/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;ide0-0-0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;drive&#39;</span> <span style="color:#a6e22e">controller=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">target=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">unit=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/disk&gt;</span>
+    <span style="color:#f92672">&lt;controller</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">model=</span><span style="color:#e6db74">&#39;pci-root&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;pci.0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/controller&gt;</span>
+    <span style="color:#f92672">&lt;controller</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;ide&#39;</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;ide&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x01&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x1&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/controller&gt;</span>
+    <span style="color:#f92672">&lt;controller</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;virtio-serial&#39;</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;virtio-serial0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x05&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/controller&gt;</span>
+    <span style="color:#f92672">&lt;controller</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;usb&#39;</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;usb&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x01&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x2&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/controller&gt;</span>
+    <span style="color:#f92672">&lt;interface</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;bridge&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;mac</span> <span style="color:#a6e22e">address=</span><span style="color:#e6db74">&#39;52:54:00:e7:53:84&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;source</span> <span style="color:#a6e22e">bridge=</span><span style="color:#e6db74">&#39;br0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">dev=</span><span style="color:#e6db74">&#39;vnet0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;model</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;virtio&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;net0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x03&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/interface&gt;</span>
+    <span style="color:#f92672">&lt;serial</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pty&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;source</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#39;/dev/pts/0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;serial0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/serial&gt;</span>
+    <span style="color:#f92672">&lt;console</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pty&#39;</span> <span style="color:#a6e22e">tty=</span><span style="color:#e6db74">&#39;/dev/pts/0&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;source</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#39;/dev/pts/0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;serial&#39;</span> <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;serial0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/console&gt;</span>
+    <span style="color:#f92672">&lt;channel</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;spicevmc&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;virtio&#39;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;com.redhat.spice.0&#39;</span> <span style="color:#a6e22e">state=</span><span style="color:#e6db74">&#39;disconnected&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;channel0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;virtio-serial&#39;</span> <span style="color:#a6e22e">controller=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/channel&gt;</span>
+    <span style="color:#f92672">&lt;input</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;mouse&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;ps2&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;input</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;keyboard&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;ps2&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;graphics</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;spice&#39;</span> <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#39;5900&#39;</span> <span style="color:#a6e22e">autoport=</span><span style="color:#e6db74">&#39;yes&#39;</span> <span style="color:#a6e22e">listen=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;listen</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;address&#39;</span> <span style="color:#a6e22e">address=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/graphics&gt;</span>
+    <span style="color:#f92672">&lt;graphics</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;vnc&#39;</span> <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#39;5901&#39;</span> <span style="color:#a6e22e">autoport=</span><span style="color:#e6db74">&#39;yes&#39;</span> <span style="color:#a6e22e">listen=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;listen</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;address&#39;</span> <span style="color:#a6e22e">address=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/graphics&gt;</span>
+    <span style="color:#f92672">&lt;sound</span> <span style="color:#a6e22e">model=</span><span style="color:#e6db74">&#39;ich6&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;sound0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x04&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/sound&gt;</span>
+    <span style="color:#f92672">&lt;video&gt;</span>
+      <span style="color:#f92672">&lt;model</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;qxl&#39;</span> <span style="color:#a6e22e">ram=</span><span style="color:#e6db74">&#39;65536&#39;</span> <span style="color:#a6e22e">vram=</span><span style="color:#e6db74">&#39;65536&#39;</span> <span style="color:#a6e22e">vgamem=</span><span style="color:#e6db74">&#39;16384&#39;</span> <span style="color:#a6e22e">heads=</span><span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;video0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x02&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/video&gt;</span>
+    <span style="color:#f92672">&lt;redirdev</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;usb&#39;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;spicevmc&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;redir0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/redirdev&gt;</span>
+    <span style="color:#f92672">&lt;redirdev</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;usb&#39;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;spicevmc&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;redir1&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/redirdev&gt;</span>
+    <span style="color:#f92672">&lt;memballoon</span> <span style="color:#a6e22e">model=</span><span style="color:#e6db74">&#39;virtio&#39;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;alias</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#39;balloon0&#39;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;address</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;pci&#39;</span> <span style="color:#a6e22e">domain=</span><span style="color:#e6db74">&#39;0x0000&#39;</span> <span style="color:#a6e22e">bus=</span><span style="color:#e6db74">&#39;0x00&#39;</span> <span style="color:#a6e22e">slot=</span><span style="color:#e6db74">&#39;0x08&#39;</span> <span style="color:#a6e22e">function=</span><span style="color:#e6db74">&#39;0x0&#39;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/memballoon&gt;</span>
+  <span style="color:#f92672">&lt;/devices&gt;</span>
+  <span style="color:#f92672">&lt;seclabel</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#39;dynamic&#39;</span> <span style="color:#a6e22e">model=</span><span style="color:#e6db74">&#39;apparmor&#39;</span> <span style="color:#a6e22e">relabel=</span><span style="color:#e6db74">&#39;yes&#39;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;label&gt;</span>libvirt-eec00f24-7b85-4032-93c8-121d1abd5ee9<span style="color:#f92672">&lt;/label&gt;</span>
+    <span style="color:#f92672">&lt;imagelabel&gt;</span>libvirt-eec00f24-7b85-4032-93c8-121d1abd5ee9<span style="color:#f92672">&lt;/imagelabel&gt;</span>
+  <span style="color:#f92672">&lt;/seclabel&gt;</span>
+<span style="color:#f92672">&lt;/domain&gt;</span>
+</code></pre></div><h4 id="一个vpn用来科学上网">一个vpn用来科学上网</h4>
+<p>部署k8s最好用vpn而不是代理，因为k8s里面很多工具可能使用的代理方式都不一样，而且有些命令是在docker里面跑的，你还得跑进去配置</p>
+<p>vpn要确保网段不与k8s的网段冲突</p>
+<h2 id="部署master机器">部署master机器</h2>
+<h4 id="使用docker作为k8s的cri">使用docker作为k8s的cri</h4>
+<p>以下代码都是照抄k8s官网,只把docker的**&ldquo;exec-opts&rdquo;: [&ldquo;native.cgroupdriver=systemd&rdquo;],** 改成 **&ldquo;exec-opts&rdquo;: [&ldquo;native.cgroupdriver=cgroupfs&rdquo;],**</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Install Docker CE</span>
+<span style="color:#75715e">## Set up the repository:</span>
+<span style="color:#75715e">### Install packages to allow apt to use a repository over HTTPS</span>
+apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install apt-transport-https ca-certificates curl software-properties-common
+
+<span style="color:#75715e">### Add Docker’s official GPG key</span>
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+<span style="color:#75715e">### Add Docker apt repository.</span>
+add-apt-repository <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+</span><span style="color:#e6db74">  </span><span style="color:#66d9ef">$(</span>lsb_release -cs<span style="color:#66d9ef">)</span><span style="color:#e6db74"> \
+</span><span style="color:#e6db74">  stable&#34;</span>
+
+<span style="color:#75715e">## Install Docker CE.</span>
+apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install docker-ce<span style="color:#f92672">=</span>18.06.2~ce~3-0~ubuntu
+
+<span style="color:#75715e"># Setup daemon.</span>
+cat &gt; /etc/docker/daemon.json <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">{
+</span><span style="color:#e6db74">  &#34;exec-opts&#34;: [&#34;native.cgroupdriver=cgroupfs&#34;],
+</span><span style="color:#e6db74">  &#34;log-driver&#34;: &#34;json-file&#34;,
+</span><span style="color:#e6db74">  &#34;log-opts&#34;: {
+</span><span style="color:#e6db74">    &#34;max-size&#34;: &#34;100m&#34;
+</span><span style="color:#e6db74">  },
+</span><span style="color:#e6db74">  &#34;storage-driver&#34;: &#34;overlay2&#34;
+</span><span style="color:#e6db74">}
+</span><span style="color:#e6db74">EOF</span>
+
+mkdir -p /etc/systemd/system/docker.service.d
+
+<span style="color:#75715e"># Restart docker.</span>
+systemctl daemon-reload
+systemctl restart docker
+</code></pre></div><h4 id="安装k8s三件套">安装k8s三件套</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <span style="color:#e6db74">&lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list
+</span><span style="color:#e6db74">deb https://apt.kubernetes.io/ kubernetes-xenial main
+</span><span style="color:#e6db74">EOF</span>
+apt-get update
+apt-get install -y kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl
+</code></pre></div><h4 id="修改kubelet的env参数">修改kubelet的Env参数</h4>
+<p>这里使用cgroupfs是 因为这个 issue <a href="https://github.com/kubernetes/kubernetes/issues/71887">https://github.com/kubernetes/kubernetes/issues/71887</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat &gt; /var/lib/kubelet/kubeadm-flags.env <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">KUBELET_KUBEADM_ARGS=--cgroup-driver=cgroupfs --network-plugin=cni --resolv-conf=/run/systemd/resolve/resolv.conf
+</span><span style="color:#e6db74">EOF</span>
+
+cat &gt; /etc/default/kubelet <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">KUBELET_EXTRA_ARGS=--cgroup-driver=cgroupfs
+</span><span style="color:#e6db74">EOF</span>
+</code></pre></div><h4 id="使用kubeadm初始化master节点">使用kubeadm初始化master节点</h4>
+<p>因为我们用flannel作为我们的cni，所以要指定一个network-cidr</p>
+<pre><code>kubeadm init --pod-network-cidr=10.244.0.0/16
+</code></pre>
+<h4 id="配置kubectl">配置kubectl</h4>
+<p>参照官方文档，只要吧/etc/kubernetes/admin.conf放到你机器对应的$HOME/.kube/config 目录,kubectl就能连上k8s了</p>
+<p>多个k8s,也可以使用kubectl &ndash;kubeconfig config 指定对应k8s</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</code></pre></div><h4 id="使用kubectl-安装flannel">使用kubectl 安装flannel</h4>
+<p>k8s必须在部署app之前安装cni，不然k8s的网络和dns无法使用</p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
+</code></pre>
+<p>等待安装完成</p>
+<h4 id="使用kubectl-安装dashboard">使用kubectl 安装dashboard</h4>
+<p>安装 dashboard</p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+</code></pre>
+<p>通过kubelet创建service account</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">admin-user</span>
+  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">kube-system</span>
+</code></pre></div><p>创建cluster role binding 绑定admin-user</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io/v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRoleBinding</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">admin-user</span>
+<span style="color:#f92672">roleRef</span>:
+  <span style="color:#f92672">apiGroup</span>: <span style="color:#ae81ff">rbac.authorization.k8s.io</span>
+  <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterRole</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">cluster-admin</span>
+<span style="color:#f92672">subjects</span>:
+- <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">admin-user</span>
+  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">kube-system</span>
+</code></pre></div><p>获取登录授权token</p>
+<pre><code>kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+</code></pre>
+<p>使用proxy代理k8s</p>
+<pre><code> kubectl proxy
+</code></pre>
+<p>在浏览器访问dashboard,在里面使用token登录</p>
+<pre><code>http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+</code></pre>
+<h4 id="创建一个k8s的token">创建一个k8s的token</h4>
+<p>每个k8s cluster要加入master都需要创建一个token，可以使用下面命令创建</p>
+<pre><code>kubeadm token create
+// 5didvk.d09sbcov8ph2amjw 
+</code></pre>
+<p>可以通过下面命令查看已有的token</p>
+<pre><code>kubeadm token list
+</code></pre>
+<h4 id="查看ca证书的hash值">查看ca证书的hash值</h4>
+<p>cluster机器加入时需要该值</p>
+<pre><code>openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+</code></pre>
+<h2 id="部署cluster机器">部署cluster机器</h2>
+<p>cluster机器比较简单，只需要安装docker和k8s三件套，然后使用token加入master即可</p>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8docker%E4%BD%9C%E4%B8%BAk8s%E7%9A%84cri">安装docker</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85k8s%E4%B8%89%E4%BB%B6%E5%A5%97">安装k8s三件套</a></li>
+</ul>
+<h4 id="加入k8s-master节点">加入k8s master节点</h4>
+<p>加入节点需要一个刚才在master的token和ca证书hash值，<strong>master-port</strong>默认是6443</p>
+<pre><code>kubeadm join &lt;master-ip&gt;:&lt;master-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</code></pre>
+<h2 id="重置k8s">重置k8s</h2>
+<p>如果你在安装k8s过程中某些改动或者网络情况导致不可用，可以使用下面命令，然后重新安装</p>
+<pre><code>kubeadm reset 
+</code></pre>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/go-ast-walk/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">使用go/ast来解析go文件III</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/go-change-compile-source-code/" class="navigation-next">
+      <span class="navigation-tittle">go module无法拉取库的原因排查</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+
+
+    
+
+
+
+    </body>
 </html>

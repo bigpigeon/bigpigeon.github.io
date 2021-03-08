@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Operation on bigpigeon</title>
@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 06 Feb 2016 14:06:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/categories/operation/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 06 Feb 2016 14:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/operation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用docker部署jekyll</title>
       <link>https://bigpigeon.org/post/docker-and-jekyll/</link>
@@ -19,10 +15,7 @@
       
       <guid>https://bigpigeon.org/post/docker-and-jekyll/</guid>
       <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
-
-&lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -32,25 +25,20 @@
       
       <guid>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</guid>
       <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
-
 &lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;lantern
-
 &lt;ul&gt;
 &lt;li&gt;把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;shadowsocks
-
-&lt;ul&gt;
-&lt;li&gt;把domain做成一个{domain:1,&amp;hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&amp;rsquo;.&amp;lsquo;和之前的内容 继续做domains.hasOwnProperty判断&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
-
-于是我自己实现一个pac优化FindProxyForURL匹配速度&lt;/p&gt;</description>
+&lt;/li&gt;
+&lt;li&gt;shadowsocks
+&lt;ul&gt;
+&lt;li&gt;把domain做成一个{domain:1,&amp;hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&#39;.&amp;lsquo;和之前的内容 继续做domains.hasOwnProperty判断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断&lt;/p&gt;</description>
     </item>
     
   </channel>

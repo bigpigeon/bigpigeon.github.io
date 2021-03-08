@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on bigpigeon</title>
@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>containerd介绍</title>
       <link>https://bigpigeon.org/post/containerd-tutorial-first/</link>
@@ -19,10 +15,7 @@
       
       <guid>https://bigpigeon.org/post/containerd-tutorial-first/</guid>
       <description>&lt;h1 id=&#34;containerd是什么&#34;&gt;containerd是什么&lt;/h1&gt;
-
-&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -32,16 +25,12 @@
       
       <guid>https://bigpigeon.org/post/k8s-crd/</guid>
       <description>&lt;p&gt;k8s的service实体的路由规则太简单，无法设置路由节点信息，于是我通过crd扩展一个LocalService的种类来控制节点的路由&lt;/p&gt;
-
 &lt;p&gt;它的结构如下,创建LocalService会创建对应的节点service,通过&lt;code&gt;服务名-节点名&lt;/code&gt;就可以很方便的路由到该节点的上&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;demo-service(kind:LocalService)
   \- demo-service-node1(kind:service)
   \- demo-service-node2(kind:service)
   ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -51,14 +40,10 @@
       
       <guid>https://bigpigeon.org/post/k8s-concept/</guid>
       <description>&lt;h3 id=&#34;前置条件&#34;&gt;前置条件&lt;/h3&gt;
-
 &lt;p&gt;容器: docker&lt;/p&gt;
-
 &lt;p&gt;kubernetes: 1.14.2&lt;/p&gt;
-
 &lt;p&gt;当在k8s中创建一个deployments,注意kubeapi会通知到每一个controller，多个controll同时对一个deployment增加replicaSet只有一个会成功&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;sequenceDiagram
+&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34; data-lang=&#34;mermaid&#34;&gt;sequenceDiagram
   kubectl-&amp;gt;kubeapi: 创建一个deployment
   kubeapi-&amp;gt;etcd: 持久化这次修改
   kubeapi-&amp;gt;kubectl: 告知客户端创建成功
@@ -68,9 +53,7 @@
   kubelet-&amp;gt;kubeapi: 获取pod信息，通过cri发送给本地docker，创建container
   kubelet-&amp;gt;container: 通知docker创建pod中的container
   kubelet-&amp;gt;kubeapi: 收集container状态，更新pod状态
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -80,7 +63,6 @@
       
       <guid>https://bigpigeon.org/post/grafana-and-prometheus/</guid>
       <description>&lt;p&gt;普罗米休斯是目前非常流行的监控解决方案，他提供了一个非常好用的监控api规范和告警方法,以下是prometheus的特性&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;Dimensional data, prometheus基于时间序列存储数据&lt;/li&gt;
 &lt;li&gt;Powerful queries, prometheus提供了一种PromQL的查询语言，使用户可以很方便汇总数据&lt;/li&gt;
@@ -90,9 +72,7 @@
 &lt;li&gt;Precise alerting, 告警规则允许你基于prometheus的表达式来定义告警条件，然后发送关于火警通知到额外的服务，每当告警表达式在给定时间点生成一个或多个矢量时，对应标签的告警计数将为对应的成员响应&lt;/li&gt;
 &lt;li&gt;Many client libraries, 在你监控你的服务之前，你需要通过prometheus客户端库增加指标到你的代码中，它们实现了prometheus的所有指标类型&lt;/li&gt;
 &lt;li&gt;Many integrations, 有许多库和服务将第三方系统中的现有指标导出为prometheus指标，这对无法直接使用prometheus指标来检测给定系统的情况很有用(例如HAProxy或者Linux操作系统统计信息)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -102,22 +82,13 @@
       
       <guid>https://bigpigeon.org/post/go-text-template/</guid>
       <description>&lt;p&gt;go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题&lt;/p&gt;
-
 &lt;p&gt;为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍&lt;/p&gt;
-
 &lt;p&gt;本篇只是粗略的讲解模板的各个模块，不会深入函数细节&lt;/p&gt;
-
 &lt;p&gt;首先基本用法开始&lt;/p&gt;
-
 &lt;h4 id=&#34;基本用法&#34;&gt;基本用法&lt;/h4&gt;
-
 &lt;p&gt;我们这里用的是text_template中example_test的ExampleTemplate()作为例子&lt;/p&gt;
-
 &lt;p&gt;通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中&lt;/p&gt;
-
-&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -127,17 +98,10 @@
       
       <guid>https://bigpigeon.org/post/go-change-compile-source-code/</guid>
       <description>&lt;p&gt;有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;package xxx.internel.io/lib/with-lfs: unknown import path &amp;quot;xxx.internel.io/lib/with-lfs&amp;quot;: downloaded zip file too large
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
 &lt;p&gt;在一番google我找到了 &lt;a href=&#34;https://github.com/golang/go/issues/29987&#34;&gt;issue&lt;/a&gt; 应该就是对应这个问题的，但一直没有close,看来是没解决&lt;/p&gt;
-
-&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -147,10 +111,7 @@
       
       <guid>https://bigpigeon.org/post/kubernetes-deployment/</guid>
       <description>&lt;p&gt;老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来&lt;/p&gt;
-
-&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -160,12 +121,8 @@
       
       <guid>https://bigpigeon.org/post/go-ast-walk/</guid>
       <description>&lt;p&gt;可能很多人想问types中的Type和Object接口有什么区别&lt;/p&gt;
-
 &lt;p&gt;我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象&lt;/p&gt;
-
-&lt;p&gt;比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -175,14 +132,9 @@
       
       <guid>https://bigpigeon.org/post/go-ast-type/</guid>
       <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
-
 &lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
-
 &lt;p&gt;先来看看全部代码&lt;/p&gt;
-
-&lt;p&gt;代码也可以通过&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/blog_go_types&#34;&gt;这里&lt;/a&gt;下载，建议在看教程的同时运行这个demo代码&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;代码也可以通过&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/blog_go_types&#34;&gt;这里&lt;/a&gt;下载，建议在看教程的同时运行这个demo代码&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -192,53 +144,49 @@
       
       <guid>https://bigpigeon.org/post/go-ast-parser-file/</guid>
       <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
-
 &lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;package main
-
-import (
-	&amp;quot;go/ast&amp;quot;
-	&amp;quot;go/parser&amp;quot;
-	&amp;quot;go/token&amp;quot;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/ast&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/parser&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/token&amp;#34;&lt;/span&gt;
 )
 
-func main() {
-	src := `
-package main
-
-// 该声明为GenDecl TOK=token.IMPORT
-import &amp;quot;fmt&amp;quot;
-
-// 该声明为GenDecl TOK=token.TYPE
-type Product struct {
-	Name string
-}
-
-// 该声明为GenDecl TOK=token.VAR
-var product Product
-
-// 该声明为FunDecl
-func main() { //test1
-	fmt.Println(&amp;quot;Hello, World!&amp;quot;) //test2
-	a := []int{1,2,3}
-	a[1],a[2] = 5,6
-}
-`
-	fset := token.NewFileSet() // 位置是相对于节点
-	// 用ParseFile把文件解析成*ast.File节点
-	f, err := parser.ParseFile(fset, &amp;quot;&amp;quot;, src, 0)
-	if err != nil {
-		panic(err)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;package main
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.IMPORT
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;import &amp;#34;fmt&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.TYPE
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;type Product struct {
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	Name string
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.VAR
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;var product Product
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为FunDecl
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;func main() { //test1
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	fmt.Println(&amp;#34;Hello, World!&amp;#34;) //test2
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	a := []int{1,2,3}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	a[1],a[2] = 5,6
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewFileSet&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;// 位置是相对于节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// 用ParseFile把文件解析成*ast.File节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parser&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ParseFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
 	}
 
-	// 打印ast节点
-	ast.Print(fset, f)
+	&lt;span style=&#34;color:#75715e&#34;&gt;// 打印ast节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;ast&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Print&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;)
 }
 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -248,29 +196,18 @@ func main() { //test1
       
       <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
-
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
-
 &lt;p&gt;scopes是需要一个自定义的函数&lt;strong&gt;func(db *gorm.DB) *gorm.DB&lt;/strong&gt;作为参数，这样就可以在不破坏链式语法的情况下自定义操作了&lt;/p&gt;
-
-&lt;p&gt;比如我要查询GreekAlphabet表中LatinName是&amp;rdquo;Alpha&amp;rdquo;或 &amp;ldquo;Omega&amp;rdquo;的条目可以这样&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;chars := []GreekAlphabet{}
-db.Model(&amp;amp;GreekAlphabet{}).Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;}).Find(&amp;amp;chars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因为查询多个字段的值只能用 &lt;strong&gt;Where(&amp;ldquo;field in (?)&amp;rdquo;, fields)&lt;/strong&gt; 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;firstAndLast := func(db *gorm.DB) *gorm.DB {
-  return db.Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;})
+&lt;p&gt;比如我要查询GreekAlphabet表中LatinName是&amp;quot;Alpha&amp;quot;或 &amp;ldquo;Omega&amp;quot;的条目可以这样&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}
+&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Model&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Where&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;latin_name in (?)&amp;#34;&lt;/span&gt;, []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alpha&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Omega&amp;#34;&lt;/span&gt;}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Find&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为查询多个字段的值只能用 &lt;strong&gt;Where(&amp;ldquo;field in (?)&amp;rdquo;, fields)&lt;/strong&gt; 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;firstAndLast&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;gorm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DB&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;gorm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DB&lt;/span&gt; {
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Where&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;latin_name in (?)&amp;#34;&lt;/span&gt;, []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alpha&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Omega&amp;#34;&lt;/span&gt;})
 }
-chars := []GreekAlphabet{}
-db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Error
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}
+&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Model&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Scopes&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;firstAndLast&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Find&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -280,18 +217,11 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
-
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
-
 &lt;p&gt;reflect.Type.Field模块可以获得&lt;strong&gt;struct&lt;/strong&gt;或者&lt;strong&gt;interface&lt;/strong&gt;中的字段名，字段类型，字段的tag等信息&lt;/p&gt;
-
 &lt;p&gt;reflect.ValueOf可以获得一个对象的值信息，比如它是指针还是实体，值的类型和interface类型下的值，它返回一个reflect.Value&lt;/p&gt;
-
 &lt;p&gt;我这里简单谈谈reflect的用法和哪些能做到哪些不能做到&lt;/p&gt;
-
-&lt;p&gt;Ps:以下所有代码都包含在这个&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/reflect_demo&#34;&gt;测试项目&lt;/a&gt;中&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;Ps:以下所有代码都包含在这个&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/reflect_demo&#34;&gt;测试项目&lt;/a&gt;中&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -301,13 +231,9 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
-
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
-
 &lt;p&gt;所以需要一个工具来管理数据库语句的组装和操作&lt;/p&gt;
-
-&lt;p&gt;gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
-&lt;/p&gt;</description>
+&lt;p&gt;gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -316,9 +242,7 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       <pubDate>Thu, 09 Mar 2017 09:44:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/post/git-push-recover-way/</guid>
-      <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -328,16 +252,10 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/my-skip-gfw-stack/</guid>
       <description>&lt;p&gt;谈到翻墙，很多人第一时间想到的就是shdowsocks，虽然简单的搭建一个shadowsocks服务就可以实现翻墙，不过很快你就会发现代理的速度并不理想，而且有时会发生长时间无法链接的情况。&lt;/p&gt;
-
 &lt;p&gt;这是因为网络有的错误丢包被当成拥塞丢包，所以发送窗口一直没法增大。&lt;/p&gt;
-
 &lt;p&gt;linux kernel 4.9支持BBR拥塞控制算法可以解决这个问题&lt;/p&gt;
-
 &lt;p&gt;也可以通过其他协议工具比如:&lt;a href=&#34;https://github.com/xtaci/kcptun&#34;&gt;kcptun&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;kcptun可以提供双边加速和窗口控制，效果可能比bbr好&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;kcptun可以提供双边加速和窗口控制，效果可能比bbr好&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -347,10 +265,7 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
-
-&lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -359,11 +274,7 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       <pubDate>Tue, 28 Jun 2016 16:00:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/post/iptables-study/</guid>
-      <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;
-
-&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
-
-&lt;p&gt;但后来我接触linux运维越来越多才发现，iptables虽然缺点一大堆，但它胜在功能非常强大，并且可以满足大多数网络管理上的需求，在没有更好的代替品出现前iptables绝对是必不可少的工具。&lt;/p&gt;</description>
+      <description>&lt;p&gt;以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -373,30 +284,18 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
-
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
-
 &lt;p&gt;那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;var a = &amp;lt;div class=&amp;quot;green&amp;quot;&amp;gt;my color is green&amp;lt;/div&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用&lt;/p&gt;
-
 &lt;p&gt;也可以使用react.createElement创建element&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var app = React.createElement(
-    &amp;quot;div&amp;quot;, //标签名或组件对象
-    {class:&amp;quot;green&amp;quot;}, //元素属性集
-    &amp;quot;my color is green&amp;quot; //子元素
-);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;createElement的更多信息&lt;a href=&#34;https://facebook.github.io/react/docs/top-level-api.html#react.createelement&#34;&gt;看这里&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
-
-&lt;p&gt;于是乎，我们可以自由组合js和xml了，比如&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;React&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;createElement&lt;/span&gt;(
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;div&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;//标签名或组件对象
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    {&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;}, &lt;span style=&#34;color:#75715e&#34;&gt;//元素属性集
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my color is green&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;//子元素
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;createElement的更多信息&lt;a href=&#34;https://facebook.github.io/react/docs/top-level-api.html#react.createelement&#34;&gt;看这里&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -406,18 +305,22 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/postgresql-type/</guid>
       <description>&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;但是繁多的类型也导致了postgresql的学习成本和复杂度的问题&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;这里我来做个笔记简单讲讲postgresql的数据类型有哪些和如何用好这些类型&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;PS:以下内容都基于postgresql 9.3&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;TODO:有些类型的例子和介绍还没写完，以后再补上&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;li&gt;
+&lt;p&gt;postgresql支持的类型相当的多,配合postgresql的函数就已经可以满足很多业务的需求了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但是繁多的类型也导致了postgresql的学习成本和复杂度的问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这里我来做个笔记简单讲讲postgresql的数据类型有哪些和如何用好这些类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PS:以下内容都基于postgresql 9.3&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TODO:有些类型的例子和介绍还没写完，以后再补上&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -427,14 +330,16 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/python-and-postgresql/</guid>
       <description>&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;首先postgresql的安装,这里我使用了自己build一个Dockerfile&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;我的Dockerfile:&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;li&gt;
+&lt;p&gt;本文使用的是postgresql 9.3 基于docker ubuntu&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;首先postgresql的安装,这里我使用了自己build一个Dockerfile&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;我的Dockerfile:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -444,10 +349,7 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/docker-and-jekyll/</guid>
       <description>&lt;p&gt;关于在docker部署jekyll在&lt;a href=&#34;http://books.linuxfocus.net/files/books/James.Turnbull.The.Docker.Book.Containerization.is.the.new.virtualization.B00LRROTI4.pdf&#34;&gt;The.Docker.Book&lt;/a&gt;中也有详细说明，但主要是自从jekyll升级到需要ruby2.0+版本后就没那么容易了&lt;/p&gt;
-
-&lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;所以我在这记录一下部署过程以免将来再次踩坑&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -457,12 +359,8 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
-
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;
-
-&lt;p&gt;而因为它的简单我们也能很好的在它上面增加功能或再开发&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;而因为它的简单我们也能很好的在它上面增加功能或再开发&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -472,25 +370,20 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/switchy-proxy-pac-optimization/</guid>
       <description>&lt;p&gt;最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.&lt;/p&gt;
-
 &lt;p&gt;于是我翻看了它们的实现&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;lantern
-
 &lt;ul&gt;
 &lt;li&gt;把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;shadowsocks
-
-&lt;ul&gt;
-&lt;li&gt;把domain做成一个{domain:1,&amp;hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&amp;rsquo;.&amp;lsquo;和之前的内容 继续做domains.hasOwnProperty判断&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
-
-于是我自己实现一个pac优化FindProxyForURL匹配速度&lt;/p&gt;</description>
+&lt;/li&gt;
+&lt;li&gt;shadowsocks
+&lt;ul&gt;
+&lt;li&gt;把domain做成一个{domain:1,&amp;hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&#39;.&amp;lsquo;和之前的内容 继续做domains.hasOwnProperty判断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -503,7 +396,8 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
 &lt;li&gt;在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况&lt;/li&gt;
 &lt;li&gt;把博客上传github的时候主要不要把_site里的内容上传上去，不然会你的邮箱会收到一个Page build failure的邮件&lt;/li&gt;
 &lt;li&gt;这个博客的模板我是fork &lt;a href=&#34;https://github.com/Gaohaoyang&#34;&gt;浩阳 Gaohaoyang&lt;/a&gt; 的 &lt;a href=&#34;https://github.com/Gaohaoyang/gaohaoyang.github.io&#34;&gt;博客模板&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;其实我还是希望设计一个有特色点的博客，但毕竟我前端技能很烂，只能先用别人的了.</description>
+&lt;li&gt;其实我还是希望设计一个有特色点的博客，但毕竟我前端技能很烂，只能先用别人的了.&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
   </channel>

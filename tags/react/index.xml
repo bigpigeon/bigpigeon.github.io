@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>React on bigpigeon</title>
@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 21 Apr 2016 10:43:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/tags/react/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 21 Apr 2016 10:43:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/tags/react/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>react学习笔记</title>
       <link>https://bigpigeon.org/post/react-study/</link>
@@ -19,30 +15,18 @@
       
       <guid>https://bigpigeon.org/post/react-study/</guid>
       <description>&lt;h3 id=&#34;jsx&#34;&gt;JSX&lt;/h3&gt;
-
 &lt;p&gt;React可以使用的是独有的JSX语法,包围它的&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签type值为text/babel&lt;/p&gt;
-
 &lt;p&gt;那什么是JSX呢，JSX其实就是JS+XML,在JSX中JS和XML可以同时存在,举个简单例子:&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;var a = &amp;lt;div class=&amp;quot;green&amp;quot;&amp;gt;my color is green&amp;lt;/div&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;在JSX中这样的写法是完全合法的,这个a可以当成是一个html的element使用&lt;/p&gt;
-
 &lt;p&gt;也可以使用react.createElement创建element&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var app = React.createElement(
-    &amp;quot;div&amp;quot;, //标签名或组件对象
-    {class:&amp;quot;green&amp;quot;}, //元素属性集
-    &amp;quot;my color is green&amp;quot; //子元素
-);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;createElement的更多信息&lt;a href=&#34;https://facebook.github.io/react/docs/top-level-api.html#react.createelement&#34;&gt;看这里&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;hugomore42&#34;&gt;&lt;/h2&gt;
-
-&lt;p&gt;于是乎，我们可以自由组合js和xml了，比如&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;React&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;createElement&lt;/span&gt;(
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;div&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;//标签名或组件对象
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    {&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;}, &lt;span style=&#34;color:#75715e&#34;&gt;//元素属性集
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my color is green&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;//子元素
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;createElement的更多信息&lt;a href=&#34;https://facebook.github.io/react/docs/top-level-api.html#react.createelement&#34;&gt;看这里&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go语言 on bigpigeon</title>
@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>实现一个k8s的节点本地服务</title>
       <link>https://bigpigeon.org/post/k8s-crd/</link>
@@ -19,16 +15,12 @@
       
       <guid>https://bigpigeon.org/post/k8s-crd/</guid>
       <description>&lt;p&gt;k8s的service实体的路由规则太简单，无法设置路由节点信息，于是我通过crd扩展一个LocalService的种类来控制节点的路由&lt;/p&gt;
-
 &lt;p&gt;它的结构如下,创建LocalService会创建对应的节点service,通过&lt;code&gt;服务名-节点名&lt;/code&gt;就可以很方便的路由到该节点的上&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;demo-service(kind:LocalService)
   \- demo-service-node1(kind:service)
   \- demo-service-node2(kind:service)
   ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -38,17 +30,10 @@
       
       <guid>https://bigpigeon.org/post/go-change-compile-source-code/</guid>
       <description>&lt;p&gt;有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;package xxx.internel.io/lib/with-lfs: unknown import path &amp;quot;xxx.internel.io/lib/with-lfs&amp;quot;: downloaded zip file too large
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在多方信息干扰下我先从gitlab查起，当然比较竟然叫 &lt;code&gt;go module无法拉取库的原因排查&lt;/code&gt;,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上&lt;/p&gt;
 &lt;p&gt;在一番google我找到了 &lt;a href=&#34;https://github.com/golang/go/issues/29987&#34;&gt;issue&lt;/a&gt; 应该就是对应这个问题的，但一直没有close,看来是没解决&lt;/p&gt;
-
-&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到&lt;code&gt;downloaded zip file too large&lt;/code&gt;关键字对应的行&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -58,10 +43,7 @@
       
       <guid>https://bigpigeon.org/post/kubernetes-deployment/</guid>
       <description>&lt;p&gt;老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来&lt;/p&gt;
-
-&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -71,12 +53,8 @@
       
       <guid>https://bigpigeon.org/post/go-ast-walk/</guid>
       <description>&lt;p&gt;可能很多人想问types中的Type和Object接口有什么区别&lt;/p&gt;
-
 &lt;p&gt;我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象&lt;/p&gt;
-
-&lt;p&gt;比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -86,14 +64,9 @@
       
       <guid>https://bigpigeon.org/post/go-ast-type/</guid>
       <description>&lt;p&gt;在进行go文件解析经常需要对Ident对象的类型/值进行比较&lt;/p&gt;
-
 &lt;p&gt;但go/ast只对单文件进行解析，并不适合用来比较类型，所以这个时候就需要用到另一个库go/types&lt;/p&gt;
-
 &lt;p&gt;先来看看全部代码&lt;/p&gt;
-
-&lt;p&gt;代码也可以通过&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/blog_go_types&#34;&gt;这里&lt;/a&gt;下载，建议在看教程的同时运行这个demo代码&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;代码也可以通过&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/blog_go_types&#34;&gt;这里&lt;/a&gt;下载，建议在看教程的同时运行这个demo代码&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -103,53 +76,49 @@
       
       <guid>https://bigpigeon.org/post/go-ast-parser-file/</guid>
       <description>&lt;p&gt;go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具&lt;/p&gt;
-
 &lt;p&gt;下面我们来看看如何ast树的结构&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;package main
-
-import (
-	&amp;quot;go/ast&amp;quot;
-	&amp;quot;go/parser&amp;quot;
-	&amp;quot;go/token&amp;quot;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/ast&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/parser&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go/token&amp;#34;&lt;/span&gt;
 )
 
-func main() {
-	src := `
-package main
-
-// 该声明为GenDecl TOK=token.IMPORT
-import &amp;quot;fmt&amp;quot;
-
-// 该声明为GenDecl TOK=token.TYPE
-type Product struct {
-	Name string
-}
-
-// 该声明为GenDecl TOK=token.VAR
-var product Product
-
-// 该声明为FunDecl
-func main() { //test1
-	fmt.Println(&amp;quot;Hello, World!&amp;quot;) //test2
-	a := []int{1,2,3}
-	a[1],a[2] = 5,6
-}
-`
-	fset := token.NewFileSet() // 位置是相对于节点
-	// 用ParseFile把文件解析成*ast.File节点
-	f, err := parser.ParseFile(fset, &amp;quot;&amp;quot;, src, 0)
-	if err != nil {
-		panic(err)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;package main
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.IMPORT
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;import &amp;#34;fmt&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.TYPE
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;type Product struct {
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	Name string
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为GenDecl TOK=token.VAR
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;var product Product
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;// 该声明为FunDecl
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;func main() { //test1
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	fmt.Println(&amp;#34;Hello, World!&amp;#34;) //test2
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	a := []int{1,2,3}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	a[1],a[2] = 5,6
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewFileSet&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;// 位置是相对于节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// 用ParseFile把文件解析成*ast.File节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parser&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ParseFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
 	}
 
-	// 打印ast节点
-	ast.Print(fset, f)
+	&lt;span style=&#34;color:#75715e&#34;&gt;// 打印ast节点
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;ast&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Print&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;fset&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;)
 }
 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -159,29 +128,18 @@ func main() { //test1
       
       <guid>https://bigpigeon.org/post/gorm-tutorial-second/</guid>
       <description>&lt;p&gt;上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块&lt;/p&gt;
-
 &lt;h3 id=&#34;scopes简介&#34;&gt;scopes简介&lt;/h3&gt;
-
 &lt;p&gt;scopes是需要一个自定义的函数&lt;strong&gt;func(db *gorm.DB) *gorm.DB&lt;/strong&gt;作为参数，这样就可以在不破坏链式语法的情况下自定义操作了&lt;/p&gt;
-
-&lt;p&gt;比如我要查询GreekAlphabet表中LatinName是&amp;rdquo;Alpha&amp;rdquo;或 &amp;ldquo;Omega&amp;rdquo;的条目可以这样&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;chars := []GreekAlphabet{}
-db.Model(&amp;amp;GreekAlphabet{}).Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;}).Find(&amp;amp;chars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因为查询多个字段的值只能用 &lt;strong&gt;Where(&amp;ldquo;field in (?)&amp;rdquo;, fields)&lt;/strong&gt; 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;firstAndLast := func(db *gorm.DB) *gorm.DB {
-  return db.Where(&amp;quot;latin_name in (?)&amp;quot;, []string{&amp;quot;Alpha&amp;quot;, &amp;quot;Omega&amp;quot;})
+&lt;p&gt;比如我要查询GreekAlphabet表中LatinName是&amp;quot;Alpha&amp;quot;或 &amp;ldquo;Omega&amp;quot;的条目可以这样&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}
+&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Model&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Where&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;latin_name in (?)&amp;#34;&lt;/span&gt;, []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alpha&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Omega&amp;#34;&lt;/span&gt;}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Find&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为查询多个字段的值只能用 &lt;strong&gt;Where(&amp;ldquo;field in (?)&amp;rdquo;, fields)&lt;/strong&gt; 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;firstAndLast&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;gorm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DB&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;gorm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DB&lt;/span&gt; {
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Where&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;latin_name in (?)&amp;#34;&lt;/span&gt;, []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alpha&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Omega&amp;#34;&lt;/span&gt;})
 }
-chars := []GreekAlphabet{}
-db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Error
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}
+&lt;span style=&#34;color:#a6e22e&#34;&gt;db&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Model&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;GreekAlphabet&lt;/span&gt;{}).&lt;span style=&#34;color:#a6e22e&#34;&gt;Scopes&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;firstAndLast&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Find&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;chars&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -191,18 +149,11 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/go-reflect-talk/</guid>
       <description>&lt;p&gt;go的reflect实现了一个运行时反射，它允许程序操纵任意类型的对象&lt;/p&gt;
-
 &lt;p&gt;reflect.TypeOf函数能把对象的类型信息，它返回一个relect.Type&lt;/p&gt;
-
 &lt;p&gt;reflect.Type.Field模块可以获得&lt;strong&gt;struct&lt;/strong&gt;或者&lt;strong&gt;interface&lt;/strong&gt;中的字段名，字段类型，字段的tag等信息&lt;/p&gt;
-
 &lt;p&gt;reflect.ValueOf可以获得一个对象的值信息，比如它是指针还是实体，值的类型和interface类型下的值，它返回一个reflect.Value&lt;/p&gt;
-
 &lt;p&gt;我这里简单谈谈reflect的用法和哪些能做到哪些不能做到&lt;/p&gt;
-
-&lt;p&gt;Ps:以下所有代码都包含在这个&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/reflect_demo&#34;&gt;测试项目&lt;/a&gt;中&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;Ps:以下所有代码都包含在这个&lt;a href=&#34;https://github.com/bigpigeon/Test/tree/master/go/reflect_demo&#34;&gt;测试项目&lt;/a&gt;中&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -212,13 +163,9 @@ db.Model(&amp;amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;amp;chars).Err
       
       <guid>https://bigpigeon.org/post/gorm-tutorial-first/</guid>
       <description>&lt;p&gt;我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险&lt;/p&gt;
-
 &lt;p&gt;而且组装sql语句也容易出错和减低代码的可维护性&lt;/p&gt;
-
 &lt;p&gt;所以需要一个工具来管理数据库语句的组装和操作&lt;/p&gt;
-
-&lt;p&gt;gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
-&lt;/p&gt;</description>
+&lt;p&gt;gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作&lt;/p&gt;</description>
     </item>
     
   </channel>

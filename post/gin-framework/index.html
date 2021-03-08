@@ -1,527 +1,544 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> gin框架介绍 &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>gin框架介绍 • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="gin框架介绍"/>
+<meta name="twitter:description" content="为何用gin
+它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够
+而因为它的简单我们也能很好的在它上面增加功能或再开发"/>
+
+<meta property="og:title" content="gin框架介绍" />
+<meta property="og:description" content="为何用gin
+它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够
+而因为它的简单我们也能很好的在它上面增加功能或再开发" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/gin-framework/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-12-24T06:25:00&#43;08:00" />
+<meta property="article:modified_time" content="2015-12-24T06:25:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>gin框架介绍</h2>
-          <span class="post-date">Thu, Dec 24, 2015</span>
-          <h3 id="为何用gin">为何用gin</h3>
+      </div>
+    </div>
+    
 
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>gin框架介绍</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Dec 24, 2015
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/%E5%BC%80%E5%8F%91">开发</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/development">development</a>
+           
+      
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/golang">golang</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 4 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <h3 id="为何用gin">为何用gin</h3>
 <p>它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够</p>
-
 <p>而因为它的简单我们也能很好的在它上面增加功能或再开发</p>
-
-<p></p>
-
 <h3 id="gin的特性">gin的特性</h3>
-
 <p>支持中间层</p>
-
 <pre><code>一个请求过来经过 global middleware,group middleware 最后到该path的middleware处理
 我们可以把处理函数放入global/middleware/group middleware的中
 </code></pre>
-
 <p>基于Radix tree</p>
-
 <p>灾难恢复</p>
-
 <pre><code>处理请求崩溃后会在Recover函数中恢复然后返回500
 </code></pre>
-
 <p>更多特性请看<a href="https://gin-gonic.github.io/gin/">官网</a></p>
-
 <h3 id="基本用法">基本用法</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/gin-gonic/gin&#34;</span>
 
-import &quot;github.com/gin-gonic/gin&quot;
-
-func pingPath(c *gin.Context) {
-	c.String(200, &quot;pong&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">pingPath</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">String</span>(<span style="color:#ae81ff">200</span>, <span style="color:#e6db74">&#34;pong&#34;</span>)
 }
 
-func main() {
-    r := gin.Default()
-	r.GET(&quot;ping&quot;, pingPath)
-	r.Run(&quot;:80&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
+	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;ping&#34;</span>, <span style="color:#a6e22e">pingPath</span>)
+	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;:80&#34;</span>)
 }
-</code></pre>
-
-<h3 id="上面的代码是什么意思呢">上面的代码是什么意思呢？</h3>
-
-<h4 id="先看看gin-default的源码">先看看gin.Default的源码</h4>
-
-<pre><code class="language-go">func Default() *Engine {
-	engine := New()
-	engine.Use(Recovery(), Logger())
-	return engine
+</code></pre></div><h3 id="上面的代码是什么意思呢">上面的代码是什么意思呢？</h3>
+<h4 id="先看看gindefault的源码">先看看gin.Default的源码</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Default</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Engine</span> {
+	<span style="color:#a6e22e">engine</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">New</span>()
+	<span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Use</span>(<span style="color:#a6e22e">Recovery</span>(), <span style="color:#a6e22e">Logger</span>())
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">engine</span>
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>New()是用默认参数构造一个engine</li>
 <li>engine.Use(&hellip;)把Recovery() 和Logger()生成的函数增加值全局handler列</li>
 <li>engine.Use要在所有handle的middleware绑定之前使用，否则某些绑定的path会不生效(在group的middleware之后加是可以的)</li>
 </ul>
-
 <h4 id="然后我们来看看recovery干了什么">然后我们来看看Recovery干了什么</h4>
-
-<pre><code class="language-go">// Recovery returns a middleware that recovers from any panics and writes a 500 if there was one.
-func Recovery() HandlerFunc {
-	return RecoveryWithWriter(DefaultWriter)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Recovery returns a middleware that recovers from any panics and writes a 500 if there was one.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Recovery</span>() <span style="color:#a6e22e">HandlerFunc</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">RecoveryWithWriter</span>(<span style="color:#a6e22e">DefaultWriter</span>)
 }
 
-func RecoveryWithWriter(out io.Writer) HandlerFunc {
-	var logger *log.Logger
-	if out != nil {
-		logger = log.New(out, &quot;&quot;, log.LstdFlags)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RecoveryWithWriter</span>(<span style="color:#a6e22e">out</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>) <span style="color:#a6e22e">HandlerFunc</span> {
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">logger</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Logger</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">out</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">logger</span> = <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">out</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">LstdFlags</span>)
 	}
-	return func(c *Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				if logger != nil {
-					stack := stack(3)
-					logger.Printf(&quot;Panic recovery -&gt; %s\n%s\n&quot;, err, stack)
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Context</span>) {
+		<span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> recover(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">logger</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+					<span style="color:#a6e22e">stack</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">stack</span>(<span style="color:#ae81ff">3</span>)
+					<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Panic recovery -&gt; %s\n%s\n&#34;</span>, <span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">stack</span>)
 				}
-				c.AbortWithStatus(500)
+				<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">AbortWithStatus</span>(<span style="color:#ae81ff">500</span>)
 			}
 		}()
-		c.Next()
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Next</span>()
 	}
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>关于recover的使用可以看<a href="http://blog.golang.org/defer-panic-and-recover">http://blog.golang.org/defer-panic-and-recover</a></li>
 <li>defer的函数会在函数结束后返回前调用</li>
 <li>c.Next()就是调用下一个handler 就和Nodejs中的http库差不多</li>
 <li>大致流程就是 FuncBody -&gt; c.Next -&gt; defer func (一个灾难恢复就这样简单的实现了)</li>
 </ul>
-
 <h4 id="再然后来看看logger">再然后来看看Logger</h4>
-
-<pre><code class="language-go">// Instances a Logger middleware that will write the logs to gin.DefaultWriter
-// By default gin.DefaultWriter = os.Stdout
-func Logger() HandlerFunc {
-	return LoggerWithWriter(DefaultWriter)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Instances a Logger middleware that will write the logs to gin.DefaultWriter
+</span><span style="color:#75715e">// By default gin.DefaultWriter = os.Stdout
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Logger</span>() <span style="color:#a6e22e">HandlerFunc</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">LoggerWithWriter</span>(<span style="color:#a6e22e">DefaultWriter</span>)
 }
 
-// Instance a Logger middleware with the specified writter buffer.
-// Example: os.Stdout, a file opened in write mode, a socket...
-func LoggerWithWriter(out io.Writer) HandlerFunc {
-	return func(c *Context) {
-		// Start timer
-		start := time.Now()
-		path := c.Request.URL.Path
+<span style="color:#75715e">// Instance a Logger middleware with the specified writter buffer.
+</span><span style="color:#75715e">// Example: os.Stdout, a file opened in write mode, a socket...
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">LoggerWithWriter</span>(<span style="color:#a6e22e">out</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>) <span style="color:#a6e22e">HandlerFunc</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Context</span>) {
+		<span style="color:#75715e">// Start timer
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">start</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()
+		<span style="color:#a6e22e">path</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Path</span>
 
-		// Process request
-		c.Next()
+		<span style="color:#75715e">// Process request
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Next</span>()
 
-		// Stop timer
-		end := time.Now()
-		latency := end.Sub(start)
+		<span style="color:#75715e">// Stop timer
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">end</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()
+		<span style="color:#a6e22e">latency</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">end</span>.<span style="color:#a6e22e">Sub</span>(<span style="color:#a6e22e">start</span>)
 
-		clientIP := c.ClientIP()
-		method := c.Request.Method
-		statusCode := c.Writer.Status()
-		statusColor := colorForStatus(statusCode)
-		methodColor := colorForMethod(method)
-		comment := c.Errors.ByType(ErrorTypePrivate).String()
+		<span style="color:#a6e22e">clientIP</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ClientIP</span>()
+		<span style="color:#a6e22e">method</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">Method</span>
+		<span style="color:#a6e22e">statusCode</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Writer</span>.<span style="color:#a6e22e">Status</span>()
+		<span style="color:#a6e22e">statusColor</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">colorForStatus</span>(<span style="color:#a6e22e">statusCode</span>)
+		<span style="color:#a6e22e">methodColor</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">colorForMethod</span>(<span style="color:#a6e22e">method</span>)
+		<span style="color:#a6e22e">comment</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Errors</span>.<span style="color:#a6e22e">ByType</span>(<span style="color:#a6e22e">ErrorTypePrivate</span>).<span style="color:#a6e22e">String</span>()
 
-		fmt.Fprintf(out, &quot;[GIN] %v |%s %3d %s| %13v | %s |%s  %s %-7s %s\n%s&quot;,
-			end.Format(&quot;2006/01/02 - 15:04:05&quot;),
-			statusColor, statusCode, reset,
-			latency,
-			clientIP,
-			methodColor, reset, method,
-			path,
-			comment,
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">out</span>, <span style="color:#e6db74">&#34;[GIN] %v |%s %3d %s| %13v | %s |%s  %s %-7s %s\n%s&#34;</span>,
+			<span style="color:#a6e22e">end</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006/01/02 - 15:04:05&#34;</span>),
+			<span style="color:#a6e22e">statusColor</span>, <span style="color:#a6e22e">statusCode</span>, <span style="color:#a6e22e">reset</span>,
+			<span style="color:#a6e22e">latency</span>,
+			<span style="color:#a6e22e">clientIP</span>,
+			<span style="color:#a6e22e">methodColor</span>, <span style="color:#a6e22e">reset</span>, <span style="color:#a6e22e">method</span>,
+			<span style="color:#a6e22e">path</span>,
+			<span style="color:#a6e22e">comment</span>,
 		)
 	}
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>大致就是输出请求头的数据和处理请求所花费的时间</li>
 <li>但听说获取系统时间会有阻塞</li>
 </ul>
-
-<h4 id="再来看看r-get之后发生了什么">再来看看r.GET之后发生了什么</h4>
-
-<pre><code class="language-go">// routergroup file
-func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
-	return group.handle(&quot;GET&quot;, relativePath, handlers)
+<h4 id="再来看看rget之后发生了什么">再来看看r.GET之后发生了什么</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// routergroup file
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">group</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RouterGroup</span>) <span style="color:#a6e22e">GET</span>(<span style="color:#a6e22e">relativePath</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">handlers</span> <span style="color:#f92672">...</span><span style="color:#a6e22e">HandlerFunc</span>) <span style="color:#a6e22e">IRoutes</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">handle</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">relativePath</span>, <span style="color:#a6e22e">handlers</span>)
 }
 
-func (group *RouterGroup) handle(httpMethod, relativePath string, handlers HandlersChain) IRoutes {
-	absolutePath := group.calculateAbsolutePath(relativePath)
-	handlers = group.combineHandlers(handlers)
-	group.engine.addRoute(httpMethod, absolutePath, handlers)
-	return group.returnObj()
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">group</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RouterGroup</span>) <span style="color:#a6e22e">handle</span>(<span style="color:#a6e22e">httpMethod</span>, <span style="color:#a6e22e">relativePath</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">handlers</span> <span style="color:#a6e22e">HandlersChain</span>) <span style="color:#a6e22e">IRoutes</span> {
+	<span style="color:#a6e22e">absolutePath</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">calculateAbsolutePath</span>(<span style="color:#a6e22e">relativePath</span>)
+	<span style="color:#a6e22e">handlers</span> = <span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">combineHandlers</span>(<span style="color:#a6e22e">handlers</span>)
+	<span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">addRoute</span>(<span style="color:#a6e22e">httpMethod</span>, <span style="color:#a6e22e">absolutePath</span>, <span style="color:#a6e22e">handlers</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">returnObj</span>()
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>这里的类是RouterGroup但上面gin.Default()返回的却是是Engine</li>
 </ul>
-
 <h4 id="于是我们看看engine的定义">于是我们看看Engine的定义</h4>
-
-<pre><code class="language-go">// Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
-// Create an instance of Engine, by using New() or Default()
-Engine struct {
-	RouterGroup
-	HTMLRender  render.HTMLRender
-	allNoRoute  HandlersChain
-	allNoMethod HandlersChain
-	noRoute     HandlersChain
-	noMethod    HandlersChain
-	pool        sync.Pool
-	trees       methodTrees
-	//忽略一些太长的数据
-	...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Engine is the framework&#39;s instance, it contains the muxer, middleware and configuration settings.
+</span><span style="color:#75715e">// Create an instance of Engine, by using New() or Default()
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">Engine</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">RouterGroup</span>
+	<span style="color:#a6e22e">HTMLRender</span>  <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">HTMLRender</span>
+	<span style="color:#a6e22e">allNoRoute</span>  <span style="color:#a6e22e">HandlersChain</span>
+	<span style="color:#a6e22e">allNoMethod</span> <span style="color:#a6e22e">HandlersChain</span>
+	<span style="color:#a6e22e">noRoute</span>     <span style="color:#a6e22e">HandlersChain</span>
+	<span style="color:#a6e22e">noMethod</span>    <span style="color:#a6e22e">HandlersChain</span>
+	<span style="color:#a6e22e">pool</span>        <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Pool</span>
+	<span style="color:#a6e22e">trees</span>       <span style="color:#a6e22e">methodTrees</span>
+	<span style="color:#75715e">//忽略一些太长的数据
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">...</span>
 
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>Engine 是继承于RouteGroup的</li>
 <li>其实可以把Engine当成是RouteGroup节点，Group是可以嵌套的</li>
 </ul>
-
 <h4 id="最后看一下handler函数的context参数">最后看一下handler函数的Context参数</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Context is the most important part of gin. It allows us to pass variables between middleware,
+</span><span style="color:#75715e">// manage the flow, validate the JSON of a request and render a JSON response for example.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Context</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">writermem</span> <span style="color:#a6e22e">responseWriter</span>
+	<span style="color:#a6e22e">Request</span>   <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>
+	<span style="color:#a6e22e">Writer</span>    <span style="color:#a6e22e">ResponseWriter</span>
 
-<pre><code class="language-go">// Context is the most important part of gin. It allows us to pass variables between middleware,
-// manage the flow, validate the JSON of a request and render a JSON response for example.
-type Context struct {
-	writermem responseWriter
-	Request   *http.Request
-	Writer    ResponseWriter
+	<span style="color:#a6e22e">Params</span>   <span style="color:#a6e22e">Params</span>
+	<span style="color:#a6e22e">handlers</span> <span style="color:#a6e22e">HandlersChain</span>
+	<span style="color:#a6e22e">index</span>    <span style="color:#66d9ef">int8</span>
 
-	Params   Params
-	handlers HandlersChain
-	index    int8
-
-	engine   *Engine
-	Keys     map[string]interface{}
-	Errors   errorMsgs
-	Accepted []string
+	<span style="color:#a6e22e">engine</span>   <span style="color:#f92672">*</span><span style="color:#a6e22e">Engine</span>
+	<span style="color:#a6e22e">Keys</span>     <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}
+	<span style="color:#a6e22e">Errors</span>   <span style="color:#a6e22e">errorMsgs</span>
+	<span style="color:#a6e22e">Accepted</span> []<span style="color:#66d9ef">string</span>
 }
 
-// Next should be used only inside middleware.
-// It executes the pending handlers in the chain inside the calling handler.
-// See example in github.
-func (c *Context) Next() {
-	c.index++
-	s := int8(len(c.handlers))
-	for ; c.index &lt; s; c.index++ {
-		c.handlers[c.index](c)
+<span style="color:#75715e">// Next should be used only inside middleware.
+</span><span style="color:#75715e">// It executes the pending handlers in the chain inside the calling handler.
+</span><span style="color:#75715e">// See example in github.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Context</span>) <span style="color:#a6e22e">Next</span>() {
+	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">index</span><span style="color:#f92672">++</span>
+	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> int8(len(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">handlers</span>))
+	<span style="color:#66d9ef">for</span> ; <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">index</span> &lt; <span style="color:#a6e22e">s</span>; <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">index</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">handlers</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">index</span>](<span style="color:#a6e22e">c</span>)
 	}
 }
 
-</code></pre>
-
-<ul>
-<li><p>这里只展示了Context的定义和Next函数的实现,<a href="https://github.com/gin-gonic/gin/blob/master/context.go">详细看源码</a></p></li>
-
-<li><p>gin的运作原理大概就是这样了,之后讲gin的一些example和<a href="https://github.com/gin-gonic/gin">gin的github page</a>上的一样</p></li>
+</code></pre></div><ul>
+<li>
+<p>这里只展示了Context的定义和Next函数的实现,<a href="https://github.com/gin-gonic/gin/blob/master/context.go">详细看源码</a></p>
+</li>
+<li>
+<p>gin的运作原理大概就是这样了,之后讲gin的一些example和<a href="https://github.com/gin-gonic/gin">gin的github page</a>上的一样</p>
+</li>
 </ul>
-
 <h3 id="包含参数的路径">包含参数的路径</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/gin-gonic/gin&#34;</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;net/http&#34;</span>
 
-import &quot;github.com/gin-gonic/gin&quot;
-import &quot;net/http&quot;
-
-func main() {
-	r := gin.Default()
-	// 这种写法只会匹配/user/pigeon ,/user/ 和/user就不会被匹配
-	r.GET(&quot;/user/:name&quot;, func(c *gin.Context) {
-		name := c.Param(&quot;name&quot;)
-		c.String(http.StatusOK, &quot;Hello %s&quot;, name)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
+	<span style="color:#75715e">// 这种写法只会匹配/user/pigeon ,/user/ 和/user就不会被匹配
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/user/:name&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+		<span style="color:#a6e22e">name</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Param</span>(<span style="color:#e6db74">&#34;name&#34;</span>)
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#e6db74">&#34;Hello %s&#34;</span>, <span style="color:#a6e22e">name</span>)
 	})
-	//这种写法会匹配 /user/pigeon/ 和/user/pigeon/enter 或 /user/pigeon/to/doing/something
-	r.GET(&quot;/user/:name/*action&quot;, func(c *gin.Context) {
-		name := c.Param(&quot;name&quot;)
-		action := c.Param(&quot;action&quot;)
-		message := name + &quot; is &quot; + action
-		c.String(http.StatusOK, message)
+	<span style="color:#75715e">//这种写法会匹配 /user/pigeon/ 和/user/pigeon/enter 或 /user/pigeon/to/doing/something
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/user/:name/*action&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+		<span style="color:#a6e22e">name</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Param</span>(<span style="color:#e6db74">&#34;name&#34;</span>)
+		<span style="color:#a6e22e">action</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Param</span>(<span style="color:#e6db74">&#34;action&#34;</span>)
+		<span style="color:#a6e22e">message</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">action</span>
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#a6e22e">message</span>)
 	})
-	r.Run(&quot;:80&quot;)
+	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;:80&#34;</span>)
 }
 
-</code></pre>
+</code></pre></div><h3 id="query字符串参数">Query字符串参数</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<h3 id="query字符串参数">Query字符串参数</h3>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/gin-gonic/gin&#34;</span>
 
-<pre><code class="language-go">package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func main() {
-    router := gin.Default()
-	// 注:Query函数获取的值都必定是字符串
-    router.GET(&quot;/welcome&quot;, func(c *gin.Context) {
-        firstname := c.DefaultQuery(&quot;firstname&quot;, &quot;Guest&quot;)
-        lastname := c.Query(&quot;lastname&quot;) // shortcut for c.Request.URL.Query().Get(&quot;lastname&quot;)
-
-        c.String(http.StatusOK, &quot;Hello %s %s&quot;, firstname, lastname)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">router</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
+	<span style="color:#75715e">// 注:Query函数获取的值都必定是字符串
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/welcome&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+        <span style="color:#a6e22e">firstname</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">DefaultQuery</span>(<span style="color:#e6db74">&#34;firstname&#34;</span>, <span style="color:#e6db74">&#34;Guest&#34;</span>)
+        <span style="color:#a6e22e">lastname</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;lastname&#34;</span>) <span style="color:#75715e">// shortcut for c.Request.URL.Query().Get(&#34;lastname&#34;)
+</span><span style="color:#75715e"></span>
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#e6db74">&#34;Hello %s %s&#34;</span>, <span style="color:#a6e22e">firstname</span>, <span style="color:#a6e22e">lastname</span>)
     })
-    router.Run(&quot;:80&quot;)
+    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;:80&#34;</span>)
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>请尝试用如下请求路径来请求:  /welcome?firstname=Jane&amp;lastname=Doe</li>
 <li>然后查看请求结果</li>
 </ul>
-
 <h3 id="model-binding-and-validation">Model binding and validation</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/gin-gonic/gin&#34;</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;net/http&#34;</span>
 
-import &quot;github.com/gin-gonic/gin&quot;
-import &quot;net/http&quot;
-
-// Binding from JSON
-type Login struct {
-    User     string `form:&quot;user&quot; json:&quot;user&quot; binding:&quot;required&quot;`
-    Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
+<span style="color:#75715e">// Binding from JSON
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Login</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">User</span>     <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`form:&#34;user&#34; json:&#34;user&#34; binding:&#34;required&#34;`</span>
+    <span style="color:#a6e22e">Password</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`form:&#34;password&#34; json:&#34;password&#34; binding:&#34;required&#34;`</span>
 }
 
-func main() {
-    router := gin.Default()
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">router</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
 
-    // 该例子将绑定一个拥有 user 和 password 键的JSON数据
-    router.POST(&quot;/loginJSON&quot;, func(c *gin.Context) {
-        var json Login
-        if c.BindJSON(&amp;json) == nil {
-            if json.User == &quot;manu&quot; &amp;&amp; json.Password == &quot;123&quot; {
-                c.JSON(http.StatusOK, gin.H{&quot;status&quot;: &quot;you are logged in&quot;})
-            } else {
-                c.JSON(http.StatusUnauthorized, gin.H{&quot;status&quot;: &quot;unauthorized&quot;})
+    <span style="color:#75715e">// 该例子将绑定一个拥有 user 和 password 键的JSON数据
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">POST</span>(<span style="color:#e6db74">&#34;/loginJSON&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">json</span> <span style="color:#a6e22e">Login</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">BindJSON</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">json</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">User</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;manu&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Password</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;123&#34;</span> {
+                <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">H</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;you are logged in&#34;</span>})
+            } <span style="color:#66d9ef">else</span> {
+                <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusUnauthorized</span>, <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">H</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unauthorized&#34;</span>})
             }
         }
     })
 
-    // Example for binding a HTML form (user=manu&amp;password=123)
-    router.POST(&quot;/loginForm&quot;, func(c *gin.Context) {
-        var form Login
-        // 用http头中Content-Type 的值去判定数据类型
-        if c.Bind(&amp;form) == nil {
-            if form.User == &quot;manu&quot; &amp;&amp; form.Password == &quot;123&quot; {
-                c.JSON(http.StatusOK, gin.H{&quot;status&quot;: &quot;you are logged in&quot;})
-            } else {
-                c.JSON(http.StatusUnauthorized, gin.H{&quot;status&quot;: &quot;unauthorized&quot;})
+    <span style="color:#75715e">// Example for binding a HTML form (user=manu&amp;password=123)
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">POST</span>(<span style="color:#e6db74">&#34;/loginForm&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">form</span> <span style="color:#a6e22e">Login</span>
+        <span style="color:#75715e">// 用http头中Content-Type 的值去判定数据类型
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Bind</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">form</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">User</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;manu&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">Password</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;123&#34;</span> {
+                <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">H</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;you are logged in&#34;</span>})
+            } <span style="color:#66d9ef">else</span> {
+                <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">JSON</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusUnauthorized</span>, <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">H</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unauthorized&#34;</span>})
             }
         }
     })
 
-    router.Run(&quot;:80&quot;)
+    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;:80&#34;</span>)
 }
-</code></pre>
+</code></pre></div><h3 id="在中间层中使用goroute">在中间层中使用goroute</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<h3 id="在中间层中使用goroute">在中间层中使用goroute</h3>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/gin-gonic/gin&#34;</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;time&#34;</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;log&#34;</span>
 
-<pre><code class="language-go">package main
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
 
-import &quot;github.com/gin-gonic/gin&quot;
-import &quot;time&quot;
-import &quot;log&quot;
+    <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/long_async&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+        <span style="color:#75715e">// create copy to be used inside the goroutine
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">c_cp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Copy</span>()
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+            <span style="color:#75715e">// simulate a long task with time.Sleep(). 5 seconds
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
 
-func main() {
-    r := gin.Default()
-
-    r.GET(&quot;/long_async&quot;, func(c *gin.Context) {
-        // create copy to be used inside the goroutine
-        c_cp := c.Copy()
-        go func() {
-            // simulate a long task with time.Sleep(). 5 seconds
-            time.Sleep(5 * time.Second)
-
-            // note than you are using the copied context &quot;c_cp&quot;, IMPORTANT
-            log.Println(&quot;Done! in path &quot; + c_cp.Request.URL.Path)
+            <span style="color:#75715e">// note than you are using the copied context &#34;c_cp&#34;, IMPORTANT
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Done! in path &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">c_cp</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Path</span>)
         }()
     })
 
 
-    r.GET(&quot;/long_sync&quot;, func(c *gin.Context) {
-        // simulate a long task with time.Sleep(). 5 seconds
-        time.Sleep(5 * time.Second)
+    <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/long_sync&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>) {
+        <span style="color:#75715e">// simulate a long task with time.Sleep(). 5 seconds
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
 
-        // since we are NOT using a goroutine, we do not have to copy the context
-        log.Println(&quot;Done! in path &quot; + c.Request.URL.Path)
+        <span style="color:#75715e">// since we are NOT using a goroutine, we do not have to copy the context
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Done! in path &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Request</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Path</span>)
     })
 
-    r.Run(&quot;:80&quot;)
+    <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#e6db74">&#34;:80&#34;</span>)
 }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>goroute 中请使用只读的Context,用Context.Copy可以返回一个只读的Context</li>
 </ul>
-
-<hr />
-
+<hr>
 <p><strong>更多gin的信息可看这<a href="https://gin-gonic.github.io/gin/">https://gin-gonic.github.io/gin/</a></strong></p>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=gin%e6%a1%86%e6%9e%b6%e4%bb%8b%e7%bb%8d-https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f&title=gin%e6%a1%86%e6%9e%b6%e4%bb%8b%e7%bb%8d" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgin-framework%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/switchy-proxy-pac-optimization/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">pac脚本优化</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/docker-and-jekyll/" class="navigation-next">
+      <span class="navigation-tittle">使用docker部署jekyll</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
         
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-      </div>
-    </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
 
+    </body>
 </html>

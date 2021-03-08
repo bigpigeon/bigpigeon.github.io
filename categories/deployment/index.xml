@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Deployment on bigpigeon</title>
@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 30 Apr 2019 11:47:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/categories/deployment/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 30 Apr 2019 11:47:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/deployment/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kubernetes官方kubeadm部署笔记</title>
       <link>https://bigpigeon.org/post/kubernetes-deployment/</link>
@@ -19,10 +15,7 @@
       
       <guid>https://bigpigeon.org/post/kubernetes-deployment/</guid>
       <description>&lt;p&gt;老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来&lt;/p&gt;
-
-&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这里做一个k8s部署(踩坑)笔记&lt;/p&gt;</description>
     </item>
     
   </channel>

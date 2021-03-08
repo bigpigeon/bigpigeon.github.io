@@ -1,511 +1,533 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> go的text/template源码解析 &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>go的text/template源码解析 • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="go的text/template源码解析"/>
+<meta name="twitter:description" content="go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题
+为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍
+本篇只是粗略的讲解模板的各个模块，不会深入函数细节
+首先基本用法开始
+基本用法
+我们这里用的是text_template中example_test的ExampleTemplate()作为例子
+通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中
+然后通过t.Execute把模板渲染出来"/>
+
+<meta property="og:title" content="go的text/template源码解析" />
+<meta property="og:description" content="go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题
+为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍
+本篇只是粗略的讲解模板的各个模块，不会深入函数细节
+首先基本用法开始
+基本用法
+我们这里用的是text_template中example_test的ExampleTemplate()作为例子
+通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中
+然后通过t.Execute把模板渲染出来" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/go-text-template/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-10-05T13:24:00&#43;08:00" />
+<meta property="article:modified_time" content="2019-10-05T13:24:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>go的text/template源码解析</h2>
-          <span class="post-date">Sat, Oct 5, 2019</span>
-          <p>go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题</p>
+      </div>
+    </div>
+    
 
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>go的text/template源码解析</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Oct 05, 2019
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/go">GO</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/go">go</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 12 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p>go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题</p>
 <p>为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍</p>
-
 <p>本篇只是粗略的讲解模板的各个模块，不会深入函数细节</p>
-
 <p>首先基本用法开始</p>
-
 <h4 id="基本用法">基本用法</h4>
-
 <p>我们这里用的是text_template中example_test的ExampleTemplate()作为例子</p>
-
 <p>通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中</p>
-
 <p>然后通过<code>t.Execute</code>把模板渲染出来</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">letter</span> = <span style="color:#e6db74">`
+</span><span style="color:#e6db74">Dear </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.Name</span><span style="color:#75715e">}}</span><span style="color:#e6db74">,
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">.Attended</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">It was a pleasure to see you at the wedding.
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{-</span> <span style="color:#66d9ef">else</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">It is a shame you couldn&#39;t make it to the wedding.
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{-</span> <span style="color:#66d9ef">end</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">with</span> <span style="color:#a6e22e">.Gift</span> <span style="color:#75715e">-}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Thank you for the lovely </span><span style="color:#75715e">{{</span><span style="color:#a6e22e">.</span><span style="color:#75715e">}}</span><span style="color:#e6db74">.
+</span><span style="color:#e6db74"></span><span style="color:#75715e">{{</span><span style="color:#66d9ef">end</span><span style="color:#75715e">}}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Best wishes,
+</span><span style="color:#e6db74">Josie
+</span><span style="color:#e6db74">`</span>
 
-<p></p>
-
-<pre><code class="language-golang">const letter = `
-Dear {{.Name}},
-{{if .Attended}}
-It was a pleasure to see you at the wedding.
-{{- else}}
-It is a shame you couldn't make it to the wedding.
-{{- end}}
-{{with .Gift -}}
-Thank you for the lovely {{.}}.
-{{end}}
-Best wishes,
-Josie
-`
-
-// Prepare some data to insert into the template.
-type Recipient struct {
-	Name, Gift string
-	Attended   bool
+<span style="color:#75715e">// Prepare some data to insert into the template.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Recipient</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">Gift</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Attended</span>   <span style="color:#66d9ef">bool</span>
 }
-var recipients = []Recipient{
-	{&quot;Aunt Mildred&quot;, &quot;bone china tea set&quot;, true},
-	{&quot;Uncle John&quot;, &quot;moleskin pants&quot;, false},
-	{&quot;Cousin Rodney&quot;, &quot;&quot;, false},
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">recipients</span> = []<span style="color:#a6e22e">Recipient</span>{
+	{<span style="color:#e6db74">&#34;Aunt Mildred&#34;</span>, <span style="color:#e6db74">&#34;bone china tea set&#34;</span>, <span style="color:#66d9ef">true</span>},
+	{<span style="color:#e6db74">&#34;Uncle John&#34;</span>, <span style="color:#e6db74">&#34;moleskin pants&#34;</span>, <span style="color:#66d9ef">false</span>},
+	{<span style="color:#e6db74">&#34;Cousin Rodney&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#66d9ef">false</span>},
 }
 
-t := template.Must(template.New(&quot;letter&quot;).Parse(letter))
+<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">Must</span>(<span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;letter&#34;</span>).<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">letter</span>))
 
-// Execute the template for each recipient.
-for _, r := range recipients {
-	err := t.Execute(os.Stdout, r)
-	if err != nil {
-		log.Println(&quot;executing template:&quot;, err)
+<span style="color:#75715e">// Execute the template for each recipient.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">recipients</span> {
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">r</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;executing template:&#34;</span>, <span style="color:#a6e22e">err</span>)
 	}
 }
-</code></pre>
-
-<h4 id="数据结构">数据结构</h4>
-
+</code></pre></div><h4 id="数据结构">数据结构</h4>
 <p>先看看text/template的Template结构，这个是整个template库最重要了结构了，也是我们通过<code>template.New(&quot;letter&quot;).Parse(letter)</code>得到对象</p>
-
 <p>下面我会加入自己的注释，以<code>// self</code>开头</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Template is the representation of a parsed template. The *parse.Tree
+</span><span style="color:#75715e">// field is exported only for use by html/template and should be treated
+</span><span style="color:#75715e">// as unexported by all other clients.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Template</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>     <span style="color:#75715e">// self 模板名字
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">Tree</span>     <span style="color:#75715e">// self 
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">*</span><span style="color:#a6e22e">common</span>
+	<span style="color:#a6e22e">leftDelim</span>  <span style="color:#66d9ef">string</span>  <span style="color:#75715e">//self 左分隔符，一般是 {{ 
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">rightDelim</span> <span style="color:#66d9ef">string</span>  <span style="color:#75715e">//self 右分隔符, 一般是 }}
+</span><span style="color:#75715e"></span>}
 
-<pre><code class="language-golang">// Template is the representation of a parsed template. The *parse.Tree
-// field is exported only for use by html/template and should be treated
-// as unexported by all other clients.
-type Template struct {
-	name string     // self 模板名字
-	*parse.Tree     // self 
-	*common
-	leftDelim  string  //self 左分隔符，一般是 {{ 
-	rightDelim string  //self 右分隔符, 一般是 }}
+<span style="color:#75715e">// common holds the information shared by related templates.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">common</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">tmpl</span>   <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Template</span> <span style="color:#75715e">// Map from name to defined templates. //self 模板的子模板，在文件中的 {{ define xxx }} {{ end }} 就会创建一个模板
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">option</span> <span style="color:#a6e22e">option</span>
+	<span style="color:#75715e">// We use two maps, one for parsing and one for execution.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// This separation makes the API cleaner since it doesn&#39;t
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// expose reflection to the client.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">muFuncs</span>    <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">RWMutex</span> <span style="color:#75715e">// protects parseFuncs and execFuncs 
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">parseFuncs</span> <span style="color:#a6e22e">FuncMap</span>      <span style="color:#75715e">//self 以interface{}形式保存的函数对象
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">execFuncs</span>  <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span> <span style="color:#75715e">// self parseFuncs中的函数最终都会转换成reflect.Value形式
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Template中还有一个<code>parse.Tree</code> 看看它长什么样子</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Tree is the representation of a single parsed template.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Tree</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Name</span>      <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// name of the template represented by the tree.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ParseName</span> <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// name of the top-level template during parsing, for error messages.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Root</span>      <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> <span style="color:#75715e">// top-level root of the tree.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">text</span>      <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// text parsed to create the template (or its parent) //self 等待解析的文本
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Parsing only; cleared after parse.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">funcs</span>     []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}
+	<span style="color:#a6e22e">lex</span>       <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span> <span style="color:#75715e">//self 词法解析器，用于解析模板中的关键字,比如 &#39;{{&#39; ,&#39;|&#39;, &#39;=&#39;, 函数名，表达式，等等
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">token</span>     [<span style="color:#ae81ff">3</span>]<span style="color:#a6e22e">item</span> <span style="color:#75715e">// three-token lookahead for parser.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">peekCount</span> <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">vars</span>      []<span style="color:#66d9ef">string</span> <span style="color:#75715e">// variables defined at the moment.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">treeSet</span>   <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>
 }
 
-// common holds the information shared by related templates.
-type common struct {
-	tmpl   map[string]*Template // Map from name to defined templates. //self 模板的子模板，在文件中的 {{ define xxx }} {{ end }} 就会创建一个模板
-	option option
-	// We use two maps, one for parsing and one for execution.
-	// This separation makes the API cleaner since it doesn't
-	// expose reflection to the client.
-	muFuncs    sync.RWMutex // protects parseFuncs and execFuncs 
-	parseFuncs FuncMap      //self 以interface{}形式保存的函数对象
-	execFuncs  map[string]reflect.Value // self parseFuncs中的函数最终都会转换成reflect.Value形式
-}
-</code></pre>
+<span style="color:#75715e">// ListNode holds a sequence of nodes.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ListNode</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">NodeType</span>  <span style="color:#75715e">//self 节点类型，没什么好说的
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Pos</span>       <span style="color:#75715e">//self 该节点在文本中的位置，也可以理解为index
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tr</span>    <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span> <span style="color:#75715e">//self 该节点在树中的位置
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Nodes</span> []<span style="color:#a6e22e">Node</span> <span style="color:#75715e">// The element nodes in lexical order.
+</span><span style="color:#75715e"></span>}
 
-<p>Template中还有一个<code>parse.Tree</code> 看看它长什么样子</p>
-
-<pre><code class="language-golang">// Tree is the representation of a single parsed template.
-type Tree struct {
-	Name      string    // name of the template represented by the tree.
-	ParseName string    // name of the top-level template during parsing, for error messages.
-	Root      *ListNode // top-level root of the tree.
-	text      string    // text parsed to create the template (or its parent) //self 等待解析的文本
-	// Parsing only; cleared after parse.
-	funcs     []map[string]interface{}
-	lex       *lexer //self 词法解析器，用于解析模板中的关键字,比如 '{{' ,'|', '=', 函数名，表达式，等等
-	token     [3]item // three-token lookahead for parser.
-	peekCount int
-	vars      []string // variables defined at the moment.
-	treeSet   map[string]*Tree
-}
-
-// ListNode holds a sequence of nodes.
-type ListNode struct {
-	NodeType  //self 节点类型，没什么好说的
-	Pos       //self 该节点在文本中的位置，也可以理解为index
-	tr    *Tree //self 该节点在树中的位置
-	Nodes []Node // The element nodes in lexical order.
-}
-
-// A Node is an element in the parse tree. The interface is trivial.
-// The interface contains an unexported method so that only
-// types local to this package can satisfy it.
-type Node interface {
-	Type() NodeType
-	String() string
-	// Copy does a deep copy of the Node and all its components.
-	// To avoid type assertions, some XxxNodes also have specialized
-	// CopyXxx methods that return *XxxNode.
-	Copy() Node
-	Position() Pos // byte position of start of node in full original input string
-	// tree returns the containing *Tree.
-	// It is unexported so all implementations of Node are in this package.
-	tree() *Tree
+<span style="color:#75715e">// A Node is an element in the parse tree. The interface is trivial.
+</span><span style="color:#75715e">// The interface contains an unexported method so that only
+</span><span style="color:#75715e">// types local to this package can satisfy it.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">Type</span>() <span style="color:#a6e22e">NodeType</span>
+	<span style="color:#a6e22e">String</span>() <span style="color:#66d9ef">string</span>
+	<span style="color:#75715e">// Copy does a deep copy of the Node and all its components.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// To avoid type assertions, some XxxNodes also have specialized
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// CopyXxx methods that return *XxxNode.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Copy</span>() <span style="color:#a6e22e">Node</span>
+	<span style="color:#a6e22e">Position</span>() <span style="color:#a6e22e">Pos</span> <span style="color:#75715e">// byte position of start of node in full original input string
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// tree returns the containing *Tree.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// It is unexported so all implementations of Node are in this package.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tree</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>
 }
 
 
-const (
-	NodeText       NodeType = iota // Plain text.
-	NodeAction                     // A non-control action such as a field evaluation.
-	NodeBool                       // A boolean constant.
-	NodeChain                      // A sequence of field accesses.
-	NodeCommand                    // An element of a pipeline.
-	NodeDot                        // The cursor, dot.
-	nodeElse                       // An else action. Not added to tree.
-	nodeEnd                        // An end action. Not added to tree.
-	NodeField                      // A field or method name.
-	NodeIdentifier                 // An identifier; always a function name.
-	NodeIf                         // An if action.
-	NodeList                       // A list of Nodes.
-	NodeNil                        // An untyped nil constant.
-	NodeNumber                     // A numerical constant.
-	NodePipe                       // A pipeline of commands.
-	NodeRange                      // A range action.
-	NodeString                     // A string constant.
-	NodeTemplate                   // A template invocation action.
-	NodeVariable                   // A $ variable.
-	NodeWith                       // A with action.
-)
-</code></pre>
-
-<h4 id="创建模板">创建模板</h4>
-
+<span style="color:#66d9ef">const</span> (
+	<span style="color:#a6e22e">NodeText</span>       <span style="color:#a6e22e">NodeType</span> = <span style="color:#66d9ef">iota</span> <span style="color:#75715e">// Plain text.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeAction</span>                     <span style="color:#75715e">// A non-control action such as a field evaluation.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeBool</span>                       <span style="color:#75715e">// A boolean constant.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeChain</span>                      <span style="color:#75715e">// A sequence of field accesses.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeCommand</span>                    <span style="color:#75715e">// An element of a pipeline.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeDot</span>                        <span style="color:#75715e">// The cursor, dot.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nodeElse</span>                       <span style="color:#75715e">// An else action. Not added to tree.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nodeEnd</span>                        <span style="color:#75715e">// An end action. Not added to tree.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeField</span>                      <span style="color:#75715e">// A field or method name.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeIdentifier</span>                 <span style="color:#75715e">// An identifier; always a function name.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeIf</span>                         <span style="color:#75715e">// An if action.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeList</span>                       <span style="color:#75715e">// A list of Nodes.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeNil</span>                        <span style="color:#75715e">// An untyped nil constant.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeNumber</span>                     <span style="color:#75715e">// A numerical constant.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodePipe</span>                       <span style="color:#75715e">// A pipeline of commands.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeRange</span>                      <span style="color:#75715e">// A range action.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeString</span>                     <span style="color:#75715e">// A string constant.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeTemplate</span>                   <span style="color:#75715e">// A template invocation action.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeVariable</span>                   <span style="color:#75715e">// A $ variable.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NodeWith</span>                       <span style="color:#75715e">// A with action.
+</span><span style="color:#75715e"></span>)
+</code></pre></div><h4 id="创建模板">创建模板</h4>
 <p>我们从Parse函数作为入口看看它做了什么</p>
-
-<pre><code class="language-golang">// Parse parses text as a template body for t.
-// Named template definitions ({{define ...}} or {{block ...}} statements) in text
-// define additional templates associated with t and are removed from the
-// definition of t itself.
-//
-// Templates can be redefined in successive calls to Parse.
-// A template definition with a body containing only white space and comments
-// is considered empty and will not replace an existing template's body.
-// This allows using Parse to add new named template definitions without
-// overwriting the main template body.
-func (t *Template) Parse(text string) (*Template, error) {
-	t.init()
-	t.muFuncs.RLock()
-	trees, err := parse.Parse(t.name, text, t.leftDelim, t.rightDelim, t.parseFuncs, builtins)
-	t.muFuncs.RUnlock()
-	if err != nil {
-		return nil, err
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Parse parses text as a template body for t.
+</span><span style="color:#75715e">// Named template definitions ({{define ...}} or {{block ...}} statements) in text
+</span><span style="color:#75715e">// define additional templates associated with t and are removed from the
+</span><span style="color:#75715e">// definition of t itself.
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// Templates can be redefined in successive calls to Parse.
+</span><span style="color:#75715e">// A template definition with a body containing only white space and comments
+</span><span style="color:#75715e">// is considered empty and will not replace an existing template&#39;s body.
+</span><span style="color:#75715e">// This allows using Parse to add new named template definitions without
+</span><span style="color:#75715e">// overwriting the main template body.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Template</span>) <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Template</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">init</span>()
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">muFuncs</span>.<span style="color:#a6e22e">RLock</span>()
+	<span style="color:#a6e22e">trees</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">text</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">leftDelim</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">rightDelim</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">parseFuncs</span>, <span style="color:#a6e22e">builtins</span>)
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">muFuncs</span>.<span style="color:#a6e22e">RUnlock</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
 	}
-	// Add the newly parsed trees, including the one for t, into our common structure.
-	for name, tree := range trees {
-		if _, err := t.AddParseTree(name, tree); err != nil {
-			return nil, err
+	<span style="color:#75715e">// Add the newly parsed trees, including the one for t, into our common structure.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">tree</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">trees</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">AddParseTree</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">tree</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
 		}
 	}
-	return t, nil
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">nil</span>
 }
-</code></pre>
-
-<p>如果在模板使用语法我就不讲了，从注释中我们还可以知道，该函数可以重复调用，新的模板会覆盖旧的，然后我们看看代码</p>
-
+</code></pre></div><p>如果在模板使用语法我就不讲了，从注释中我们还可以知道，该函数可以重复调用，新的模板会覆盖旧的，然后我们看看代码</p>
 <p>代码大致含义 <strong>parse.Parse</strong> 函数把文本解析成<code>map[string]*parse.Tree</code>的树map对象,然后把它append到当前模板的t.temp中</p>
-
 <p>然后看看<strong>parse.Parse</strong>发生了什么</p>
-
-<pre><code class="language-golang">
-// Parse returns a map from template name to parse.Tree, created by parsing the
-// templates described in the argument string. The top-level template will be
-// given the specified name. If an error is encountered, parsing stops and an
-// empty map is returned with the error.
-func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interface{}) (map[string]*Tree, error) {
-	treeSet := make(map[string]*Tree)
-	t := New(name)
-	t.text = text
-	_, err := t.Parse(text, leftDelim, rightDelim, treeSet, funcs...)
-	return treeSet, err
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">
+<span style="color:#75715e">// Parse returns a map from template name to parse.Tree, created by parsing the
+</span><span style="color:#75715e">// templates described in the argument string. The top-level template will be
+</span><span style="color:#75715e">// given the specified name. If an error is encountered, parsing stops and an
+</span><span style="color:#75715e">// empty map is returned with the error.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">text</span>, <span style="color:#a6e22e">leftDelim</span>, <span style="color:#a6e22e">rightDelim</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">funcs</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) (<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">treeSet</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>)
+	<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">name</span>)
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">text</span> = <span style="color:#a6e22e">text</span>
+	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">text</span>, <span style="color:#a6e22e">leftDelim</span>, <span style="color:#a6e22e">rightDelim</span>, <span style="color:#a6e22e">treeSet</span>, <span style="color:#a6e22e">funcs</span><span style="color:#f92672">...</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">treeSet</span>, <span style="color:#a6e22e">err</span>
 }
-</code></pre>
-
-<p>我们接着往下看</p>
-
-<pre><code class="language-golang">
-// Parse parses the template definition string to construct a representation of
-// the template for execution. If either action delimiter string is empty, the
-// default (&quot;{{&quot; or &quot;}}&quot;) is used. Embedded template definitions are added to
-// the treeSet map.
-func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error) {
-	defer t.recover(&amp;err)
-	t.ParseName = t.Name
-	t.startParse(funcs, lex(t.Name, text, leftDelim, rightDelim), treeSet)
-	t.text = text
-	t.parse()
-	t.add()
-	t.stopParse()
-	return t, nil
+</code></pre></div><p>我们接着往下看</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">
+<span style="color:#75715e">// Parse parses the template definition string to construct a representation of
+</span><span style="color:#75715e">// the template for execution. If either action delimiter string is empty, the
+</span><span style="color:#75715e">// default (&#34;{{&#34; or &#34;}}&#34;) is used. Embedded template definitions are added to
+</span><span style="color:#75715e">// the treeSet map.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">text</span>, <span style="color:#a6e22e">leftDelim</span>, <span style="color:#a6e22e">rightDelim</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">treeSet</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>, <span style="color:#a6e22e">funcs</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">tree</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">t</span>.recover(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">err</span>)
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">ParseName</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Name</span>
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">startParse</span>(<span style="color:#a6e22e">funcs</span>, <span style="color:#a6e22e">lex</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">text</span>, <span style="color:#a6e22e">leftDelim</span>, <span style="color:#a6e22e">rightDelim</span>), <span style="color:#a6e22e">treeSet</span>)
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">text</span> = <span style="color:#a6e22e">text</span>
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">parse</span>()
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">add</span>()
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">stopParse</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">nil</span>
 }
 
-// lex creates a new scanner for the input string.
-func lex(name, input, left, right string) *lexer {
-	if left == &quot;&quot; {
-		left = leftDelim
+<span style="color:#75715e">// lex creates a new scanner for the input string.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lex</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">left</span> = <span style="color:#a6e22e">leftDelim</span>
 	}
-	if right == &quot;&quot; {
-		right = rightDelim
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">right</span> = <span style="color:#a6e22e">rightDelim</span>
 	}
-	l := &amp;lexer{
-		name:       name,
-		input:      input,
-		leftDelim:  left,
-		rightDelim: right,
-		items:      make(chan item),
-		line:       1,
+	<span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">lexer</span>{
+		<span style="color:#a6e22e">name</span>:       <span style="color:#a6e22e">name</span>,
+		<span style="color:#a6e22e">input</span>:      <span style="color:#a6e22e">input</span>,
+		<span style="color:#a6e22e">leftDelim</span>:  <span style="color:#a6e22e">left</span>,
+		<span style="color:#a6e22e">rightDelim</span>: <span style="color:#a6e22e">right</span>,
+		<span style="color:#a6e22e">items</span>:      make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">item</span>),
+		<span style="color:#a6e22e">line</span>:       <span style="color:#ae81ff">1</span>,
 	}
-	go l.run()
-	return l
+	<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">run</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">l</span>
 }
 
-// startParse initializes the parser, using the lexer.
-func (t *Tree) startParse(funcs []map[string]interface{}, lex *lexer, treeSet map[string]*Tree) {
-	t.Root = nil
-	t.lex = lex
-	t.vars = []string{&quot;$&quot;}
-	t.funcs = funcs
-	t.treeSet = treeSet
+<span style="color:#75715e">// startParse initializes the parser, using the lexer.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">startParse</span>(<span style="color:#a6e22e">funcs</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}, <span style="color:#a6e22e">lex</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span>, <span style="color:#a6e22e">treeSet</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Root</span> = <span style="color:#66d9ef">nil</span>
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">lex</span> = <span style="color:#a6e22e">lex</span>
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">vars</span> = []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;$&#34;</span>}
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">funcs</span> = <span style="color:#a6e22e">funcs</span>
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">treeSet</span> = <span style="color:#a6e22e">treeSet</span>
 }
 
 
-</code></pre>
-
-<p>lex就是词法解析器，它不断的读取文本中的关键字，传给<code>Tree.parse</code>来解析</p>
-
+</code></pre></div><p>lex就是词法解析器，它不断的读取文本中的关键字，传给<code>Tree.parse</code>来解析</p>
 <p><code>Tree.startParse</code>并不是真的开始解析，它只是初始化<code>Tree</code>的词法解析器等字段</p>
-
 <p><code>Tree.parse</code>会读取从lex中解析的关键词，构建成不同的节点，保存到树中(这个源码我会在下面讲解时才贴)</p>
-
 <p>我们先从lex开始看</p>
-
-<pre><code class="language-golang">// lex creates a new scanner for the input string.
-func lex(name, input, left, right string) *lexer {
-	if left == &quot;&quot; {
-		left = leftDelim
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// lex creates a new scanner for the input string.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lex</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">left</span> = <span style="color:#a6e22e">leftDelim</span>
 	}
-	if right == &quot;&quot; {
-		right = rightDelim
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">right</span> = <span style="color:#a6e22e">rightDelim</span>
 	}
-	l := &amp;lexer{
-		name:       name,
-		input:      input,
-		leftDelim:  left,
-		rightDelim: right,
-		items:      make(chan item),
-		line:       1,
+	<span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">lexer</span>{
+		<span style="color:#a6e22e">name</span>:       <span style="color:#a6e22e">name</span>,
+		<span style="color:#a6e22e">input</span>:      <span style="color:#a6e22e">input</span>,
+		<span style="color:#a6e22e">leftDelim</span>:  <span style="color:#a6e22e">left</span>,
+		<span style="color:#a6e22e">rightDelim</span>: <span style="color:#a6e22e">right</span>,
+		<span style="color:#a6e22e">items</span>:      make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">item</span>),
+		<span style="color:#a6e22e">line</span>:       <span style="color:#ae81ff">1</span>,
 	}
-	go l.run()
-	return l
+	<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">run</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">l</span>
 }
 
-// run runs the state machine for the lexer.
-func (l *lexer) run() {
-	for state := lexText; state != nil; {
-		state = state(l)
+<span style="color:#75715e">// run runs the state machine for the lexer.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span>) <span style="color:#a6e22e">run</span>() {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">lexText</span>; <span style="color:#a6e22e">state</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>; {
+		<span style="color:#a6e22e">state</span> = <span style="color:#a6e22e">state</span>(<span style="color:#a6e22e">l</span>)
 	}
-	close(l.items)
+	close(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">items</span>)
 }
 
 
-// lexText scans until an opening action delimiter, &quot;{{&quot;.
-func lexText(l *lexer) stateFn {
-	l.width = 0
-	if x := strings.Index(l.input[l.pos:], l.leftDelim); x &gt;= 0 {
-		ldn := Pos(len(l.leftDelim))
-		l.pos += Pos(x)
-		trimLength := Pos(0)
-		if strings.HasPrefix(l.input[l.pos+ldn:], leftTrimMarker) {
-			trimLength = rightTrimLength(l.input[l.start:l.pos])
+<span style="color:#75715e">// lexText scans until an opening action delimiter, &#34;{{&#34;.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lexText</span>(<span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span>) <span style="color:#a6e22e">stateFn</span> {
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">width</span> = <span style="color:#ae81ff">0</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>[<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span>:], <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">leftDelim</span>); <span style="color:#a6e22e">x</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">ldn</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Pos</span>(len(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">leftDelim</span>))
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">Pos</span>(<span style="color:#a6e22e">x</span>)
+		<span style="color:#a6e22e">trimLength</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Pos</span>(<span style="color:#ae81ff">0</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>[<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span><span style="color:#f92672">+</span><span style="color:#a6e22e">ldn</span>:], <span style="color:#a6e22e">leftTrimMarker</span>) {
+			<span style="color:#a6e22e">trimLength</span> = <span style="color:#a6e22e">rightTrimLength</span>(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>[<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span>:<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span>])
 		}
-		l.pos -= trimLength
-		if l.pos &gt; l.start {
-			l.emit(itemText)
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">trimLength</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> &gt; <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span> {
+			<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">emit</span>(<span style="color:#a6e22e">itemText</span>)
 		}
-		l.pos += trimLength
-		l.ignore()
-		return lexLeftDelim
-	} else {
-		l.pos = Pos(len(l.input))
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">trimLength</span>
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">ignore</span>()
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lexLeftDelim</span>
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> = <span style="color:#a6e22e">Pos</span>(len(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>))
 	}
-	// Correctly reached EOF.
-	if l.pos &gt; l.start {
-		l.emit(itemText)
+	<span style="color:#75715e">// Correctly reached EOF.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span> &gt; <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span> {
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">emit</span>(<span style="color:#a6e22e">itemText</span>)
 	}
-	l.emit(itemEOF)
-	return nil
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">emit</span>(<span style="color:#a6e22e">itemEOF</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }
-</code></pre>
-
-<p><code>lex</code>函数通过<code>go l.run</code>异步执行单词解析，并通过<code>items chan</code>传给外面</p>
-
+</code></pre></div><p><code>lex</code>函数通过<code>go l.run</code>异步执行单词解析，并通过<code>items chan</code>传给外面</p>
 <p><code>lexer.Run</code>通过不断执行 <code>stateFn</code>直到它返回一个空值</p>
-
 <p>第一个被执行的<code>stateFn</code>是lexText，它负责扫描遇到 <code>{{</code>符号之前的所有字符，也就是模板语法之外的文本</p>
-
 <p><code>l.emit</code>就是往 <code>l.items</code>发送一个 item，我们看看l.emit是怎么样的</p>
-
-<pre><code class="language-golang">// emit passes an item back to the client.
-func (l *lexer) emit(t itemType) {
-	l.items &lt;- item{t, l.start, l.input[l.start:l.pos], l.line}
-	// Some items contain text internally. If so, count their newlines.
-	switch t {
-	case itemText, itemRawString, itemLeftDelim, itemRightDelim:
-		l.line += strings.Count(l.input[l.start:l.pos], &quot;\n&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// emit passes an item back to the client.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">lexer</span>) <span style="color:#a6e22e">emit</span>(<span style="color:#a6e22e">t</span> <span style="color:#a6e22e">itemType</span>) {
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">items</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">item</span>{<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span>, <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>[<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span>:<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span>], <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">line</span>}
+	<span style="color:#75715e">// Some items contain text internally. If so, count their newlines.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">t</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemText</span>, <span style="color:#a6e22e">itemRawString</span>, <span style="color:#a6e22e">itemLeftDelim</span>, <span style="color:#a6e22e">itemRightDelim</span>:
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">line</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Count</span>(<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">input</span>[<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span>:<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span>], <span style="color:#e6db74">&#34;\n&#34;</span>)
 	}
-	l.start = l.pos
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">start</span> = <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">pos</span>
 }
-</code></pre>
-
-<p>其中 <code>l.input[l.start:l.pos]</code> 表示这次分析的 “词” 对应的位置(<code>{{,/*,:=</code>等等也是属于词 )</p>
-
+</code></pre></div><p>其中 <code>l.input[l.start:l.pos]</code> 表示这次分析的 “词” 对应的位置(<code>{{,/*,:= </code>等等也是属于词 )</p>
 <p>lex函数解析顺序(TODO)</p>
-
 <pre><code>lexText -&gt; lexLeftDelim -&gt;  lexComment -&gt; lexText
 						-&gt; lexInsideAction -&gt; 	
 
 lexText -&gt; EOF
-</code></pre>
-
-<p>我们来开开<code>Tree.parse</code>拿到item后怎么处理</p>
-
-<h5 id="tree-parse">Tree.parse</h5>
-
-<pre><code class="language-golang">// parse is the top-level parser for a template, essentially the same
-// as itemList except it also parses {{define}} actions.
-// It runs to EOF.
-func (t *Tree) parse() {
-	t.Root = t.newList(t.peek().pos)
-	for t.peek().typ != itemEOF {
-		if t.peek().typ == itemLeftDelim {
-			delim := t.next()
-			if t.nextNonSpace().typ == itemDefine {
-				newT := New(&quot;definition&quot;) // name will be updated once we know it.
-				newT.text = t.text
-				newT.ParseName = t.ParseName
-				newT.startParse(t.funcs, t.lex, t.treeSet)
-				newT.parseDefinition()
-				continue
+</code></pre><p>我们来开开<code>Tree.parse</code>拿到item后怎么处理</p>
+<h5 id="treeparse">Tree.parse</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// parse is the top-level parser for a template, essentially the same
+</span><span style="color:#75715e">// as itemList except it also parses {{define}} actions.
+</span><span style="color:#75715e">// It runs to EOF.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">parse</span>() {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Root</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newList</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peek</span>().<span style="color:#a6e22e">pos</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peek</span>().<span style="color:#a6e22e">typ</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">itemEOF</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peek</span>().<span style="color:#a6e22e">typ</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">itemLeftDelim</span> {
+			<span style="color:#a6e22e">delim</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">next</span>()
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">nextNonSpace</span>().<span style="color:#a6e22e">typ</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">itemDefine</span> {
+				<span style="color:#a6e22e">newT</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;definition&#34;</span>) <span style="color:#75715e">// name will be updated once we know it.
+</span><span style="color:#75715e"></span>				<span style="color:#a6e22e">newT</span>.<span style="color:#a6e22e">text</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">text</span>
+				<span style="color:#a6e22e">newT</span>.<span style="color:#a6e22e">ParseName</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">ParseName</span>
+				<span style="color:#a6e22e">newT</span>.<span style="color:#a6e22e">startParse</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">funcs</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">lex</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">treeSet</span>)
+				<span style="color:#a6e22e">newT</span>.<span style="color:#a6e22e">parseDefinition</span>()
+				<span style="color:#66d9ef">continue</span>
 			}
-			t.backup2(delim)
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">backup2</span>(<span style="color:#a6e22e">delim</span>)
 		}
-		switch n := t.textOrAction(); n.Type() {
-		case nodeEnd, nodeElse:
-			t.errorf(&quot;unexpected %s&quot;, n)
-		default:
-			t.Root.append(n)
+		<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">textOrAction</span>(); <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Type</span>() {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">nodeEnd</span>, <span style="color:#a6e22e">nodeElse</span>:
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;unexpected %s&#34;</span>, <span style="color:#a6e22e">n</span>)
+		<span style="color:#66d9ef">default</span>:
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Root</span>.append(<span style="color:#a6e22e">n</span>)
 		}
 	}
 }
-</code></pre>
-
-<p>首先parse这个函数的目的是把lex解析出来的item进一步解析成<code>parse.Node</code>然后放入t.Root中</p>
-
+</code></pre></div><p>首先parse这个函数的目的是把lex解析出来的item进一步解析成<code>parse.Node</code>然后放入t.Root中</p>
 <p>在解释这个函数之前我也简单说说 <code>peek</code>,<code>next</code>,<code>backup</code>,<code>backup2</code> 这几个函数的含义</p>
-
 <ul>
 <li>peek: 查看栈的最后一个item</li>
 <li>next: 拿出栈的最后一个item</li>
@@ -513,150 +535,133 @@ func (t *Tree) parse() {
 <li>backend2: 把最后一个拿出来的item塞到栈尾，并额外塞一个进去</li>
 <li>backend3: 和backend2同理，塞2个进去</li>
 </ul>
-
 <p>好了理解了这些我们就基本能看到这个函数在干什么了</p>
-
 <ol>
 <li>用第0个item.pos来初始化<code>t.Root</code></li>
 <li>for循环遍历item，直到遇到<code>itemEOF</code>这个结束符item为止</li>
-<li>遇到 左分隔符(也就是&rdquo;{{&ldquo;)判断这个分隔符中的是不是 itemDefine(也就是{{define subTemp}}来定义额外的模板树)，如果是，开始解析子模板树并跳过这一轮循环，如果不是回到itemLeftDelim之前从新解析</li>
+<li>遇到 左分隔符(也就是&quot;{{&quot;)判断这个分隔符中的是不是 itemDefine(也就是{{define subTemp}}来定义额外的模板树)，如果是，开始解析子模板树并跳过这一轮循环，如果不是回到itemLeftDelim之前从新解析</li>
 <li>通过<code>Tree.textOrAction</code>返回下一个Node放入<code>t.Root</code>中</li>
 </ol>
-
 <p>下一步我们来看看textOrAction干了什么</p>
-
 <h5 id="textoraction">textOrAction</h5>
-
-<pre><code class="language-golang">// textOrAction:
-//	text | action
-func (t *Tree) textOrAction() Node {
-	switch token := t.nextNonSpace(); token.typ {
-	case itemText:
-		return t.newText(token.pos, token.val)
-	case itemLeftDelim:
-		return t.action()
-	default:
-		t.unexpected(token, &quot;input&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// textOrAction:
+</span><span style="color:#75715e">//	text | action
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">textOrAction</span>() <span style="color:#a6e22e">Node</span> {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">nextNonSpace</span>(); <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">typ</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemText</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newText</span>(<span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">val</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemLeftDelim</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">action</span>()
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">unexpected</span>(<span style="color:#a6e22e">token</span>, <span style="color:#e6db74">&#34;input&#34;</span>)
 	}
-	return nil
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }
 
 
-func (t *Tree) newText(pos Pos, text string) *TextNode {
-	return &amp;TextNode{tr: t, NodeType: NodeText, Pos: pos, Text: []byte(text)}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">newText</span>(<span style="color:#a6e22e">pos</span> <span style="color:#a6e22e">Pos</span>, <span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">TextNode</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">TextNode</span>{<span style="color:#a6e22e">tr</span>: <span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">NodeType</span>: <span style="color:#a6e22e">NodeText</span>, <span style="color:#a6e22e">Pos</span>: <span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">Text</span>: []byte(<span style="color:#a6e22e">text</span>)}
 }
 
-// Action:
-//	control
-//	command (&quot;|&quot; command)*
-// Left delim is past. Now get actions.
-// First word could be a keyword such as range.
-func (t *Tree) action() (n Node) {
-	switch token := t.nextNonSpace(); token.typ {
-	case itemBlock:
-		return t.blockControl()
-	case itemElse:
-		return t.elseControl()
-	case itemEnd:
-		return t.endControl()
-	case itemIf:
-		return t.ifControl()
-	case itemRange:
-		return t.rangeControl()
-	case itemTemplate:
-		return t.templateControl()
-	case itemWith:
-		return t.withControl()
+<span style="color:#75715e">// Action:
+</span><span style="color:#75715e">//	control
+</span><span style="color:#75715e">//	command (&#34;|&#34; command)*
+</span><span style="color:#75715e">// Left delim is past. Now get actions.
+</span><span style="color:#75715e">// First word could be a keyword such as range.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">action</span>() (<span style="color:#a6e22e">n</span> <span style="color:#a6e22e">Node</span>) {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">token</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">nextNonSpace</span>(); <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">typ</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemBlock</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">blockControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemElse</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">elseControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemEnd</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">endControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemIf</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">ifControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemRange</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">rangeControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemTemplate</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">templateControl</span>()
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">itemWith</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">withControl</span>()
 	}
-	t.backup()
-	token := t.peek()
-	// Do not pop variables; they persist until &quot;end&quot;.
-	return t.newAction(token.pos, token.line, t.pipeline(&quot;command&quot;))
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">backup</span>()
+	<span style="color:#a6e22e">token</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peek</span>()
+	<span style="color:#75715e">// Do not pop variables; they persist until &#34;end&#34;.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newAction</span>(<span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">token</span>.<span style="color:#a6e22e">line</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">pipeline</span>(<span style="color:#e6db74">&#34;command&#34;</span>))
 }
-</code></pre>
-
-<p>textOrAction非常简单，就是把item分成2部分，遇到itemText就解析成<code>TextNode</code>遇到<code>{{</code>就开始action解析</p>
-
+</code></pre></div><p>textOrAction非常简单，就是把item分成2部分，遇到itemText就解析成<code>TextNode</code>遇到<code>{{</code>就开始action解析</p>
 <p>所以继续看几个关键的action函数这部分就算完成了</p>
-
 <h5 id="ifnode">IfNode</h5>
-
-<pre><code class="language-golang">// If:
-//	{{if pipeline}} itemList {{end}}
-//	{{if pipeline}} itemList {{else}} itemList {{end}}
-// If keyword is past.
-func (t *Tree) ifControl() Node {
-	return t.newIf(t.parseControl(true, &quot;if&quot;))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// If:
+</span><span style="color:#75715e">//	{{if pipeline}} itemList {{end}}
+</span><span style="color:#75715e">//	{{if pipeline}} itemList {{else}} itemList {{end}}
+</span><span style="color:#75715e">// If keyword is past.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">ifControl</span>() <span style="color:#a6e22e">Node</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newIf</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">parseControl</span>(<span style="color:#66d9ef">true</span>, <span style="color:#e6db74">&#34;if&#34;</span>))
 }
 
-func (t *Tree) newIf(pos Pos, line int, pipe *PipeNode, list, elseList *ListNode) *IfNode {
-	return &amp;IfNode{BranchNode{tr: t, NodeType: NodeIf, Pos: pos, Line: line, Pipe: pipe, List: list, ElseList: elseList}}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">newIf</span>(<span style="color:#a6e22e">pos</span> <span style="color:#a6e22e">Pos</span>, <span style="color:#a6e22e">line</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">pipe</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">PipeNode</span>, <span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">elseList</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">IfNode</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">IfNode</span>{<span style="color:#a6e22e">BranchNode</span>{<span style="color:#a6e22e">tr</span>: <span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">NodeType</span>: <span style="color:#a6e22e">NodeIf</span>, <span style="color:#a6e22e">Pos</span>: <span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">Line</span>: <span style="color:#a6e22e">line</span>, <span style="color:#a6e22e">Pipe</span>: <span style="color:#a6e22e">pipe</span>, <span style="color:#a6e22e">List</span>: <span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">ElseList</span>: <span style="color:#a6e22e">elseList</span>}}
 }
 
-func (t *Tree) parseControl(allowElseIf bool, context string) (pos Pos, line int, pipe *PipeNode, list, elseList *ListNode) {
-	defer t.popVars(len(t.vars))
-	pipe = t.pipeline(context)
-	var next Node
-	list, next = t.itemList()
-	switch next.Type() {
-	case nodeEnd: //done
-	case nodeElse:
-		if allowElseIf {
-			// Special case for &quot;else if&quot;. If the &quot;else&quot; is followed immediately by an &quot;if&quot;,
-			// the elseControl will have left the &quot;if&quot; token pending. Treat
-			//	{{if a}}_{{else if b}}_{{end}}
-			// as
-			//	{{if a}}_{{else}}{{if b}}_{{end}}{{end}}.
-			// To do this, parse the if as usual and stop at it {{end}}; the subsequent{{end}}
-			// is assumed. This technique works even for long if-else-if chains.
-			// TODO: Should we allow else-if in with and range?
-			if t.peek().typ == itemIf {
-				t.next() // Consume the &quot;if&quot; token.
-				elseList = t.newList(next.Position())
-				elseList.append(t.ifControl())
-				// Do not consume the next item - only one {{end}} required.
-				break
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">parseControl</span>(<span style="color:#a6e22e">allowElseIf</span> <span style="color:#66d9ef">bool</span>, <span style="color:#a6e22e">context</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">pos</span> <span style="color:#a6e22e">Pos</span>, <span style="color:#a6e22e">line</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">pipe</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">PipeNode</span>, <span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">elseList</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) {
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">popVars</span>(len(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">vars</span>))
+	<span style="color:#a6e22e">pipe</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">pipeline</span>(<span style="color:#a6e22e">context</span>)
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">next</span> <span style="color:#a6e22e">Node</span>
+	<span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">itemList</span>()
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">Type</span>() {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">nodeEnd</span>: <span style="color:#75715e">//done
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">nodeElse</span>:
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">allowElseIf</span> {
+			<span style="color:#75715e">// Special case for &#34;else if&#34;. If the &#34;else&#34; is followed immediately by an &#34;if&#34;,
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// the elseControl will have left the &#34;if&#34; token pending. Treat
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">//	{{if a}}_{{else if b}}_{{end}}
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// as
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">//	{{if a}}_{{else}}{{if b}}_{{end}}{{end}}.
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// To do this, parse the if as usual and stop at it {{end}}; the subsequent{{end}}
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// is assumed. This technique works even for long if-else-if chains.
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// TODO: Should we allow else-if in with and range?
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peek</span>().<span style="color:#a6e22e">typ</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">itemIf</span> {
+				<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">next</span>() <span style="color:#75715e">// Consume the &#34;if&#34; token.
+</span><span style="color:#75715e"></span>				<span style="color:#a6e22e">elseList</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newList</span>(<span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">Position</span>())
+				<span style="color:#a6e22e">elseList</span>.append(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">ifControl</span>())
+				<span style="color:#75715e">// Do not consume the next item - only one {{end}} required.
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>
 			}
 		}
-		elseList, next = t.itemList()
-		if next.Type() != nodeEnd {
-			t.errorf(&quot;expected end; found %s&quot;, next)
+		<span style="color:#a6e22e">elseList</span>, <span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">itemList</span>()
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">Type</span>() <span style="color:#f92672">!=</span> <span style="color:#a6e22e">nodeEnd</span> {
+			<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;expected end; found %s&#34;</span>, <span style="color:#a6e22e">next</span>)
 		}
 	}
-	return pipe.Position(), pipe.Line, pipe, list, elseList
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">pipe</span>.<span style="color:#a6e22e">Position</span>(), <span style="color:#a6e22e">pipe</span>.<span style="color:#a6e22e">Line</span>, <span style="color:#a6e22e">pipe</span>, <span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">elseList</span>
 }
 
-// itemList:
-//	textOrAction*
-// Terminates at {{end}} or {{else}}, returned separately.
-func (t *Tree) itemList() (list *ListNode, next Node) {
-	list = t.newList(t.peekNonSpace().pos)
-	for t.peekNonSpace().typ != itemEOF {
-		n := t.textOrAction()
-		switch n.Type() {
-		case nodeEnd, nodeElse:
-			return list, n
+<span style="color:#75715e">// itemList:
+</span><span style="color:#75715e">//	textOrAction*
+</span><span style="color:#75715e">// Terminates at {{end}} or {{else}}, returned separately.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Tree</span>) <span style="color:#a6e22e">itemList</span>() (<span style="color:#a6e22e">list</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>, <span style="color:#a6e22e">next</span> <span style="color:#a6e22e">Node</span>) {
+	<span style="color:#a6e22e">list</span> = <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">newList</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peekNonSpace</span>().<span style="color:#a6e22e">pos</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">peekNonSpace</span>().<span style="color:#a6e22e">typ</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">itemEOF</span> {
+		<span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">textOrAction</span>()
+		<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">Type</span>() {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">nodeEnd</span>, <span style="color:#a6e22e">nodeElse</span>:
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">n</span>
 		}
-		list.append(n)
+		<span style="color:#a6e22e">list</span>.append(<span style="color:#a6e22e">n</span>)
 	}
-	t.errorf(&quot;unexpected EOF&quot;)
-	return
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;unexpected EOF&#34;</span>)
+	<span style="color:#66d9ef">return</span>
 }
-</code></pre>
-
-<p>这个函数内容太多我就跳过细节了</p>
-
+</code></pre></div><p>这个函数内容太多我就跳过细节了</p>
 <p>首先ifControl/rangeControl/withControl/rangeControl需要调用parseControl，也可以理解为所有<code>{{ }}</code>可以支持语句的都需要通过该函数来解析，比如pipeline <code>|</code> 或者函数调用等</p>
-
 <p><code>parseControl</code>逻辑</p>
-
 <ol>
 <li>把 <code>{{}}</code>中所有内容解析成<code>PipeNode</code></li>
 <li>调用<code>Tree.itemList</code>尝试获取ElseNode和EndNode</li>
 </ol>
-
 <p>在最后，我们来看看下面例子生成的node是怎么样的,以下是letter模板生成的Node结构，缩进表示层级</p>
-
 <pre><code>testdata/letter.tmpl:1:0 (NodeList)
  testdata/letter.tmpl:1:0 (NodeText)
  testdata/letter.tmpl:1:7 (NodeAction)
@@ -685,203 +690,187 @@ func (t *Tree) itemList() (list *ListNode, next Node) {
       testdata/letter.tmpl:8:31 (NodeDot)
    testdata/letter.tmpl:8:34 (NodeText)
  testdata/letter.tmpl:9:7 (NodeText)
-</code></pre>
-
-<p>总结一下</p>
-
+</code></pre><p>总结一下</p>
 <p>text/template通过 lex 将文本解析成一个个item,然后通过<code>Tree.parse</code>生成一个有层级关系的node，最后通过 <code>Execute</code>生成文本，下面来介绍模板Execute</p>
-
 <p>其实和语言编译原理有点像，词法解析器-&gt;语法解析器-&gt;编译成一个对象-&gt;根据执行参数的不同输出不同结果</p>
-
 <h4 id="模板execute">模板Execute</h4>
-
 <p>execute就很简单了，基本就是该循环循环，该打印打印，</p>
-
 <p>Pipe里面只有当node.Pipe.Decl为0才会把Pipe中的值渲染出来，不然只是一次赋值，</p>
-
 <p>稍微能讲讲的就是node.Pipe</p>
-
-<pre><code class="language-golang">// Execute applies a parsed template to the specified data object,
-// and writes the output to wr.
-// If an error occurs executing the template or writing its output,
-// execution stops, but partial results may already have been written to
-// the output writer.
-// A template may be executed safely in parallel, although if parallel
-// executions share a Writer the output may be interleaved.
-//
-// If data is a reflect.Value, the template applies to the concrete
-// value that the reflect.Value holds, as in fmt.Print.
-func (t *Template) Execute(wr io.Writer, data interface{}) error {
-	return t.execute(wr, data)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Execute applies a parsed template to the specified data object,
+</span><span style="color:#75715e">// and writes the output to wr.
+</span><span style="color:#75715e">// If an error occurs executing the template or writing its output,
+</span><span style="color:#75715e">// execution stops, but partial results may already have been written to
+</span><span style="color:#75715e">// the output writer.
+</span><span style="color:#75715e">// A template may be executed safely in parallel, although if parallel
+</span><span style="color:#75715e">// executions share a Writer the output may be interleaved.
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// If data is a reflect.Value, the template applies to the concrete
+</span><span style="color:#75715e">// value that the reflect.Value holds, as in fmt.Print.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Template</span>) <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">wr</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">wr</span>, <span style="color:#a6e22e">data</span>)
 }
 
-func (t *Template) execute(wr io.Writer, data interface{}) (err error) {
-	defer errRecover(&amp;err)
-	value, ok := data.(reflect.Value)
-	if !ok {
-		value = reflect.ValueOf(data)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Template</span>) <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">wr</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">errRecover</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">err</span>)
+	<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">data</span>.(<span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>)
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> {
+		<span style="color:#a6e22e">value</span> = <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">data</span>)
 	}
-	state := &amp;state{
-		tmpl: t,
-		wr:   wr,
-		vars: []variable{{&quot;$&quot;, value}},
+	<span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">state</span>{
+		<span style="color:#a6e22e">tmpl</span>: <span style="color:#a6e22e">t</span>,
+		<span style="color:#a6e22e">wr</span>:   <span style="color:#a6e22e">wr</span>,
+		<span style="color:#a6e22e">vars</span>: []<span style="color:#a6e22e">variable</span>{{<span style="color:#e6db74">&#34;$&#34;</span>, <span style="color:#a6e22e">value</span>}},
 	}
-	if t.Tree == nil || t.Root == nil {
-		state.errorf(&quot;%q is an incomplete or empty template&quot;, t.Name())
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Tree</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Root</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;%q is an incomplete or empty template&#34;</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Name</span>())
 	}
-	state.walk(value, t.Root)
-	return
+	<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">walk</span>(<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Root</span>)
+	<span style="color:#66d9ef">return</span>
 }
 
-// Walk functions step through the major pieces of the template structure,
-// generating output as they go.
-func (s *state) walk(dot reflect.Value, node parse.Node) {
-	s.at(node)
-	switch node := node.(type) {
-	case *parse.ActionNode:
-		// Do not pop variables so they persist until next end.
-		// Also, if the action declares variables, don't print the result.
-		val := s.evalPipeline(dot, node.Pipe)
-		if len(node.Pipe.Decl) == 0 {
-			s.printValue(node, val)
+<span style="color:#75715e">// Walk functions step through the major pieces of the template structure,
+</span><span style="color:#75715e">// generating output as they go.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>) <span style="color:#a6e22e">walk</span>(<span style="color:#a6e22e">dot</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>, <span style="color:#a6e22e">node</span> <span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">Node</span>) {
+	<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">at</span>(<span style="color:#a6e22e">node</span>)
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">node</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">node</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">ActionNode</span>:
+		<span style="color:#75715e">// Do not pop variables so they persist until next end.
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// Also, if the action declares variables, don&#39;t print the result.
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalPipeline</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Pipe</span>)
+		<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Pipe</span>.<span style="color:#a6e22e">Decl</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">printValue</span>(<span style="color:#a6e22e">node</span>, <span style="color:#a6e22e">val</span>)
 		}
-	case *parse.IfNode:
-		s.walkIfOrWith(parse.NodeIf, dot, node.Pipe, node.List, node.ElseList)
-	case *parse.ListNode:
-		for _, node := range node.Nodes {
-			s.walk(dot, node)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">IfNode</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">walkIfOrWith</span>(<span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">NodeIf</span>, <span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Pipe</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">List</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">ElseList</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">ListNode</span>:
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">node</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Nodes</span> {
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">walk</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>)
 		}
-	case *parse.RangeNode:
-		s.walkRange(dot, node)
-	case *parse.TemplateNode:
-		s.walkTemplate(dot, node)
-	case *parse.TextNode:
-		if _, err := s.wr.Write(node.Text); err != nil {
-			s.writeError(err)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">RangeNode</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">walkRange</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">TemplateNode</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">walkTemplate</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">TextNode</span>:
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">wr</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Text</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">writeError</span>(<span style="color:#a6e22e">err</span>)
 		}
-	case *parse.WithNode:
-		s.walkIfOrWith(parse.NodeWith, dot, node.Pipe, node.List, node.ElseList)
-	default:
-		s.errorf(&quot;unknown node: %s&quot;, node)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">WithNode</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">walkIfOrWith</span>(<span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">NodeWith</span>, <span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">Pipe</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">List</span>, <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">ElseList</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;unknown node: %s&#34;</span>, <span style="color:#a6e22e">node</span>)
 	}
 }
 
-</code></pre>
-
-<p>我们来看看Pipe的解析时怎么样的</p>
-
+</code></pre></div><p>我们来看看Pipe的解析时怎么样的</p>
 <p>执行里面的cmds，然后跳过<code>interface{}</code>对象拿里面的值</p>
-
-<pre><code class="language-golang">// Eval functions evaluate pipelines, commands, and their elements and extract
-// values from the data structure by examining fields, calling methods, and so on.
-// The printing of those values happens only through walk functions.
-
-// evalPipeline returns the value acquired by evaluating a pipeline. If the
-// pipeline has a variable declaration, the variable will be pushed on the
-// stack. Callers should therefore pop the stack after they are finished
-// executing commands depending on the pipeline value.
-func (s *state) evalPipeline(dot reflect.Value, pipe *parse.PipeNode) (value reflect.Value) {
-	if pipe == nil {
-		return
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Eval functions evaluate pipelines, commands, and their elements and extract
+</span><span style="color:#75715e">// values from the data structure by examining fields, calling methods, and so on.
+</span><span style="color:#75715e">// The printing of those values happens only through walk functions.
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// evalPipeline returns the value acquired by evaluating a pipeline. If the
+</span><span style="color:#75715e">// pipeline has a variable declaration, the variable will be pushed on the
+</span><span style="color:#75715e">// stack. Callers should therefore pop the stack after they are finished
+</span><span style="color:#75715e">// executing commands depending on the pipeline value.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>) <span style="color:#a6e22e">evalPipeline</span>(<span style="color:#a6e22e">dot</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>, <span style="color:#a6e22e">pipe</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">PipeNode</span>) (<span style="color:#a6e22e">value</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>) {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">pipe</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span>
 	}
-	s.at(pipe)
-	value = missingVal
-	for _, cmd := range pipe.Cmds {
-		value = s.evalCommand(dot, cmd, value) // previous value is this one's final arg.
-		// If the object has type interface{}, dig down one level to the thing inside.
-		if value.Kind() == reflect.Interface &amp;&amp; value.Type().NumMethod() == 0 {
-			value = reflect.ValueOf(value.Interface()) // lovely!
+	<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">at</span>(<span style="color:#a6e22e">pipe</span>)
+	<span style="color:#a6e22e">value</span> = <span style="color:#a6e22e">missingVal</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">pipe</span>.<span style="color:#a6e22e">Cmds</span> {
+		<span style="color:#a6e22e">value</span> = <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalCommand</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">value</span>) <span style="color:#75715e">// previous value is this one&#39;s final arg.
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// If the object has type interface{}, dig down one level to the thing inside.
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">Kind</span>() <span style="color:#f92672">==</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Interface</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">Type</span>().<span style="color:#a6e22e">NumMethod</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#a6e22e">value</span> = <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">Interface</span>()) <span style="color:#75715e">// lovely!
+</span><span style="color:#75715e"></span>		}
+	}
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">variable</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">pipe</span>.<span style="color:#a6e22e">Decl</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">pipe</span>.<span style="color:#a6e22e">IsAssign</span> {
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">setVar</span>(<span style="color:#a6e22e">variable</span>.<span style="color:#a6e22e">Ident</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">value</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">variable</span>.<span style="color:#a6e22e">Ident</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">value</span>)
 		}
 	}
-	for _, variable := range pipe.Decl {
-		if pipe.IsAssign {
-			s.setVar(variable.Ident[0], value)
-		} else {
-			s.push(variable.Ident[0], value)
-		}
-	}
-	return value
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">value</span>
 }
 
 
-func (s *state) evalCommand(dot reflect.Value, cmd *parse.CommandNode, final reflect.Value) reflect.Value {
-	firstWord := cmd.Args[0]
-	switch n := firstWord.(type) {
-	case *parse.FieldNode:
-		return s.evalFieldNode(dot, n, cmd.Args, final)
-	case *parse.ChainNode:
-		return s.evalChainNode(dot, n, cmd.Args, final)
-	case *parse.IdentifierNode:
-		// Must be a function.
-		return s.evalFunction(dot, n, cmd, cmd.Args, final)
-	case *parse.PipeNode:
-		// Parenthesized pipeline. The arguments are all inside the pipeline; final is ignored.
-		return s.evalPipeline(dot, n)
-	case *parse.VariableNode:
-		return s.evalVariableNode(dot, n, cmd.Args, final)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>) <span style="color:#a6e22e">evalCommand</span>(<span style="color:#a6e22e">dot</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>, <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">CommandNode</span>, <span style="color:#a6e22e">final</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span>) <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span> {
+	<span style="color:#a6e22e">firstWord</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">0</span>]
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">firstWord</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">FieldNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalFieldNode</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>, <span style="color:#a6e22e">final</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">ChainNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalChainNode</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>, <span style="color:#a6e22e">final</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">IdentifierNode</span>:
+		<span style="color:#75715e">// Must be a function.
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalFunction</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>, <span style="color:#a6e22e">final</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">PipeNode</span>:
+		<span style="color:#75715e">// Parenthesized pipeline. The arguments are all inside the pipeline; final is ignored.
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalPipeline</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">n</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">VariableNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">evalVariableNode</span>(<span style="color:#a6e22e">dot</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>, <span style="color:#a6e22e">final</span>)
 	}
-	s.at(firstWord)
-	s.notAFunction(cmd.Args, final)
-	switch word := firstWord.(type) {
-	case *parse.BoolNode:
-		return reflect.ValueOf(word.True)
-	case *parse.DotNode:
-		return dot
-	case *parse.NilNode:
-		s.errorf(&quot;nil is not a command&quot;)
-	case *parse.NumberNode:
-		return s.idealConstant(word)
-	case *parse.StringNode:
-		return reflect.ValueOf(word.Text)
+	<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">at</span>(<span style="color:#a6e22e">firstWord</span>)
+	<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">notAFunction</span>(<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span>, <span style="color:#a6e22e">final</span>)
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">word</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">firstWord</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">BoolNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">word</span>.<span style="color:#a6e22e">True</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">DotNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">dot</span>
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">NilNode</span>:
+		<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;nil is not a command&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">NumberNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">idealConstant</span>(<span style="color:#a6e22e">word</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">parse</span>.<span style="color:#a6e22e">StringNode</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">word</span>.<span style="color:#a6e22e">Text</span>)
 	}
-	s.errorf(&quot;can't evaluate command %q&quot;, firstWord)
-	panic(&quot;not reached&quot;)
+	<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">errorf</span>(<span style="color:#e6db74">&#34;can&#39;t evaluate command %q&#34;</span>, <span style="color:#a6e22e">firstWord</span>)
+	panic(<span style="color:#e6db74">&#34;not reached&#34;</span>)
 }
-</code></pre>
-
-<p>go模板就写到这里，里面代码给人一种零乱的感觉，但是代码意图和注释还是很清晰的，看函数名和注释能猜到个大概</p>
-
+</code></pre></div><p>go模板就写到这里，里面代码给人一种零乱的感觉，但是代码意图和注释还是很清晰的，看函数名和注释能猜到个大概</p>
 <p>抛开代码结构不说，go的template的语法自成一派让人用起来很不舒服，每次使用都得查查文档，如果能和go语法统一就好了</p>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=go%e7%9a%84text%2ftemplate%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90-https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f&title=go%e7%9a%84text%2ftemplate%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-text-template%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/go-change-compile-source-code/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">go module无法拉取库的原因排查</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/grafana-and-prometheus/" class="navigation-next">
+      <span class="navigation-tittle">prometheus介绍</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
         
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-      </div>
-    </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
 
+    </body>
 </html>

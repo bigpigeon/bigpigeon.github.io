@@ -1,220 +1,273 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> gorm简介[前] &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>gorm简介[前] • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="gorm简介[前]"/>
+<meta name="twitter:description" content="gorm的增删改查"/>
+
+<meta property="og:title" content="gorm简介[前]" />
+<meta property="og:description" content="gorm的增删改查" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/gorm-tutorial-first/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-05-29T15:16:00&#43;08:00" />
+<meta property="article:modified_time" content="2017-05-29T15:16:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>gorm简介[前]</h2>
-          <span class="post-date">Mon, May 29, 2017</span>
-          <p>我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险</p>
+      </div>
+    </div>
+    
 
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>gorm简介[前]</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> May 29, 2017
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/develop">DEVELOP</a>
+              •
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/golang">GOLANG</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91">开发</a>
+           
+      
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80">go语言</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 4 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p>我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险</p>
 <p>而且组装sql语句也容易出错和减低代码的可维护性</p>
-
 <p>所以需要一个工具来管理数据库语句的组装和操作</p>
-
-<p>gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
-</p>
-
+<p>gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作</p>
 <p><strong>所有gorm的内容在它的<a href="http://jinzhu.me/gorm/">文档</a>中已经介绍的很详细，所以我这里写的大部分内容可能只是对原文进行了翻译和个人理解上的补充</strong></p>
-
 <h3 id="基本操作">基本操作</h3>
-
 <h4 id="连接数据库"><strong>连接数据库</strong></h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;github.com/jinzhu/gorm&#34;</span>
+  <span style="color:#75715e">//需要连接那个数据库，就import对应的dialect包
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/jinzhu/gorm/dialects/mysql&#34;</span>
+	<span style="color:#75715e">//_ &#34;github.com/jinzhu/gorm/dialects/postgres&#34;
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">//_ &#34;github.com/jinzhu/gorm/dialects/sqlite&#34;
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//_ &#34;github.com/jinzhu/gorm/dialects/mssql&#34;
+</span><span style="color:#75715e"></span>)
 
-<pre><code class="language-golang">package main
-import (
-	&quot;github.com/jinzhu/gorm&quot;
-  //需要连接那个数据库，就import对应的dialect包
-	_ &quot;github.com/jinzhu/gorm/dialects/mysql&quot;
-	//_ &quot;github.com/jinzhu/gorm/dialects/postgres&quot;
-	//_ &quot;github.com/jinzhu/gorm/dialects/sqlite&quot;
-  //_ &quot;github.com/jinzhu/gorm/dialects/mssql&quot;
-)
-
-func main(){
-  db, err := gorm.Open(&quot;mysql&quot;, &quot;user:password@/dbname?charset=utf8&amp;parseTime=True&amp;loc=Local&quot;)
-  defer db.close()
-  //db, err := gorm.Open(&quot;postgres&quot;, &quot;host=myhost user=gorm dbname=gorm sslmode=disable password=mypassword&quot;)
-  //defer db.Close()
-  //db, err := gorm.Open(&quot;sqlite3&quot;, &quot;/tmp/gorm.db&quot;)
-  //defer db.Close()
-  //db, err = gorm.Open(&quot;mssql&quot;, &quot;sqlserver://username:password@localhost:1433?database=dbname&quot;)
-  //defer db.Close()
-  ...
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>(){
+  <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#e6db74">&#34;user:password@/dbname?charset=utf8&amp;parseTime=True&amp;loc=Local&#34;</span>)
+  <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">db</span>.close()
+  <span style="color:#75715e">//db, err := gorm.Open(&#34;postgres&#34;, &#34;host=myhost user=gorm dbname=gorm sslmode=disable password=mypassword&#34;)
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//defer db.Close()
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//db, err := gorm.Open(&#34;sqlite3&#34;, &#34;/tmp/gorm.db&#34;)
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//defer db.Close()
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//db, err = gorm.Open(&#34;mssql&#34;, &#34;sqlserver://username:password@localhost:1433?database=dbname&#34;)
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//defer db.Close()
+</span><span style="color:#75715e"></span>  <span style="color:#f92672">...</span>
 }
-</code></pre>
-
-<h4 id="创建表"><strong>创建表</strong></h4>
-
+</code></pre></div><h4 id="创建表"><strong>创建表</strong></h4>
 <p>首先我们来看看如何建立一个和数据库关联的struct</p>
-
-<pre><code class="language-golang">
-type Category struct {
-	Name        string `gorm:&quot;primary_key&quot;`
-	Description string `gorm:&quot;size:255;default:'nothing in here'&quot;`
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Category</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Name</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;primary_key&#34;`</span>
+	<span style="color:#a6e22e">Description</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;size:255;default:&#39;nothing in here&#39;&#34;`</span>
 }
 
-type Email struct {
-	ID         int
-	UserId     int
-	Email      string `gorm:&quot;type:varchar(100);unique_index&quot;`
-	Subscribed bool
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Email</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">ID</span>         <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">UserId</span>     <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Email</span>      <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;type:varchar(100);unique_index&#34;`</span>
+	<span style="color:#a6e22e">Subscribed</span> <span style="color:#66d9ef">bool</span>
 }
 
-type Origin struct {
-	ID        int
-	ProductID uint
-	Address1  string `gorm:&quot;not null;unique&quot;`
-	Address2  string `gorm:&quot;unique&quot;`
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Origin</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">ID</span>        <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">ProductID</span> <span style="color:#66d9ef">uint</span>
+	<span style="color:#a6e22e">Address1</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;not null;unique&#34;`</span>
+	<span style="color:#a6e22e">Address2</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;unique&#34;`</span>
 }
 
-type Language struct {
-	ID   int
-	Name string `gorm:&quot;index:idx_name_code&quot;`
-	Code string `gorm:&quot;index:idx_name_code&quot;`
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Language</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">ID</span>   <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;index:idx_name_code&#34;`</span>
+	<span style="color:#a6e22e">Code</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;index:idx_name_code&#34;`</span>
 }
 
-type Product struct {
-	gorm.Model
-	Name string `gorm:&quot;index;size:255&quot;`
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Product</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Model</span>
+	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;index;size:255&#34;`</span>
 
-	Sid         int        `gorm:&quot;unique_index&quot;`
-	Categories  []Category `gorm:&quot;many2many:categories_product;&quot;`
-	Emails      []Email    `gorm:&quot;ForeignKey:UserId&quot;`
-	Origin      *Origin
-	Languages   []Language
-	Score       *float64 `gorm:&quot;not null;default:1.0&quot;`
-	Description string   `gorm:&quot;size:255;default:'nothing in here'&quot;`
+	<span style="color:#a6e22e">Sid</span>         <span style="color:#66d9ef">int</span>        <span style="color:#e6db74">`gorm:&#34;unique_index&#34;`</span>
+	<span style="color:#a6e22e">Categories</span>  []<span style="color:#a6e22e">Category</span> <span style="color:#e6db74">`gorm:&#34;many2many:categories_product;&#34;`</span>
+	<span style="color:#a6e22e">Emails</span>      []<span style="color:#a6e22e">Email</span>    <span style="color:#e6db74">`gorm:&#34;ForeignKey:UserId&#34;`</span>
+	<span style="color:#a6e22e">Origin</span>      <span style="color:#f92672">*</span><span style="color:#a6e22e">Origin</span>
+	<span style="color:#a6e22e">Languages</span>   []<span style="color:#a6e22e">Language</span>
+	<span style="color:#a6e22e">Score</span>       <span style="color:#f92672">*</span><span style="color:#66d9ef">float64</span> <span style="color:#e6db74">`gorm:&#34;not null;default:1.0&#34;`</span>
+	<span style="color:#a6e22e">Description</span> <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`gorm:&#34;size:255;default:&#39;nothing in here&#39;&#34;`</span>
 }
 
-type GreekAlphabet struct {
-	ID         uint   `gorm:&quot;primary_key&quot;`
-	LatinName  string `gorm:&quot;unique_index&quot;`
-	UpperCode  rune
-	LowerCode  rune
-	IsFrequent bool `gorm:&quot;index&quot;`
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GreekAlphabet</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">ID</span>         <span style="color:#66d9ef">uint</span>   <span style="color:#e6db74">`gorm:&#34;primary_key&#34;`</span>
+	<span style="color:#a6e22e">LatinName</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;unique_index&#34;`</span>
+	<span style="color:#a6e22e">UpperCode</span>  <span style="color:#66d9ef">rune</span>
+	<span style="color:#a6e22e">LowerCode</span>  <span style="color:#66d9ef">rune</span>
+	<span style="color:#a6e22e">IsFrequent</span> <span style="color:#66d9ef">bool</span> <span style="color:#e6db74">`gorm:&#34;index&#34;`</span>
 }
-</code></pre>
-
-<p>gorm会go的类型自动转成数据库类型，也可以通过type指定数据库类型
+</code></pre></div><p>gorm会go的类型自动转成数据库类型，也可以通过type指定数据库类型
 以下是默认情况下go类型和数据库类型对照(这里用postgres举例)</p>
-
 <table>
 <thead>
 <tr>
@@ -222,89 +275,68 @@ type GreekAlphabet struct {
 <th>数据库类型</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>int</td>
 <td>integer</td>
 </tr>
-
 <tr>
 <td>uint</td>
 <td>integer</td>
 </tr>
-
 <tr>
 <td>int8-32</td>
 <td>integer</td>
 </tr>
-
 <tr>
 <td>uint8-32</td>
 <td>integer</td>
 </tr>
-
 <tr>
 <td>int64</td>
 <td>bigint</td>
 </tr>
-
 <tr>
 <td>string</td>
 <td>text</td>
 </tr>
-
 <tr>
 <td>bool</td>
 <td>boolean</td>
 </tr>
-
 <tr>
 <td>time.Time</td>
 <td>timestamp</td>
 </tr>
-
 <tr>
 <td>float32</td>
 <td>numeric</td>
 </tr>
-
 <tr>
 <td>float64</td>
 <td>numeric</td>
 </tr>
 </tbody>
 </table>
-
 <p><strong>特殊的数组类型</strong></p>
-
 <p>使用数组类型 默认会当成是一对多模式,可以通过tag修改关系
 在一对多模式下，使用数组类型中的类型必须是对应另一个数据表的struct,并且对象struct中要包含名字为<strong>当前表名+ID</strong>的字段，该字段类型最好对应当前表的primary_key类型</p>
-
-<hr />
-
+<hr>
 <p>我们看看Product包含了匿名字段gorm.Model，以下类型都有特殊含义</p>
-
 <p>gorm会在创建和修改，删除时自动填充CreatedAt和UpdatedAt，DeletedAt时自动填充字段值</p>
-
 <p>在gorm中匿名struct中的字段中的Field都会被继承，所以<strong>你也可以像gorm.Model这样把常用字段抽象成一个struct</strong></p>
-
 <p>ID字段也是默认被当成primary_key的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">gorm</span>
 
-<pre><code class="language-golang">package gorm
+<span style="color:#f92672">...</span>
 
-...
-
-type Model struct {
-	ID        uint `gorm:&quot;primary_key&quot;`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:&quot;index&quot;`
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Model</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">ID</span>        <span style="color:#66d9ef">uint</span> <span style="color:#e6db74">`gorm:&#34;primary_key&#34;`</span>
+	<span style="color:#a6e22e">CreatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+	<span style="color:#a6e22e">UpdatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+	<span style="color:#a6e22e">DeletedAt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`sql:&#34;index&#34;`</span>
 }
-</code></pre>
-
-<p>gorm的一大特性就是能用struct的tag来指定栏属性，以下是gorm tag的关键字意义</p>
-
+</code></pre></div><p>gorm的一大特性就是能用struct的tag来指定栏属性，以下是gorm tag的关键字意义</p>
 <table>
 <thead>
 <tr>
@@ -312,359 +344,283 @@ type Model struct {
 <th>属性</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>通用</td>
 <td></td>
 </tr>
-
 <tr>
 <td>index</td>
 <td>索引</td>
 </tr>
-
 <tr>
 <td>index:key_name</td>
 <td>自定义索引名，但2个索引名相同时变为组合索引</td>
 </tr>
-
 <tr>
 <td>unique_index</td>
 <td>唯一索引，组合索引的方法同上</td>
 </tr>
-
 <tr>
 <td>primary_key</td>
 <td>建立主键，组合的方法同上</td>
 </tr>
-
 <tr>
 <td>not null</td>
-<td>指定类型的值不能为空(注意这个not null只是数据库中能否为nil和数据值是否为空没有关系，string一样可以取&rdquo;&ldquo;)</td>
+<td>指定类型的值不能为空(注意这个not null只是数据库中能否为nil和数据值是否为空没有关系，string一样可以取&quot;&quot;)</td>
 </tr>
-
 <tr>
 <td>default</td>
 <td>默认值</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>忽略该字段</td>
 </tr>
-
 <tr>
 <td>数据类型</td>
 <td></td>
 </tr>
-
 <tr>
 <td>many2many:must_key_name</td>
 <td>建立多对多的关系，需要声明多对多的表名</td>
 </tr>
-
 <tr>
 <td>ForeignKey:must_key_name</td>
 <td>指定外键名(外键名必须是对应struct的所拥有的字段名)</td>
 </tr>
-
 <tr>
 <td>字符串类型</td>
 <td></td>
 </tr>
-
 <tr>
 <td>size:255</td>
 <td>指定长度，一般用于字符串</td>
 </tr>
-
 <tr>
 <td>type:varchar(100)</td>
 <td>指定类型，不同类型函数的参数不一样</td>
 </tr>
-
 <tr>
 <td>整数字段</td>
 <td></td>
 </tr>
-
 <tr>
 <td>AUTO_INCREMENT</td>
 <td>自动增长</td>
 </tr>
 </tbody>
 </table>
-
 <p>然后通过db.CreateTable在数据库中创建对应的数据库</p>
-
-<pre><code class="language-golang">tables := []interface{}{&amp;Category{}, &amp;Email{}, &amp;Origin{}, &amp;Language{}, &amp;Product{}}
-db.DropTableIfExists(tables...)
-db.CreateTable(tables...)
-</code></pre>
-
-<p>然后我们可以在数据库看到表的create statement(因为postgres的语法太罗嗦了，所以这里用sqlite举例)</p>
-
-<pre><code class="language-sqlite">CREATE TABLE &quot;categories&quot; (&quot;name&quot; varchar(255),&quot;description&quot; varchar(255) DEFAULT 'nothing in here' , PRIMARY KEY (&quot;name&quot;))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#a6e22e">tables</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">interface</span>{}{<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Category</span>{}, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Email</span>{}, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Origin</span>{}, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Language</span>{}, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{}}
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DropTableIfExists</span>(<span style="color:#a6e22e">tables</span><span style="color:#f92672">...</span>)
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">CreateTable</span>(<span style="color:#a6e22e">tables</span><span style="color:#f92672">...</span>)
+</code></pre></div><p>然后我们可以在数据库看到表的create statement(因为postgres的语法太罗嗦了，所以这里用sqlite举例)</p>
+<pre><code class="language-sqlite" data-lang="sqlite">CREATE TABLE &quot;categories&quot; (&quot;name&quot; varchar(255),&quot;description&quot; varchar(255) DEFAULT 'nothing in here' , PRIMARY KEY (&quot;name&quot;))
 CREATE TABLE &quot;categories_product&quot; (&quot;product_id&quot; integer,&quot;category_name&quot; varchar(255), PRIMARY KEY (&quot;product_id&quot;,&quot;category_name&quot;))
 CREATE TABLE &quot;emails&quot; (&quot;id&quot; integer primary key autoincrement,&quot;user_id&quot; integer,&quot;email&quot; varchar(100),&quot;subscribed&quot; bool )
 CREATE TABLE &quot;languages&quot; (&quot;id&quot; integer primary key autoincrement,&quot;name&quot; varchar(255),&quot;code&quot; varchar(255) )
 CREATE TABLE &quot;origins&quot; (&quot;id&quot; integer primary key autoincrement,&quot;product_id&quot; integer,&quot;address1&quot; varchar(255) NOT NULL UNIQUE,&quot;address2&quot; varchar(255) UNIQUE )
 CREATE TABLE &quot;products&quot; (&quot;id&quot; integer primary key autoincrement,&quot;created_at&quot; datetime,&quot;updated_at&quot; datetime,&quot;deleted_at&quot; datetime,&quot;name&quot; varchar(255),&quot;sid&quot; integer,&quot;score&quot; real NOT NULL  DEFAULT 1.0,&quot;description&quot; varchar(255) DEFAULT 'nothing in here' )
 CREATE TABLE &quot;greek_alphabets&quot; (&quot;id&quot; integer primary key autoincrement,&quot;latin_name&quot; varchar(255),&quot;upper_code&quot; integer,&quot;lower_code&quot; integer,&quot;is_frequent&quot; bool )
-</code></pre>
-
-<h4 id="创建数据"><strong>创建数据</strong></h4>
-
+</code></pre><h4 id="创建数据"><strong>创建数据</strong></h4>
 <p>创建数据比创建表简单多了，我们只需要把数据填入结构体，然后通过db.Create(interface{})来初始化,像这样</p>
-
-<pre><code class="language-golang">categories := []Category{
-	Category{&quot;mobile phone&quot;, &quot;a hand-held mobile radiotelephone for use in an area divided into small sections, each with its own short-range transmitter/receiver&quot;},
-	Category{&quot;apple&quot;, &quot;&quot;},
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#a6e22e">categories</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Category</span>{
+	<span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;mobile phone&#34;</span>, <span style="color:#e6db74">&#34;a hand-held mobile radiotelephone for use in an area divided into small sections, each with its own short-range transmitter/receiver&#34;</span>},
+	<span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;apple&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>},
 }
-emails := []Email{Email{Email: &quot;example@domain.com&quot;, Subscribed: false}}
-origin := Origin{Address1: &quot;apple company address&quot;, Address2: &quot;test&quot;}
-languages := []Language{Language{Name: &quot;中国&quot;, Code: &quot;cn&quot;}, Language{Name: &quot;美国&quot;, Code: &quot;us&quot;}}
-score := float32(0.0)
-product := Product{
-	Name:       &quot;iphone7&quot;,
-	Sid:        1211,
-	Categories: categories,
-	Emails:     emails,
-	Origin:     &amp;origin,
-	Languages:  languages,
-	Score:      &amp;score,
+<span style="color:#a6e22e">emails</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>: <span style="color:#e6db74">&#34;example@domain.com&#34;</span>, <span style="color:#a6e22e">Subscribed</span>: <span style="color:#66d9ef">false</span>}}
+<span style="color:#a6e22e">origin</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Origin</span>{<span style="color:#a6e22e">Address1</span>: <span style="color:#e6db74">&#34;apple company address&#34;</span>, <span style="color:#a6e22e">Address2</span>: <span style="color:#e6db74">&#34;test&#34;</span>}
+<span style="color:#a6e22e">languages</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;中国&#34;</span>, <span style="color:#a6e22e">Code</span>: <span style="color:#e6db74">&#34;cn&#34;</span>}, <span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;美国&#34;</span>, <span style="color:#a6e22e">Code</span>: <span style="color:#e6db74">&#34;us&#34;</span>}}
+<span style="color:#a6e22e">score</span> <span style="color:#f92672">:=</span> float32(<span style="color:#ae81ff">0.0</span>)
+<span style="color:#a6e22e">product</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Product</span>{
+	<span style="color:#a6e22e">Name</span>:       <span style="color:#e6db74">&#34;iphone7&#34;</span>,
+	<span style="color:#a6e22e">Sid</span>:        <span style="color:#ae81ff">1211</span>,
+	<span style="color:#a6e22e">Categories</span>: <span style="color:#a6e22e">categories</span>,
+	<span style="color:#a6e22e">Emails</span>:     <span style="color:#a6e22e">emails</span>,
+	<span style="color:#a6e22e">Origin</span>:     <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">origin</span>,
+	<span style="color:#a6e22e">Languages</span>:  <span style="color:#a6e22e">languages</span>,
+	<span style="color:#a6e22e">Score</span>:      <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">score</span>,
 }
-err := db.Create(&amp;product).Error
-if err != nil {
-	t.Error(err)
+<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>).<span style="color:#a6e22e">Error</span>
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">err</span>)
 }
-</code></pre>
-
-<p>相信细心的人已经注意到，我在创建Product时Score字段设为指针，这是因为gorm在创建表时会自动把所有为0值的值忽略(0值的定义可以看<a href="https://golang.org/ref/spec#The_zero_value">go的介绍</a>),而Score又设置了默认值为1.0。</p>
-
+</code></pre></div><p>相信细心的人已经注意到，我在创建Product时Score字段设为指针，这是因为gorm在创建表时会自动把所有为0值的值忽略(0值的定义可以看<a href="https://golang.org/ref/spec#The_zero_value">go的介绍</a>),而Score又设置了默认值为1.0。</p>
 <p>也就是说，<strong>如果Score如果不是指针字段，它将永远没法设置为0值</strong></p>
-
 <p>这个规则在下面的查询，插入和更新中也会有，在创建struct时一定要注意这些细节</p>
-
 <h4 id="查询数据"><strong>查询数据</strong></h4>
-
 <p>为了方便查询，我们这里增加几条数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#a6e22e">categories</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Category</span>{
+	<span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;mobile phone&#34;</span>, <span style="color:#e6db74">&#34;a hand-held mobile radiotelephone for use in an area divided into small sections, each with its own short-range transmitter/receiver&#34;</span>},
+	<span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;xiaomi&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>},
+}
+<span style="color:#a6e22e">emails</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>: <span style="color:#e6db74">&#34;example2@domain.com&#34;</span>, <span style="color:#a6e22e">Subscribed</span>: <span style="color:#66d9ef">false</span>}}
+<span style="color:#a6e22e">origin</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Origin</span>{<span style="color:#a6e22e">Address1</span>: <span style="color:#e6db74">&#34;xiaomi company address&#34;</span>, <span style="color:#a6e22e">Address2</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+<span style="color:#a6e22e">languages</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;中国&#34;</span>, <span style="color:#a6e22e">Code</span>: <span style="color:#e6db74">&#34;cn&#34;</span>}}
+<span style="color:#a6e22e">score</span> <span style="color:#f92672">:=</span> float32(<span style="color:#ae81ff">2.0</span>)
+<span style="color:#a6e22e">product</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Product</span>{
+	<span style="color:#a6e22e">Name</span>:       <span style="color:#e6db74">&#34;xiaomi6&#34;</span>,
+	<span style="color:#a6e22e">Sid</span>:        <span style="color:#ae81ff">1311</span>,
+	<span style="color:#a6e22e">Categories</span>: <span style="color:#a6e22e">categories</span>,
+	<span style="color:#a6e22e">Emails</span>:     <span style="color:#a6e22e">emails</span>,
+	<span style="color:#a6e22e">Origin</span>:     <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">origin</span>,
+	<span style="color:#a6e22e">Languages</span>:  <span style="color:#a6e22e">languages</span>,
+	<span style="color:#a6e22e">Score</span>:      <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">score</span>,
+}
+<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>).<span style="color:#a6e22e">Error</span>
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">err</span>)
+}
 
-<pre><code class="language-golang">categories := []Category{
-	Category{&quot;mobile phone&quot;, &quot;a hand-held mobile radiotelephone for use in an area divided into small sections, each with its own short-range transmitter/receiver&quot;},
-	Category{&quot;xiaomi&quot;, &quot;&quot;},
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#a6e22e">categories</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Category</span>{
+  <span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;food&#34;</span>, <span style="color:#e6db74">&#34; sth solid for eating&#34;</span>},
+  <span style="color:#a6e22e">Category</span>{<span style="color:#e6db74">&#34;meat&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>},
 }
-emails := []Email{Email{Email: &quot;example2@domain.com&quot;, Subscribed: false}}
-origin := Origin{Address1: &quot;xiaomi company address&quot;, Address2: &quot;&quot;}
-languages := []Language{Language{Name: &quot;中国&quot;, Code: &quot;cn&quot;}}
-score := float32(2.0)
-product := Product{
-	Name:       &quot;xiaomi6&quot;,
-	Sid:        1311,
-	Categories: categories,
-	Emails:     emails,
-	Origin:     &amp;origin,
-	Languages:  languages,
-	Score:      &amp;score,
+<span style="color:#a6e22e">emails</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>{<span style="color:#a6e22e">Email</span>: <span style="color:#e6db74">&#34;example3@domain.com&#34;</span>, <span style="color:#a6e22e">Subscribed</span>: <span style="color:#66d9ef">false</span>}}
+<span style="color:#a6e22e">origin</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Origin</span>{<span style="color:#a6e22e">Address1</span>: <span style="color:#e6db74">&#34;163 company address&#34;</span>, <span style="color:#a6e22e">Address2</span>: <span style="color:#e6db74">&#34;163 company address2&#34;</span>}
+<span style="color:#a6e22e">languages</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Language</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;中国&#34;</span>, <span style="color:#a6e22e">Code</span>: <span style="color:#e6db74">&#34;cn&#34;</span>}}
+<span style="color:#a6e22e">score</span> <span style="color:#f92672">:=</span> float32(<span style="color:#ae81ff">3.0</span>)
+<span style="color:#a6e22e">product</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Product</span>{
+  <span style="color:#a6e22e">Name</span>:       <span style="color:#e6db74">&#34;wild boar meat&#34;</span>,
+  <span style="color:#a6e22e">Sid</span>:        <span style="color:#ae81ff">9999</span>,
+  <span style="color:#a6e22e">Categories</span>: <span style="color:#a6e22e">categories</span>,
+  <span style="color:#a6e22e">Emails</span>:     <span style="color:#a6e22e">emails</span>,
+  <span style="color:#a6e22e">Origin</span>:     <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">origin</span>,
+  <span style="color:#a6e22e">Languages</span>:  <span style="color:#a6e22e">languages</span>,
+  <span style="color:#a6e22e">Score</span>:      <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">score</span>,
 }
-err := db.Create(&amp;product).Error
-if err != nil {
-	t.Error(err)
+<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>).<span style="color:#a6e22e">Error</span>
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+  <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">err</span>)
 }
-
-</code></pre>
-
-<pre><code class="language-golang">categories := []Category{
-  Category{&quot;food&quot;, &quot; sth solid for eating&quot;},
-  Category{&quot;meat&quot;, &quot;&quot;},
-}
-emails := []Email{Email{Email: &quot;example3@domain.com&quot;, Subscribed: false}}
-origin := Origin{Address1: &quot;163 company address&quot;, Address2: &quot;163 company address2&quot;}
-languages := []Language{Language{Name: &quot;中国&quot;, Code: &quot;cn&quot;}}
-score := float32(3.0)
-product := Product{
-  Name:       &quot;wild boar meat&quot;,
-  Sid:        9999,
-  Categories: categories,
-  Emails:     emails,
-  Origin:     &amp;origin,
-  Languages:  languages,
-  Score:      &amp;score,
-}
-err := db.Create(&amp;product).Error
-if err != nil {
-  t.Error(err)
-}
-</code></pre>
-
-<p><strong>Where查询</strong></p>
-
+</code></pre></div><p><strong>Where查询</strong></p>
 <p>如果我想查询Product.Name = &ldquo;xiaomi6&rdquo;，可以这样写</p>
-
-<pre><code class="language-golang">var product Product
-// 因为我知道xiaomi6只有一个结果，所以直接这样写
-db.Where(&amp;Product{Name: &quot;xiaomi6&quot;}).First(&amp;product)
-</code></pre>
-
-<p>Where这里的参数和上面Create中提到的规则一样，为空值的字段不会被当成查询条件，所以想查询比如Score为0，字段必须是指针字段</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#75715e">// 因为我知道xiaomi6只有一个结果，所以直接这样写
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;xiaomi6&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+</code></pre></div><p>Where这里的参数和上面Create中提到的规则一样，为空值的字段不会被当成查询条件，所以想查询比如Score为0，字段必须是指针字段</p>
 <p>First就是获取第一个查询结果，下面会讲到</p>
-
 <p><strong>获取</strong></p>
-
 <p>First函数就是获取第一个查询的结果</p>
-
-<pre><code class="language-golang">var product Product
-db.First(&amp;product)
-</code></pre>
-
-<p>相对的查询最后一个结果,用Last函数</p>
-
-<pre><code class="language-golang">var product Product
-db.Last(&amp;product)
-</code></pre>
-
-<p>这里说明一点，这里调用Last和First所需要的product指针最好是一个内容为空的对象，因为若product.ID不为空，则只会把对象更新为该ID对应的对象，若其他字段不为空就有可能污染查询到的结果</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+</code></pre></div><p>相对的查询最后一个结果,用Last函数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Last</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+</code></pre></div><p>这里说明一点，这里调用Last和First所需要的product指针最好是一个内容为空的对象，因为若product.ID不为空，则只会把对象更新为该ID对应的对象，若其他字段不为空就有可能污染查询到的结果</p>
 <p>查询全部则用Find</p>
-
-<pre><code class="language-golang">var products []Product
-db.Find(&amp;products)
-</code></pre>
-
-<p>gorm默认不会查询外键对象，如果想把结构体字段的内容也查询出来，可以使用Preload函数预加载这个结构体,像下面这样</p>
-
-<pre><code class="language-golang">var product Product
-db.Preload(&quot;Origin&quot;).Where(&amp;Product{Name: &quot;xiaomi6&quot;}).First(&amp;product)
-</code></pre>
-
-<p>虽然可以查出Origin字段的数据，不过却使用到了字符串，这样也导致人为拼写错误的可能和增加维护成本，我们可以使用go的反射来解决这个问题，这里就不细说了</p>
-
-<hr />
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">products</span> []<span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">products</span>)
+</code></pre></div><p>gorm默认不会查询外键对象，如果想把结构体字段的内容也查询出来，可以使用Preload函数预加载这个结构体,像下面这样</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Preload</span>(<span style="color:#e6db74">&#34;Origin&#34;</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;xiaomi6&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+</code></pre></div><p>虽然可以查出Origin字段的数据，不过却使用到了字符串，这样也导致人为拼写错误的可能和增加维护成本，我们可以使用go的反射来解决这个问题，这里就不细说了</p>
+<hr>
 <h4 id="更新数据"><strong>更新数据</strong></h4>
-
 <p><strong>Save</strong></p>
-
 <p>Save更新不会忽略0值，但每次只能更新一条数据</p>
-
-<pre><code class="language-golang">var xiaomi Product
-db.Where(&amp;Product{Name: &quot;xiaomi6&quot;}).First(&amp;xiaomi)
-xiaomi.Sid = 0
-db.Save(&amp;xiaomi)
-var product Product
-db.Where(&amp;Product{Name: &quot;xiaomi6&quot;}).First(&amp;product)
-//查看product有无更新成功
-</code></pre>
-
-<p><strong>Update</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xiaomi</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;xiaomi6&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">xiaomi</span>)
+<span style="color:#a6e22e">xiaomi</span>.<span style="color:#a6e22e">Sid</span> = <span style="color:#ae81ff">0</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">xiaomi</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;xiaomi6&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+<span style="color:#75715e">//查看product有无更新成功
+</span></code></pre></div><p><strong>Update</strong></p>
 <p>使用Updates可以进行批量更新，空值依然会被忽略</p>
-
-<pre><code class="language-golang">db.Model(&amp;Product{}).Updates(&amp;Product{Description: &quot;also nothing here&quot;})
-products := []Product{}
-db.Find(&amp;products)
-for _, p := range products {
-	t.Log(p.Name, p.Description)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{}).<span style="color:#a6e22e">Updates</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Description</span>: <span style="color:#e6db74">&#34;also nothing here&#34;</span>})
+<span style="color:#a6e22e">products</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Product</span>{}
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">products</span>)
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">products</span> {
+	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Description</span>)
 }
-</code></pre>
-
-<h4 id="删除数据"><strong>删除数据</strong></h4>
-
+</code></pre></div><h4 id="删除数据"><strong>删除数据</strong></h4>
 <p>删除数据时要保证被删除数据的主键不能为空，不然会吧整个表的数据都删掉</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">meat</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;wild boar meat&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">meat</span>)
 
-<pre><code class="language-golang">var meat Product
-db.Where(&amp;Product{Name: &quot;wild boar meat&quot;}).First(&amp;meat)
-
-var product Product
-db.Where(&amp;Product{Name: &quot;wild boar meat&quot;}).First(&amp;product)
-// 这时查到的product应该为空
-</code></pre>
-
-<p>因为product中包含DeleteAt字段，所以并不会数据并不会真的被删除，只是设置了DeleteAt为当前时间</p>
-
-<hr />
-
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">product</span> <span style="color:#a6e22e">Product</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Product</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;wild boar meat&#34;</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">product</span>)
+<span style="color:#75715e">// 这时查到的product应该为空
+</span></code></pre></div><p>因为product中包含DeleteAt字段，所以并不会数据并不会真的被删除，只是设置了DeleteAt为当前时间</p>
+<hr>
 <p>如果数据表没有DeletedAt字段，那么调用Delete会物理删除数据</p>
-
-<pre><code class="language-golang">var email Email
-db.First(&amp;email)
-id := email.ID
-db.Delete(&amp;email)
-// 打印id
-...
-</code></pre>
-
-<h4 id="总结"><strong>总结</strong></h4>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">email</span> <span style="color:#a6e22e">Email</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">email</span>)
+<span style="color:#a6e22e">id</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">email</span>.<span style="color:#a6e22e">ID</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">email</span>)
+<span style="color:#75715e">// 打印id
+</span><span style="color:#75715e"></span><span style="color:#f92672">...</span>
+</code></pre></div><h4 id="总结"><strong>总结</strong></h4>
 <p><strong>优点</strong></p>
-
 <ul>
-<li><p>支持多种sql数据库</p></li>
-
-<li><p>支持struct到数据表的映射</p></li>
-
-<li><p>知道struct tag的到字段属性的映射</p></li>
-
-<li><p>支持Scope自定义操作，以补充该库功能上的不足(以后会讲到)</p></li>
+<li>
+<p>支持多种sql数据库</p>
+</li>
+<li>
+<p>支持struct到数据表的映射</p>
+</li>
+<li>
+<p>知道struct tag的到字段属性的映射</p>
+</li>
+<li>
+<p>支持Scope自定义操作，以补充该库功能上的不足(以后会讲到)</p>
+</li>
 </ul>
-
 <p><strong>缺点</strong></p>
-
 <ul>
-<li><p>受限于go的struct，在gorm的查询无法查询0值，而使用指针会让结构体变的异常丑陋</p></li>
-
-<li><p>条件查询,嵌套查询等操作还是要借助字符串表达式</p></li>
+<li>
+<p>受限于go的struct，在gorm的查询无法查询0值，而使用指针会让结构体变的异常丑陋</p>
+</li>
+<li>
+<p>条件查询,嵌套查询等操作还是要借助字符串表达式</p>
+</li>
 </ul>
-
 <p>总的来说gorm还是一个不错orm,用来做简单数据的增删改查还是非常方便，在日常请求的逻辑处理基本是够用的</p>
-
 <h4 id="链接"><strong>链接</strong></h4>
-
 <p><a href="http://jinzhu.me/gorm/">gorm官方文档</a></p>
-
 <p><a href="https://github.com/bigpigeon/Test/tree/master/go/gorm_demo">测试代码地址</a></p>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=gorm%e7%ae%80%e4%bb%8b%5b%e5%89%8d%5d-https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f&title=gorm%e7%ae%80%e4%bb%8b%5b%e5%89%8d%5d" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgorm-tutorial-first%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/git-push-recover-way/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">git错误push与回滚</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/go-reflect-talk/" class="navigation-next">
+      <span class="navigation-tittle">谈谈go的relfect</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
         
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-      </div>
-    </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
 
+    </body>
 </html>

@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Golang on bigpigeon</title>
+    <title>golang on bigpigeon</title>
     <link>https://bigpigeon.org/tags/golang/</link>
-    <description>Recent content in Golang on bigpigeon</description>
+    <description>Recent content in golang on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 15 Apr 2020 18:43:37 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 15 Apr 2020 18:43:37 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>当在k8s创建一个实体时会发生什么</title>
       <link>https://bigpigeon.org/post/k8s-concept/</link>
@@ -19,14 +15,10 @@
       
       <guid>https://bigpigeon.org/post/k8s-concept/</guid>
       <description>&lt;h3 id=&#34;前置条件&#34;&gt;前置条件&lt;/h3&gt;
-
 &lt;p&gt;容器: docker&lt;/p&gt;
-
 &lt;p&gt;kubernetes: 1.14.2&lt;/p&gt;
-
 &lt;p&gt;当在k8s中创建一个deployments,注意kubeapi会通知到每一个controller，多个controll同时对一个deployment增加replicaSet只有一个会成功&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;sequenceDiagram
+&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34; data-lang=&#34;mermaid&#34;&gt;sequenceDiagram
   kubectl-&amp;gt;kubeapi: 创建一个deployment
   kubeapi-&amp;gt;etcd: 持久化这次修改
   kubeapi-&amp;gt;kubectl: 告知客户端创建成功
@@ -36,9 +28,7 @@
   kubelet-&amp;gt;kubeapi: 获取pod信息，通过cri发送给本地docker，创建container
   kubelet-&amp;gt;container: 通知docker创建pod中的container
   kubelet-&amp;gt;kubeapi: 收集container状态，更新pod状态
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -57,10 +47,7 @@
       
       <guid>https://bigpigeon.org/post/jekyll-to-hugo/</guid>
       <description>&lt;p&gt;因为我对新技术的热爱和向往，我选择博客从jekyll换成hugo了，本来是想记录一下他们之间区别，搬运完才发现它们在功能上竟然是如此的相识,所以我只能讲jekyll如何搬运到hugo.&lt;/p&gt;
-
-&lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;hugo和jekyll一样也是静态页面框架，有着和jekyll相似文件结构和配置方法，不过hugo有着更快的生成速度和更好的markdown引擎，支持toml,yaml,json配置文件格式，hugo又从hexo中借鉴了不少特性,比如live reload。而且hugo是go开发的，模板语法中能找到go语言的影子，这也是我使用它的主要原因。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -266,12 +253,8 @@ var testFuncs = []func(){
       
       <guid>https://bigpigeon.org/post/gin-framework/</guid>
       <description>&lt;h3 id=&#34;为何用gin&#34;&gt;为何用gin&lt;/h3&gt;
-
 &lt;p&gt;它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够&lt;/p&gt;
-
-&lt;p&gt;而因为它的简单我们也能很好的在它上面增加功能或再开发&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;而因为它的简单我们也能很好的在它上面增加功能或再开发&lt;/p&gt;</description>
     </item>
     
   </channel>

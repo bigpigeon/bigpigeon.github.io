@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on bigpigeon</title>
+    <title>go on bigpigeon</title>
     <link>https://bigpigeon.org/categories/go/</link>
-    <description>Recent content in Go on bigpigeon</description>
+    <description>Recent content in go on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/categories/go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>containerd介绍</title>
       <link>https://bigpigeon.org/post/containerd-tutorial-first/</link>
@@ -19,10 +15,7 @@
       
       <guid>https://bigpigeon.org/post/containerd-tutorial-first/</guid>
       <description>&lt;h1 id=&#34;containerd是什么&#34;&gt;containerd是什么&lt;/h1&gt;
-
-&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -32,22 +25,13 @@
       
       <guid>https://bigpigeon.org/post/go-text-template/</guid>
       <description>&lt;p&gt;go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题&lt;/p&gt;
-
 &lt;p&gt;为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍&lt;/p&gt;
-
 &lt;p&gt;本篇只是粗略的讲解模板的各个模块，不会深入函数细节&lt;/p&gt;
-
 &lt;p&gt;首先基本用法开始&lt;/p&gt;
-
 &lt;h4 id=&#34;基本用法&#34;&gt;基本用法&lt;/h4&gt;
-
 &lt;p&gt;我们这里用的是text_template中example_test的ExampleTemplate()作为例子&lt;/p&gt;
-
 &lt;p&gt;通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中&lt;/p&gt;
-
-&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;然后通过&lt;code&gt;t.Execute&lt;/code&gt;把模板渲染出来&lt;/p&gt;</description>
     </item>
     
   </channel>

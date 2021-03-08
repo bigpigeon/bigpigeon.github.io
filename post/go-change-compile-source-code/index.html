@@ -1,164 +1,217 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> go module无法拉取库的原因排查 &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>go module无法拉取库的原因排查 • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="go module无法拉取库的原因排查"/>
+<meta name="twitter:description" content="go compile debug，查看为何无法拉取太大的go包"/>
+
+<meta property="og:title" content="go module无法拉取库的原因排查" />
+<meta property="og:description" content="go compile debug，查看为何无法拉取太大的go包" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/go-change-compile-source-code/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-09-23T16:58:00&#43;08:00" />
+<meta property="article:modified_time" content="2019-09-23T16:58:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>go module无法拉取库的原因排查</h2>
-          <span class="post-date">Mon, Sep 23, 2019</span>
-          <p>有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了</p>
+      </div>
+    </div>
+    
 
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>go module无法拉取库的原因排查</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Sep 23, 2019
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/develop">DEVELOP</a>
+              •
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/golang">GOLANG</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91">开发</a>
+           
+      
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80">go语言</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 2 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p>有个同事问我go module突然无法拉取他写的某个库了，报了个以下错误，而且他说昨天还能拉，今天突然不行了，并且不久前又刚好重启过gitlab服务器，所以想确认是不是gitlab某些配置改了</p>
 <pre><code>package xxx.internel.io/lib/with-lfs: unknown import path &quot;xxx.internel.io/lib/with-lfs&quot;: downloaded zip file too large
-</code></pre>
-
-<p>在多方信息干扰下我先从gitlab查起，当然比较竟然叫 <code>go module无法拉取库的原因排查</code>,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上</p>
-
+</code></pre><p>在多方信息干扰下我先从gitlab查起，当然比较竟然叫 <code>go module无法拉取库的原因排查</code>,问题自然不在这，在我确保gitlab的配置和重启前完全一致后,并且排除了git lfs导致的问题，我把怀疑目标移到了go module上</p>
 <p>在一番google我找到了 <a href="https://github.com/golang/go/issues/29987">issue</a> 应该就是对应这个问题的，但一直没有close,看来是没解决</p>
-
 <p>但我不甘心，好歹找到问题了，如果得到的答案是无法解决这半天时间岂不是浪费了，于是乎我开始查看go源码，找到<code>downloaded zip file too large</code>关键字对应的行</p>
-
-<p></p>
-
-<pre><code class="language-bash">$ cd $GOROOT
-$ grep -I  -r -n &quot;downloaded zip file too large&quot;
-src/cmd/go/internal/modfetch/proxy.go:396:		return p.versionError(version, fmt.Errorf(&quot;downloaded zip file too large&quot;))
-src/cmd/go/internal/modfetch/coderepo.go:807:		return fmt.Errorf(&quot;downloaded zip file too large&quot;)
-</code></pre>
-
-<p>找到后就好办了，首先使用<code>dlv</code> debug看看</p>
-
-<pre><code class="language-bash"># 编译go之前把go module关掉
-$ export GO111MODULE=off
-$ go build -gcflags &quot;all=-N -l&quot; -o debug-go $GOROOT/src/cmd/go
-# 打开go module保证go使用module拉取项目
-$ export GO111MODULE=on
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd $GOROOT
+$ grep -I  -r -n <span style="color:#e6db74">&#34;downloaded zip file too large&#34;</span>
+src/cmd/go/internal/modfetch/proxy.go:396:		<span style="color:#66d9ef">return</span> p.versionError<span style="color:#f92672">(</span>version, fmt.Errorf<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;downloaded zip file too large&#34;</span><span style="color:#f92672">))</span>
+src/cmd/go/internal/modfetch/coderepo.go:807:		<span style="color:#66d9ef">return</span> fmt.Errorf<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;downloaded zip file too large&#34;</span><span style="color:#f92672">)</span>
+</code></pre></div><p>找到后就好办了，首先使用<code>dlv</code> debug看看</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 编译go之前把go module关掉</span>
+$ export GO111MODULE<span style="color:#f92672">=</span>off
+$ go build -gcflags <span style="color:#e6db74">&#34;all=-N -l&#34;</span> -o debug-go $GOROOT/src/cmd/go
+<span style="color:#75715e"># 打开go module保证go使用module拉取项目</span>
+$ export GO111MODULE<span style="color:#f92672">=</span>on
 $ dlv exec -- ./debug-go get xxx.internel.io/lib/with-lfs
-# 进入交互模式，打好断点就可以跑了
-(dlv) break src/cmd/go/internal/modfetch/proxy.go:396
-(dlv) break src/cmd/go/internal/modfetch/coderepo.go:807
-(dlv) continue
-</code></pre>
-
-<p>等待到达错误断点然后开始debug就好了</p>
-
+<span style="color:#75715e"># 进入交互模式，打好断点就可以跑了</span>
+<span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> break src/cmd/go/internal/modfetch/proxy.go:396
+<span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> break src/cmd/go/internal/modfetch/coderepo.go:807
+<span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> <span style="color:#66d9ef">continue</span>
+</code></pre></div><p>等待到达错误断点然后开始debug就好了</p>
 <p>也可以使用一些IDE，比如goland,这样可以得到比较好的交互体验，因为我懒得截图，所以就用命令行来说明</p>
-
 <pre><code>go: xxx.internel.io/lib/with-lfs v0.2.6
 &gt; cmd/go/internal/modfetch.(*codeRepo).Zip() /home/benjamin/.go/src/cmd/go/internal/modfetch/coderepo.go:807 (hits goroutine(47):1 total:1) (PC: 0xa97844)
    802:			dl.Close()
@@ -172,149 +225,108 @@ $ dlv exec -- ./debug-go get xxx.internel.io/lib/with-lfs
    810:		if _, err := f.Seek(0, 0); err != nil {
    811:			return err
    812:		}
-</code></pre>
-
-<p>我们跳过debug步骤，直接来说结论吧，go module 拉取项目全部逻辑</p>
-
+</code></pre><p>我们跳过debug步骤，直接来说结论吧，go module 拉取项目全部逻辑</p>
 <p>通过 在 <code>src/cmd/go/internal/modfetch/codehost/codehost.go:253</code> 打断点就可以看到go执行的所以exec</p>
-
 <ol>
 <li>初始化项目</li>
 </ol>
-
 <pre><code>src/cmd/go/internal/modfetch/codehost/git.go:76
 # 其中hash值就是 sha256.Sum256([]byte(&quot;git3:https://xxx.internel.io/lib/with-lfs&quot;)
 cd $GOPATH/pkg/mod/cache/vcs/0f8908983e14c7e04862deff0f8df25b0a3477a4a53e91555891b8518004664d
 git init --bare 
 git remote add origin -- https://xxx.internel.io/lib/with-lfs
-</code></pre>
-
-<ol>
+</code></pre><ol start="2">
 <li>列出所有git 远程分支名，用一套规则匹配最合适的tag</li>
 </ol>
-
 <pre><code>git tag -l
 git ls-remote -q origin 
-</code></pre>
-
-<ol>
+</code></pre><ol start="3">
 <li>检查本地对应tag的分支存不存在，不存在则从远端拉取</li>
 </ol>
-
 <pre><code>git -c log.showsignature=false log -m --format=&quot;format:%H %ct %D&quot;  bf4fcb5a15f71ba8c5d50de10604048331ae94df --
 git fetch -f --depth=1 origin refs/tags/v0.2.6:refs/tags/v0.2.6
-</code></pre>
-
-<ol>
+</code></pre><ol start="4">
 <li>再次查询tag信息</li>
 </ol>
-
 <pre><code>git -c log.showsignature=false log -n1 --format=&quot;format:%H %ct %D&quot; refs/tags/v0.2.6 --
-</code></pre>
-
-<ol>
+</code></pre><ol start="5">
 <li>查看该tag的<code>go.mod</code>文件</li>
 </ol>
-
 <pre><code>git cat-file blob bf4fcb5a15f71ba8c5d50de10604048331ae94df:go.mod
-</code></pre>
-
-<ol>
+</code></pre><ol start="6">
 <li>把该分支整个打成zip包并解压(这一步git lfs才会真实下载需要的大文件),因为该Run函数执行的命令行返回值直接缓存到[]byte里，而不是一个Reader，于是乎相当于你的库有多大，该进程就得占多少内存</li>
 </ol>
-
 <pre><code>git -c core.autocrlf=input -c core.eol=lf archive --format=zip --prefix=prefix/ bf4fcb5a15f71ba8c5d50de10604048331ae94df
-</code></pre>
-
-<ol>
+</code></pre><ol start="7">
 <li>在TempDir下创建一个<code>go-codehost-</code>前缀的文件并把刚刚的zip内容拷过去，当字节数大于<code>codehost.MaxZipFile</code>时报错</li>
 </ol>
-
 <p>该代码在src/cmd/go/internal/modfetch/coderepo.go:781-804</p>
-
-<ol>
+<ol start="8">
 <li>将zip文件解压放入<code>$GOPATH/pkg/mod/cache/download</code>对应的项目目录</li>
 </ol>
-
 <p>该代码地址src/cmd/go/internal/modfetch/coderepo.go:820</p>
-
 <h3 id="解决方案">解决方案</h3>
-
 <p>好了，目前的问题就出在第7步这里，当文件大于<code>codehost.MaxZipFile</code>时，就会报错导致无法下载，所以解决方案嘛，就是加大codehost.MaxZipFile的值，我真机智</p>
-
 <p>首先将$GOROOT下面的代码拷贝到一个安全目录</p>
-
 <pre><code>cp -r $GOROOT /tmp/custom-go
 </code></pre>
-
 <p>然后修改$GOROOT到安全目录去</p>
-
 <pre><code>export GOROOT=/tmp/custom-go
 </code></pre>
-
 <p>进入新目录对应的cmd/go 目录</p>
-
 <pre><code>cd /tmp/custom-go/src/cmd/go
 </code></pre>
-
 <p>修改codehost.MaxZipFile到一个合适的值</p>
-
 <pre><code>vim internal/modfetch/codehost/codehost.go
 // edit 31 line MaxZipFile
 </code></pre>
-
 <p>重新build go</p>
-
 <pre><code>go build -o custom-go .
 </code></pre>
-
 <p>然后使用这个custom-go去拉包就行了</p>
-
 <h3 id="吐槽">吐槽</h3>
-
 <p>看过源码，感觉go module这一块实现的很不好，首先在步骤6一定会把zip包写入内存，也就是说你限制只是针对拉下来后的包，不会减少进程内存使用，<code>func (r *gitRepo) ReadZip(rev, subdir string, maxSize int64)</code> 的maxSize也没有使用</p>
-
 <p>所以我才大胆改了<code>codehost.MaxZipFile</code>,这个值目前作用不大，但是还是不建议大家改go源码，到时候出问题就坑了，而且go的包这么大本来就不对</p>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=go%20module%e6%97%a0%e6%b3%95%e6%8b%89%e5%8f%96%e5%ba%93%e7%9a%84%e5%8e%9f%e5%9b%a0%e6%8e%92%e6%9f%a5-https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f&title=go%20module%e6%97%a0%e6%b3%95%e6%8b%89%e5%8f%96%e5%ba%93%e7%9a%84%e5%8e%9f%e5%9b%a0%e6%8e%92%e6%9f%a5" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgo-change-compile-source-code%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/kubernetes-deployment/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">kubernetes官方kubeadm部署笔记</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/go-text-template/" class="navigation-next">
+      <span class="navigation-tittle">go的text/template源码解析</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
         
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-      </div>
-    </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
 
+    </body>
 </html>

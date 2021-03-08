@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kubernetes on bigpigeon</title>
+    <title>kubernetes on bigpigeon</title>
     <link>https://bigpigeon.org/categories/kubernetes/</link>
-    <description>Recent content in Kubernetes on bigpigeon</description>
+    <description>Recent content in kubernetes on bigpigeon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://bigpigeon.org/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>实现一个k8s的节点本地服务</title>
       <link>https://bigpigeon.org/post/k8s-crd/</link>
@@ -19,16 +15,12 @@
       
       <guid>https://bigpigeon.org/post/k8s-crd/</guid>
       <description>&lt;p&gt;k8s的service实体的路由规则太简单，无法设置路由节点信息，于是我通过crd扩展一个LocalService的种类来控制节点的路由&lt;/p&gt;
-
 &lt;p&gt;它的结构如下,创建LocalService会创建对应的节点service,通过&lt;code&gt;服务名-节点名&lt;/code&gt;就可以很方便的路由到该节点的上&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;demo-service(kind:LocalService)
   \- demo-service-node1(kind:service)
   \- demo-service-node2(kind:service)
   ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
   </channel>

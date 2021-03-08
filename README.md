@@ -1,1 +1,0 @@
-博客已经移致bigpigeon.org

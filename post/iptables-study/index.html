@@ -1,143 +1,200 @@
-  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title> Iptables学习笔记 &middot; bigpigeon </title>
-    
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
-    
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+<!DOCTYPE html>
+<html lang="cn-zh">
     
     
-    
-    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
-    <script src="https://bigpigeon.org/js/main.min.js"></script>
-    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
-    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
 
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.81.0" />
+
+    
+    
+    
+
+<title>Iptables学习笔记 • bigpigeon</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Iptables学习笔记"/>
+<meta name="twitter:description" content="以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。"/>
+
+<meta property="og:title" content="Iptables学习笔记" />
+<meta property="og:description" content="以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bigpigeon.org/post/iptables-study/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-06-28T16:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2016-06-28T16:00:00&#43;08:00" />
+
+
+
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="https://bigpigeon.org/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.png">
+    
+    
 
 </head>
 
-  <body>
-    <div id="scriptHeader">
-    <span class="mobile btn-mobile-menu">
-            <i class="fa fa-bars btn-mobile-menu__icon"></i>
-            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
-    </span>
-    <header class="panel-cover panel-cover--collapsed" >
-    <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-            <div class="panel-main__content"> 
-                <h1 class="panel-cover__title panel-title">
-                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                </h1>
-                <hr class="panel-cover__divider" />
-                <p class="panel-cover__description">
-                </p>
-                <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                <div class="navigation-wrapper">
-                    <nav class="cover-navigation cover-navigation--primary">
-                        <ul class="navigation">
-                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
-                            
-                       </ul>
-                    </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://bigpigeon.org">
         
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
+          bigpigeon
         
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
+        </a>
+      </span>
+      
+      
+      <p class="site__description">
         
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-            </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
+      </p>
     </div>
-</header>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">bigpigeon</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="https://bigpigeon.org/about/">
+						<span>关于</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
 </div>
-<noscript>
-    <style>
-        #scriptHeader {display:none;}
-        .navigation-wrapper{
-            display: block;
-            top: 0;
-        }
-    </style>
 
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
-        <div class="panel-main">
-            <div class="panel-main__inner panel-inverted">
-                <div class="panel-main__content"> 
-                    <h1 class="panel-cover__title panel-title">
-                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
-                    </h1>
-                    <hr class="panel-cover__divider" />
-                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
-                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation">
-                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
-                                
-                                
-                           </ul>
-                        </nav> <nav class="cover-navigation navigation--social">
-    <ul class="navigation"> 
-        
-        <li class="navigation__item">
-            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
-        </li>   
-        
-        <li class="navigation__item">
-            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
-        </li>  </br>   
-        
-        <li class="navigation__item">
-            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
-        </li>  </ul>
-</nav>
- </div>
-                </div>
-            </div>
-            <div class="panel-cover--overlay"></div>
-        </div>
-    </header>
-</noscript>
+        <section class="social">
+	
+	<a href="https://twitter.com/bigpigeon0" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://github.com/bigpigeon" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://stackoverflow.com/users/5218121" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:bigpigeon0@gmail.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+</section>
 
-    <div class="content-wrapper">
-      <div class="content-wrapper__inner">
-        <div class="post">
-          <h2>Iptables学习笔记</h2>
-          <span class="post-date">Tue, Jun 28, 2016</span>
-          <p>以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。</p>
+      </div>
+    </div>
+    
 
-<h2 id="hugomore42"></h2>
 
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Iptables学习笔记</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jun 28, 2016
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="https://bigpigeon.org/categories/%E8%BF%90%E7%BB%B4">运维</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/operation">operation</a>
+           
+      
+          <a class="badge badge-tag" href="https://bigpigeon.org/tags/iptables">iptables</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 2 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p>以前我也很抵触去配置iptables，当时我觉得iptables这种工具实在是太复杂了，配置的命令超级长，而且只有命令行没有图形化工具，而大多数云服务器都有自己的一套防火墙，比如aws的EC2就有自己的安全组，简单易用并且可以直接在网页上直接配置，非常的方便。</p>
+<hr>
 <p>但后来我接触linux运维越来越多才发现，iptables虽然缺点一大堆，但它胜在功能非常强大，并且可以满足大多数网络管理上的需求，在没有更好的代替品出现前iptables绝对是必不可少的工具。</p>
-
 <p>下面我就简单总结一下iptables的用途</p>
-
 <h3 id="什么是iptables">什么是iptables</h3>
-
 <p>一提到iptables大部分人想到的估计就是防火墙，但其实防火墙只是iptables的filter表部分,iptables本身还可以做NAT（NAT表）和mangle（mangle表）</p>
-
 <h3 id="为什么需要iptables">为什么需要iptables</h3>
-
 <p>iptables可以翻译成ip表，可以理解为对ip做一些处理的工具，因为iptables的这些模块，所以这个问题应该为：</p>
-
 <pre><code>为什么需要
   filter
   nat
@@ -152,30 +209,18 @@ SNAT在局域网访问外网的必要工具，而DNAT则是为了把局域网的
 
 而mangle,raw,secrurity因为我没有接触过，所以不予评价
 </code></pre>
-
 <h3 id="如何查看配置项">如何查看配置项</h3>
-
 <p>查看iptables的配置可以用iptables-save [-t table]来查看完整的配置</p>
-
 <p>有人说可以直接用<strong>iptables -L</strong>查看，但不建议这样做，因为<strong>iptables -L</strong>为了格式化输出会忽略掉一些信息比如filter表中的接口信息就无法查看。</p>
-
 <h3 id="如何配置表">如何配置表</h3>
-
 <h3 id="filter">filter</h3>
-
 <p>filter是iptables中最常用的表,而filter默认有3个链</p>
-
-<pre><code class="language-bash">INPUT: 进入linux本机时过滤
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">INPUT: 进入linux本机时过滤
 OUTPUT: 本机送出时过滤
 FORWARD: 这个是访问本机转换的封包时过滤，比如你在本机配置了DNAT或者SNAT，那些被转换后并且目的地不在本地的包不会被INPUT/OUTPUT过滤器过滤，而是就由这个规则过滤
-</code></pre>
-
-<p>其中最常用的就是INPUT 链，这里我用INPUT 的链做说明</p>
-
-<pre><code class="language-bash">iptables -A INPUT -i eth0 -d 50.24.131.30/32 -p tcp --dport 27017 -J DROP
-</code></pre>
-
-<pre><code>-A表示append，就是把规则加到末尾，如果想加到表头可以使用-I
+</code></pre></div><p>其中最常用的就是INPUT 链，这里我用INPUT 的链做说明</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables -A INPUT -i eth0 -d 50.24.131.30/32 -p tcp --dport <span style="color:#ae81ff">27017</span> -J DROP
+</code></pre></div><pre><code>-A表示append，就是把规则加到末尾，如果想加到表头可以使用-I
 
 INPUT就是配置到INPUT这个chain
 
@@ -195,137 +240,98 @@ xx之外可以使用 ！表示比如
 
 -J 表示操作，主要有DROP(丢弃),ACCEPT(接受),REJECT(拒绝)和LOG(记录)
 </code></pre>
-
 <p><strong>DROP和REJECT的区别</strong></p>
-
 <p>REJECT就是你请求过来时会告诉你拒绝消息，而DROP就是你请求过来时直接把包删掉</p>
-
 <p><strong>预设策略</strong></p>
-
 <p>当封包没有被链中的规则匹配时就会被预设策略匹配</p>
-
 <p>预设策略有3种，分别对应3条链,我的服务器的预设策略是这样配置的</p>
-
-<pre><code class="language-bash">iptables -P INPUT   DROP
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables -P INPUT   DROP
 iptables -P OUTPUT  ACCEPT
 iptables -P FORWARD ACCEPT
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>nat表也有预设策略但用的很少就不说明了</li>
 </ul>
-
 <p><strong>总结一下iptables filter的用法</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables <span style="color:#f92672">[</span>-A|-I INPUT|FILTER|OUTPUT <span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-i|-o 网络接口 <span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-s 源ip或网域<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p tcp|udp <span style="color:#f92672">[</span>--sport 端口号或端口范围<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--dport 端口号或端口范围<span style="color:#f92672">]</span> all|icmp<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-d 目标ip或网域<span style="color:#f92672">]</span> &lt;-j ACCEPT|DROP|REJECT|LOG &gt;
 
-<pre><code class="language-bash">iptables [-A|-I INPUT|FILTER|OUTPUT ] [-i|-o 网络接口 ] [-s 源ip或网域] [-p tcp|udp [--sport 端口号或端口范围] [--dport 端口号或端口范围] all|icmp] [-d 目标ip或网域] &lt;-j ACCEPT|DROP|REJECT|LOG &gt;
-
-# 预设策略的配置
+<span style="color:#75715e"># 预设策略的配置</span>
 iptables -P &lt;INPUT|OUTPUT|FORWARD&gt; &lt;ACCEPT|DROP&gt;
-</code></pre>
-
-<p>PS:filter中还有[-m 外挂模组]对包的内容做进一步匹配和筛选</p>
-
-<hr />
-
+</code></pre></div><p>PS:filter中还有[-m 外挂模组]对包的内容做进一步匹配和筛选</p>
+<hr>
 <h3 id="nat">nat</h3>
-
 <p>先介绍一下nat表的三个链表</p>
-
-<pre><code class="language-bash">PREROUTING：在进行路由判断之前所要进行的规则(DNAT/REDIRECT)
-POSTROUTING：在进行路由判断之后所要进行的规则(SNAT/MASQUERADE)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PREROUTING：在进行路由判断之前所要进行的规则<span style="color:#f92672">(</span>DNAT/REDIRECT<span style="color:#f92672">)</span>
+POSTROUTING：在进行路由判断之后所要进行的规则<span style="color:#f92672">(</span>SNAT/MASQUERADE<span style="color:#f92672">)</span>
 OUTPUT：與發送出去的封包有關
-</code></pre>
-
-<p>说道nat大家应该不会陌生，比如路由器的内网转外网用到的就是SNAT，而docker容器的端口转换用的就是DNAT</p>
-
+</code></pre></div><p>说道nat大家应该不会陌生，比如路由器的内网转外网用到的就是SNAT，而docker容器的端口转换用的就是DNAT</p>
 <p>iptables的nat表除了SNAT和DNAT外还可以进行路由，ip选择</p>
-
 <p>下面会介绍几种常用的配置方法</p>
-
 <p><strong>SNAT</strong></p>
-
-<pre><code class="language-bash">iptables -t nat -A POSTROUTING -s 172.19.0.0/16 ! -o docker0 -j MASQUERADE
-</code></pre>
-
-<p>该命令就是把所有源地址属于172.17.0.0/16网段, 目标接口不是docker0的数据包进行伪装</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables -t nat -A POSTROUTING -s 172.19.0.0/16 ! -o docker0 -j MASQUERADE
+</code></pre></div><p>该命令就是把所有源地址属于172.17.0.0/16网段, 目标接口不是docker0的数据包进行伪装</p>
 <ul>
 <li>docker启动后会为所有network网段增加SNAT</li>
 </ul>
-
 <p><strong>SNAT+ip选择</strong></p>
-
 <p>假设你有好几个ip，你想选择192.168.1.210作为172.19.0.0/16网段的出口ip可以这样写</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables -t nat -A POSTROUTING -s 172.19.0.0/16 ! -o docker0 -j MASQUERADE --to-source 192.168.1.210
 
-<pre><code class="language-bash">iptables -t nat -A POSTROUTING -s 172.19.0.0/16 ! -o docker0 -j MASQUERADE --to-source 192.168.1.210
-
-# --to-source也可以指定一定范围内的ip比如192.168.1.210-192.168.1.211
-</code></pre>
-
-<p><strong>DNAT</strong></p>
-
-<pre><code class="language-bash">-A PREROUTING ! -i docker0 -p tcp -m tcp --dport 80 -j DNAT --to-destination 172.17.0.3:80
-</code></pre>
-
-<p>该命令就是把本地的80端口和172.17.0.3的80端口进行绑定，所有源接口不是docker0的数据包都会进行DNAT然后传给172.19.0.3:80</p>
-
+<span style="color:#75715e"># --to-source也可以指定一定范围内的ip比如192.168.1.210-192.168.1.211</span>
+</code></pre></div><p><strong>DNAT</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">-A PREROUTING ! -i docker0 -p tcp -m tcp --dport <span style="color:#ae81ff">80</span> -j DNAT --to-destination 172.17.0.3:80
+</code></pre></div><p>该命令就是把本地的80端口和172.17.0.3的80端口进行绑定，所有源接口不是docker0的数据包都会进行DNAT然后传给172.19.0.3:80</p>
 <ul>
 <li>在docker run中用-p绑定了本地端口后，会自动增加上面一项</li>
 </ul>
-
 <p><strong>总结一下NAT的用法</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">iptables -t nat <span style="color:#f92672">[</span>-A|-I POSTROUTING<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--to-source ip或网域<span style="color:#f92672">]</span>  &lt;-j MASQUERADE&gt;
 
-<pre><code class="language-bash">iptables -t nat [-A|-I POSTROUTING] [--to-source ip或网域]  &lt;-j MASQUERADE&gt;
+iptables -t nat <span style="color:#f92672">[</span>-A|-I PREROUTING<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--to-destination ip或网域<span style="color:#f92672">]</span>  &lt;-j MASQUERADE&gt;
 
-iptables -t nat [-A|-I PREROUTING] [--to-destination ip或网域]  &lt;-j MASQUERADE&gt;
-
-# filter和nat通用参数:
-[-i|-o 网络接口 ] [-s 源ip或网域] [-p tcp|udp [--sport 端口号或端口范围] [--dport 端口号或端口范围] all|icmp] [-d 目标ip或网域]
-</code></pre>
-
-<h3 id="参考资料">参考资料</h3>
-
+<span style="color:#75715e"># filter和nat通用参数:</span>
+<span style="color:#f92672">[</span>-i|-o 网络接口 <span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-s 源ip或网域<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p tcp|udp <span style="color:#f92672">[</span>--sport 端口号或端口范围<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--dport 端口号或端口范围<span style="color:#f92672">]</span> all|icmp<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-d 目标ip或网域<span style="color:#f92672">]</span>
+</code></pre></div><h3 id="参考资料">参考资料</h3>
 <p><a href="http://linux.vbird.org/linux_server/0250simple_firewall.php">鳥哥私房菜 第九章 防火牆與 NAT 伺服器</a></p>
-        </div>
-        <div class="sharing">
-<a href="https://twitter.com/intent/tweet?status=Iptables%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0-https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f" target="_blank" title="Follow me on Twitter" class="twitter">
-<span class="fa fa-twitter-square fa-3x"></span></a>
-<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f" target="_blank" title="Join me on Facebook" class="facebook">
-<span class="fa fa-facebook-square fa-3x"></span></a>
-<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f" target="_blank" title="Google+" class="googleplus">
-<span class="fa fa-google-plus-square fa-3x"></span></a>
-<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f&title=Iptables%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0" target="_blank" title="LinkedIn" class="linkedin">
-<span class="fa fa-linkedin-square fa-3x"></span></a>
-<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
-<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fiptables-study%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
-</span></a>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="https://bigpigeon.org/post/react-study/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">react学习笔记</span>
+    </a>
+    
+    
+    <a href="https://bigpigeon.org/post/jekyll-to-hugo/" class="navigation-next">
+      <span class="navigation-tittle">从jekyll到hugo，搬运经验总结</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
         
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
-<div id="disqus_thread"></div>
-
-<script type="text/javascript">
-  var disqusUsername = "httpbigpigeongithubio";
-
-  (function() { 
-  var d = document, s = d.createElement('script');
-
-  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
-
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-      </div>
-    </div>
+    
 
-  </body>
-  <footer class="footer"></footer>
 
-  <script>hljs.initHighlightingOnLoad();</script>
 
+    </body>
 </html>
