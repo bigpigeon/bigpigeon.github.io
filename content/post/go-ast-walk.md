@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "go/types中的Type"
 Tags = [
   "开发",

@@ -2,7 +2,7 @@
 Categories = [
   "go",
 ]
-menu = "main"
+
 Description = ""
 Tags = [
   "go",

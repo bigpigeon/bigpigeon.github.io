@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "gorm的scopes自定义操作"
 Tags = [
   "开发",

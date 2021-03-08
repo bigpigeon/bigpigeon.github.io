@@ -1,22 +1,21 @@
 title = "bigpigeon"
 languageCode = "cn-zh"
-theme = "hugo-uno"
+theme = "hyde-hyde"
 author = "bigpigeon"
-
 canonifyurls = true
 copyright = "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License."
-Paginate = 3
+Paginate = 4
+
 disableRSS = false
 enableRobotsTXT = true
 
-[indexes]
-   category = "categories"
-   tag = "tags"
-[Params]
-  AuthorName = "bigpigeon"
-  github = "bigpigeon"
-  twitter = "bigpigeon0"
-  email = "bigpigeon0@gmail.com"
-  description = ""
-  lab = "/demo"
-  disqus="httpbigpigeongithubio"
+[params.social]
+    github = "bigpigeon"
+    twitter = "bigpigeon0"
+    stackoverflow = "5218121"
+    email = "bigpigeon0@gmail.com"
+
+
+
+
+

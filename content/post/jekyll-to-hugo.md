@@ -7,7 +7,7 @@ Tags = [
 Categories = [
   "开发",
 ]
-menu = "main"
+
 date = "2016-10-12T11:43:37+08:00"
 title = "从jekyll到hugo，搬运经验总结"
 +++

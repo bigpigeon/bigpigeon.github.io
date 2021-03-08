@@ -7,7 +7,7 @@ Tags = [
 Categories = [
   "监控",
 ]
-menu = "main"
+
 Description = ""
 date = "2020-02-24T10:39:00+08:00"
 title = "prometheus介绍"

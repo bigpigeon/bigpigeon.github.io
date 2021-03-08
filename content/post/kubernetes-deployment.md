@@ -3,7 +3,7 @@ Categories = [
   "Deployment",
   "Golang",
 ]
-menu = "main"
+
 Description = "kubernetes官方部署方案踩坑记录"
 Tags = [
   "开发",

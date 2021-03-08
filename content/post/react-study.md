@@ -9,7 +9,7 @@ Categories = [
 ]
 date = "2016-04-21T10:43:00+08:00"
 title = "react学习笔记"
-menu = "main"
+
 +++
 
 ### JSX

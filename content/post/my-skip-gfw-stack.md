@@ -3,7 +3,7 @@ Categories = [
   "proxy",
   "gfw",
 ]
-menu = "main"
+
 Description = ""
 Tags = [
   "运维",

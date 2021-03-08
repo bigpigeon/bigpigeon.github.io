@@ -4,7 +4,6 @@ Categories = [
   "docker",
   "containerd",
 ]
-menu = "main"
 Description = ""
 Tags = [
   "开发",

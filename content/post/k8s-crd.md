@@ -4,7 +4,7 @@ Categories = [
   "Golang",
   "kubernetes",
 ]
-menu = "main"
+
 Description = "通过k8s的crd实现一个节点本地服务"
 Tags = [
   "开发",

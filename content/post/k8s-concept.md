@@ -7,7 +7,7 @@ Tags = [
 Categories = [
   "开发",
 ]
-menu = "main"
+
 date = "2020-04-15T18:43:37+08:00"
 title = "当在k8s创建一个实体时会发生什么"
 +++

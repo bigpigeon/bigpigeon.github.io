@@ -6,7 +6,7 @@ Tags = [
 Categories = [
   "运维",
 ]
-menu = "main"
+
 Description = ""
 date = "2016-06-28T16:00:00+08:00"
 title = "Iptables学习笔记"

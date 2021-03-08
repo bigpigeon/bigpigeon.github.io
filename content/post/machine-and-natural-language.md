@@ -4,7 +4,7 @@ Categories = [
   "Language",
 
 ]
-menu = "main"
+
 Description = ""
 Tags = [
   "杂谈",

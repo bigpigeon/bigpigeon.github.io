@@ -7,7 +7,7 @@ Tags = [
 Categories = [
   "开发",
 ]
-menu = "main"
+
 date = "2015-12-24T06:25:00+08:00"
 title = "gin框架介绍"
 +++

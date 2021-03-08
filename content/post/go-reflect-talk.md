@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "谈谈go的reflect"
 Tags = [
   "开发",

@@ -3,7 +3,7 @@ Categories = [
   "Operation",
   "Javascript",
 ]
-menu = "main"
+
 Description = ""
 Tags = [
   "开发",

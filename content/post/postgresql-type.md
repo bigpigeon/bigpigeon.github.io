@@ -1,5 +1,5 @@
 +++
-menu = "main"
+
 date = "2016-03-13T10:30:00+08:00"
 title = "postgresql类型"
 Description = ""

@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "gorm的增删改查"
 Tags = [
   "开发",

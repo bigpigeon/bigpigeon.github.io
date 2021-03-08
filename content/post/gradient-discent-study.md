@@ -7,7 +7,7 @@ Categories = [
   "算法",
 ]
 draft = true
-menu = "main"
+
 Description = ""
 date = "2017-03-30T10:50:00+08:00"
 title = "梯度算法学习"

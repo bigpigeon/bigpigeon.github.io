@@ -8,7 +8,7 @@ Tags = [
 Categories = [
   "开发",
 ]
-menu = "main"
+
 date = "2016-03-07T10:30:00+08:00"
 title = "在python上操作postgresql"
 +++

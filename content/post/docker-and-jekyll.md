@@ -3,7 +3,7 @@ Categories = [
   "Operation",
   "Jekyll",
 ]
-menu = "main"
+
 Description = ""
 Tags = [
   "运维",

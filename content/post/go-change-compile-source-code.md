@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "go compile debug，查看为何无法拉取太大的go包"
 Tags = [
   "开发",

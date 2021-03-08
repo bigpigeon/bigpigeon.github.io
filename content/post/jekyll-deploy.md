@@ -8,7 +8,7 @@ title = "jekyll部署总结"
 Categories = [
   "其他",
 ]
-menu = "main"
+
 +++
 
 - 在网络并不好的情况下用gem install jeskll 代替 bundle install ，bundle install 总会出现 各种connection reset的情况

@@ -3,7 +3,7 @@ Categories = [
   "Develop",
   "Golang",
 ]
-menu = "main"
+
 Description = "使用go/ast来解析go文件"
 Tags = [
   "开发",
