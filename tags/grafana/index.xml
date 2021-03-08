@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Grafana on bigpigeon</title>
+    <link>https://bigpigeon.org/tags/grafana/</link>
+    <description>Recent content in Grafana on bigpigeon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn-zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 24 Feb 2020 10:39:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bigpigeon.org/tags/grafana/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>prometheus介绍</title>
+      <link>https://bigpigeon.org/post/grafana-and-prometheus/</link>
+      <pubDate>Mon, 24 Feb 2020 10:39:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/grafana-and-prometheus/</guid>
+      <description>&lt;p&gt;普罗米休斯是目前非常流行的监控解决方案，他提供了一个非常好用的监控api规范和告警方法,以下是prometheus的特性&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Dimensional data, prometheus基于时间序列存储数据&lt;/li&gt;
+&lt;li&gt;Powerful queries, prometheus提供了一种PromQL的查询语言，使用户可以很方便汇总数据&lt;/li&gt;
+&lt;li&gt;Great visualization, 通过grafana实现强大的可视化功能， Grafana 2.5.0 (2015-10-28)开始支持prometheus的语法查询&lt;/li&gt;
+&lt;li&gt;Efficient storage, Prometheus包含一个存储在磁盘的本地数据库，但也整合了远程存储系统作为可选项&lt;/li&gt;
+&lt;li&gt;Simple operation, Prometheus可通过命令行参数和配置文件来配置它，命令行参数配置一些不变的系统参数，而配置文件则定义所有和爬取相关的任务&lt;/li&gt;
+&lt;li&gt;Precise alerting, 告警规则允许你基于prometheus的表达式来定义告警条件，然后发送关于火警通知到额外的服务，每当告警表达式在给定时间点生成一个或多个矢量时，对应标签的告警计数将为对应的成员响应&lt;/li&gt;
+&lt;li&gt;Many client libraries, 在你监控你的服务之前，你需要通过prometheus客户端库增加指标到你的代码中，它们实现了prometheus的所有指标类型&lt;/li&gt;
+&lt;li&gt;Many integrations, 有许多库和服务将第三方系统中的现有指标导出为prometheus指标，这对无法直接使用prometheus指标来检测给定系统的情况很有用(例如HAProxy或者Linux操作系统统计信息)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

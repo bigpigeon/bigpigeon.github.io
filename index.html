@@ -130,6 +130,28 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/containerd-tutorial-first/">containerd介绍 </a> </h2>
+<div class="post-meta">Mon, Mar 8, 2021 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <h1 id="containerd是什么">containerd是什么</h1>
+
+<p>在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接<code>cri</code>和<code>docker</code>，下层对接容器执行器，比如<code>runc</code>或者 Microsoft的<code>hcsshim</code>,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/containerd-tutorial-first/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/k8s-crd/">实现一个k8s的节点本地服务 </a> </h2>
 <div class="post-meta">Thu, May 21, 2020 - Read in 2 Min </div>
 </header>
@@ -186,40 +208,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/k8s-concept/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/go-text-template/">go的text/template源码解析 </a> </h2>
-<div class="post-meta">Sat, Oct 5, 2019 - Read in 12 Min </div>
-</header>
-<div class="summary">
-    <p>go的模板库一直缺少indent的功能，于是我决定自己造个轮子来解决这个问题</p>
-
-<p>为了造出好用，贴近源生态的轮子，所以我决定把text/template的源码熟读一遍</p>
-
-<p>本篇只是粗略的讲解模板的各个模块，不会深入函数细节</p>
-
-<p>首先基本用法开始</p>
-
-<h4 id="基本用法">基本用法</h4>
-
-<p>我们这里用的是text_template中example_test的ExampleTemplate()作为例子</p>
-
-<p>通过一下命令创建一个text模板,其中Must函数表示处理错误并panic，New表示创建一个空模板，解析模板内容的逻辑在Parse函数中</p>
-
-<p>然后通过<code>t.Execute</code>把模板渲染出来</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/go-text-template/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

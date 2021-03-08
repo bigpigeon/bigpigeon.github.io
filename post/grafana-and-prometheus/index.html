@@ -1,0 +1,429 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> prometheus介绍 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>prometheus介绍</h2>
+          <span class="post-date">Mon, Feb 24, 2020</span>
+          <p>普罗米休斯是目前非常流行的监控解决方案，他提供了一个非常好用的监控api规范和告警方法,以下是prometheus的特性</p>
+
+<ul>
+<li>Dimensional data, prometheus基于时间序列存储数据</li>
+<li>Powerful queries, prometheus提供了一种PromQL的查询语言，使用户可以很方便汇总数据</li>
+<li>Great visualization, 通过grafana实现强大的可视化功能， Grafana 2.5.0 (2015-10-28)开始支持prometheus的语法查询</li>
+<li>Efficient storage, Prometheus包含一个存储在磁盘的本地数据库，但也整合了远程存储系统作为可选项</li>
+<li>Simple operation, Prometheus可通过命令行参数和配置文件来配置它，命令行参数配置一些不变的系统参数，而配置文件则定义所有和爬取相关的任务</li>
+<li>Precise alerting, 告警规则允许你基于prometheus的表达式来定义告警条件，然后发送关于火警通知到额外的服务，每当告警表达式在给定时间点生成一个或多个矢量时，对应标签的告警计数将为对应的成员响应</li>
+<li>Many client libraries, 在你监控你的服务之前，你需要通过prometheus客户端库增加指标到你的代码中，它们实现了prometheus的所有指标类型</li>
+<li>Many integrations, 有许多库和服务将第三方系统中的现有指标导出为prometheus指标，这对无法直接使用prometheus指标来检测给定系统的情况很有用(例如HAProxy或者Linux操作系统统计信息)</li>
+</ul>
+
+<p></p>
+
+<h1 id="一个简单的例子">一个简单的例子</h1>
+
+<p>下面我们通过结合prometheus服务和go客户端来实现一个简单的监控方案</p>
+
+<h3 id="安装和使用prometheus">安装和使用prometheus</h3>
+
+<p>你可以通过官方源下载到最新的prometheus <a href="https://prometheus.io/download">https://prometheus.io/download</a> ，我这个例子用的是 <code>2.16.0 / 2020-02-13</code>版本</p>
+
+<pre><code>wget https://github.com/prometheus/prometheus/releases/download/v2.16.0/prometheus-2.16.0.linux-amd64.tar.gz &amp;&amp; tar -xf prometheus-2.16.0.linux-amd64.tar.gz
+cd prometheus-2.16.0.linux-amd64 
+./prometheus --config.file prometheus.yml
+</code></pre>
+
+<p>访问 <a href="http://localhost:9090">http://localhost:9090</a> 即可通过webui访问prometheus了,</p>
+
+<p>我们再来看看默认prometheus.yml写了什么,</p>
+
+<ul>
+<li>global.scrape_interval 表示爬取各个监控metrics的间隔，默认是15秒</li>
+<li>global.evaluation_interval 表示告警分析间隔</li>
+<li>global.scrape_timeout 表示爬去指标的超时时间</li>
+<li>scrape_configs 定义各种爬取任务，默认的带的prometheus-example 就是对自己监控指标的爬取</li>
+</ul>
+
+<pre><code>global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+//...
+
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: 'prometheus-example'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+</code></pre>
+
+<h3 id="启动一个go服务并导出prometheus指标">启动一个go服务并导出prometheus指标</h3>
+
+<p>这里使用 <code>v1.4.1</code>版本的 github.com/prometheus/client_golang</p>
+
+<p>以下是一个只带有一个opsProcessed的Counter指标的服务，opsProcessed每2秒增加1</p>
+
+<p>go.mod</p>
+
+<pre><code>module github.com/bigpigeon/Test/go/prometheus_example_http
+
+go 1.13
+
+require (
+	github.com/prometheus/client_golang v1.4.1
+	github.com/prometheus/common v0.9.1
+)
+
+</code></pre>
+
+<p>main.go</p>
+
+<pre><code>package main
+
+import (
+	&quot;github.com/prometheus/common/expfmt&quot;
+	&quot;net/http&quot;
+	&quot;time&quot;
+
+	&quot;github.com/prometheus/client_golang/prometheus&quot;
+)
+
+func recordMetrics(opsProcessed prometheus.Counter) {
+	go func() {
+		for {
+			opsProcessed.Inc()
+			time.Sleep(2 * time.Second)
+		}
+	}()
+}
+
+func main() {
+	reg := prometheus.NewRegistry()
+	opsProcessed := prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: &quot;bigpigeon&quot;,
+		Subsystem: &quot;test&quot;,
+		Name:      &quot;processed_test&quot;,
+		Help:      &quot;The total number of processed events&quot;,
+	})
+
+	reg.MustRegister(opsProcessed)
+
+	recordMetrics(opsProcessed)
+
+	http.HandleFunc(&quot;/metrics&quot;, func(writer http.ResponseWriter, request *http.Request) {
+		mfs, err := reg.Gather()
+		if err != nil {
+			panic(err)
+		}
+		for _, mf := range mfs {
+			if _, err := expfmt.MetricFamilyToText(writer, mf); err != nil {
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	})
+	http.ListenAndServe(&quot;:19090&quot;, nil)
+}
+</code></pre>
+
+<p>然后在prometheus增加以下job</p>
+
+<pre><code>  - job_name: &quot;processed-example&quot;
+    static_configs:
+    - targets: ['localhost:19090']
+</code></pre>
+
+<p>通过SIGHUB信号reload prometheus</p>
+
+<pre><code>killall -SIGHUP ./prometheus
+</code></pre>
+
+<p>然后就可以在 prometheus的webui中的query 中输入bigpigeon_test_processed_test来查看结果</p>
+
+<h3 id="prometheus基础">prometheus基础</h3>
+
+<p>在prometheus表达式语法中，一个表达式或者子表达式可以是以下4个类型</p>
+
+<ul>
+<li>Instant vector: 每个Value包含一个数据样本和一个时间戳</li>
+<li>Range vector: 每个Value包含一组 数据样本和时间戳</li>
+<li>Scalar: 一个简单的浮点数</li>
+<li>String: 一个简单的字符串，目前没被使用</li>
+</ul>
+
+<p>只有Instant vector是可以直接绘图的</p>
+
+<h5 id="string-literals">String literals</h5>
+
+<p>e.g:</p>
+
+<pre><code>&quot;this is a string&quot;
+'these are unescaped: \n \\ \t'
+`these are not unescaped: \n ' &quot; \t`
+</code></pre>
+
+<h5 id="float-literals">Float literals</h5>
+
+<p>浮点数可以写成以下形式: <a href="digits">-</a>[.(digits)]</p>
+
+<p>e.g:</p>
+
+<pre><code>-2.43
+</code></pre>
+
+<h5 id="vector-selectors">vector selectors</h5>
+
+<p>瞬时向量选择器就是一定时间范围的数据集</p>
+
+<p>例如之前在Query输入的<code>bigpigeon_test_processed_test</code>返回的就是瞬时向量，当然你也可以加入属性过滤，比如</p>
+
+<pre><code>bigpigeon_test_processed_test{job=&quot;processed-example&quot;}
+</code></pre>
+
+<p>job属性就是在prometheus的config中定义的job_name</p>
+
+<p>如果你想查看范围向量，只需要在Query中输入<code>bigpigeon_test_processed_test[5m]</code>即可</p>
+
+<p>这样返回的数据就会以每5分钟一组的格式返回，m表示分钟，当然你也可以用秒(s)，小时(h)等单位</p>
+
+<pre><code>s - seconds
+m - minutes
+h - hours
+d - days
+w - weeks
+y - years
+</code></pre>
+
+<h5 id="offset-modifier">Offset modifier</h5>
+
+<p><code>offset</code> 可以更改瞬时向量和范围向量的时间偏移量</p>
+
+<p>一下查询查出来的是5分钟前的收集记录</p>
+
+<pre><code>bigpigeon_test_processed_test offset 5m
+</code></pre>
+
+<h3 id="prometheus操作">prometheus操作</h3>
+
+<p>prometheus的查询支持基本逻辑和算法操作，</p>
+
+<h5 id="算数二元操作符">算数二元操作符</h5>
+
+<p>下面是二元操作符可存在于prometheus中</p>
+
+<pre><code>+ (addition)
+- (subtraction)
+* (multiplication)
+/ (division)
+% (modulo)
+^ (power/exponentiation)
+</code></pre>
+
+<p>二元算法操作符支持 scalar/scalar, vector/scalar, and vector/vector 这几种组合</p>
+
+<ul>
+<li>scalar/scalar</li>
+<li>instant vector/scalar 这个操作让instant vector中所有数据样本对scaler进行运算</li>
+<li>instant vector/instant vector 2个向量的成员必须完全匹配，有一边的成员不匹配，对应的指标名将从结果中去除，不在右边的条目将被删除</li>
+</ul>
+
+<h5 id="比对二元操作符">比对二元操作符</h5>
+
+<p>prometheus支持以下操作符</p>
+
+<pre><code>== (equal)
+!= (not-equal)
+&gt; (greater-than)
+&lt; (less-than)
+&gt;= (greater-or-equal)
+&lt;= (less-or-equal)
+</code></pre>
+
+<p>比对操作符支持 scalar/scalar, vector/scalar, and vector/vector 这几种组合</p>
+
+<p>默认用作结果过滤</p>
+
+<p>比如以下查询结果则会返回空，因为1分钟前的指标不可能大于当前指标</p>
+
+<pre><code>bigpigeon_test_processed_test &lt; (bigpigeon_test_processed_test offset 1m)
+</code></pre>
+
+<h5 id="逻辑二元操作符">逻辑二元操作符</h5>
+
+<p>逻辑操作符只能在 2个 instant vectors之间使用</p>
+
+<ul>
+<li>vector1 and vector2 返回所有成员与vector2匹配的vector1向量</li>
+<li>vector1 and vector2 列出vector1和vector2匹配的所有向量</li>
+<li>vector1 unless vector2 TODO， 目前不明，测试结果和说明不符</li>
+</ul>
+
+<h5 id="向量匹配">向量匹配</h5>
+
+<p>可以限定需要匹配的向量</p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=prometheus%e4%bb%8b%e7%bb%8d-https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f&title=prometheus%e4%bb%8b%e7%bb%8d" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fgrafana-and-prometheus%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>

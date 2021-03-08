@@ -7,8 +7,199 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 21 May 2020 12:07:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate>
     <atom:link href="https://bigpigeon.org/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>containerd介绍</title>
+      <link>https://bigpigeon.org/post/containerd-tutorial-first/</link>
+      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/containerd-tutorial-first/</guid>
+      <description>&lt;h1 id=&#34;containerd是什么&#34;&gt;containerd是什么&lt;/h1&gt;
+
+&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;启动containerd&#34;&gt;启动containerd&lt;/h1&gt;
+
+&lt;p&gt;首先需要启动containerd的daemon程序&lt;/p&gt;
+
+&lt;p&gt;首先，去github下载最新的containerd &lt;a href=&#34;https://github.com/containerd/containerd/releases&#34;&gt;https://github.com/containerd/containerd/releases&lt;/a&gt;,当然你也可以通过系统包管理直接安装，但我还是推荐官网下二进制的方式，因为这样你能尽早下载到最新的包使用最新的功能，其次了解containerd的运行原理，了解它的各个组件的用途&lt;/p&gt;
+
+&lt;p&gt;下载后吧相关二进制放到/usr/local/bin&lt;/p&gt;
+
+&lt;p&gt;然后，去github下载最新的runc&lt;a href=&#34;https://github.com/opencontainers/runc/releases&#34;&gt;https://github.com/opencontainers/runc/releases&lt;/a&gt;,同样吧它放到/usr/local/bin&lt;/p&gt;
+
+&lt;p&gt;然后，安装cni和它相关的plugins&lt;a href=&#34;https://github.com/containernetworking/cni/tree/master/cnitool&#34;&gt;https://github.com/containernetworking/cni/tree/master/cnitool&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;使用生成-默认配置文件-etc-containerd-config-toml&#34;&gt;使用生成 默认配置文件  /etc/containerd/config.toml&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;oom_score = -999
+
+[debug]
+        level = &amp;quot;debug&amp;quot;
+
+[metrics]
+        address = &amp;quot;127.0.0.1:1338&amp;quot;
+
+[plugins.linux]
+        runtime = &amp;quot;runc&amp;quot;
+        shim_debug = true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;配置systemd的配置文件&#34;&gt;配置systemd的配置文件&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target
+
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/local/bin/containerd
+Delegate=yes
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里有2个很重要的选项，&lt;code&gt;Delegate=yes&lt;/code&gt;和&lt;code&gt;KillMode=process&lt;/code&gt;，你必须保证它在[Service]段中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Delegate&lt;/code&gt;允许containerd通过它创建的cgroup来管理容器，如果没有这个选项，systemd将尝试将进程移到containerd的cgroups中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;KillMode&lt;/code&gt;决定containerd的被shutdown时的行为，默认情况下，systemd将查看该服务的cgroups的相关进程，并尝试把它们都杀死，但我们需要的是当更新containerd时，容器不会接收到kill信号影响，当设置&lt;code&gt;KillMode=process&lt;/code&gt;时，systemd只会杀死daemon进程，其他子进程不受影响&lt;/p&gt;
+
+&lt;h4 id=&#34;启动containerd-1&#34;&gt;启动containerd&lt;/h4&gt;
+
+&lt;p&gt;启动并查看containerd&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl start containerd
+systemctl status containerd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;操作containerd&#34;&gt;操作containerd&lt;/h1&gt;
+
+&lt;p&gt;下面我会通过2种方式，一种是ctr命令行工具，一种是通过gosdk用代码创建，比对一下他们的区别&lt;/p&gt;
+
+&lt;h4 id=&#34;连接containerd&#34;&gt;连接containerd&lt;/h4&gt;
+
+&lt;p&gt;go code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// create a new client connected to the default socket path for containerd
+client, err := containerd.New(&amp;quot;/run/containerd/containerd.sock&amp;quot;)
+if err != nil {
+    return err
+}
+defer client.Close()
+
+// create a new context with an &amp;quot;example&amp;quot; namespace
+ctx := namespaces.WithNamespace(context.Background(), &amp;quot;example&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ctr command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ctr --address /run/containerd/containerd.sock --namespace example # or
+ctr -a /run/containerd/containerd.sock -n example # or
+ctr -n example # ctr默认address就是/run/containerd/containerd.sock，可以不填
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;拉取镜像&#34;&gt;拉取镜像&lt;/h4&gt;
+
+&lt;p&gt;可以理解为&lt;code&gt;docker pull&lt;/code&gt;，但当拉取docker官方镜像时必须加上&lt;code&gt;docker.io/library/&lt;/code&gt;前缀&lt;/p&gt;
+
+&lt;p&gt;而且containerd可以拉k8s.io的镜像，而docker就不行&lt;/p&gt;
+
+&lt;p&gt;go code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// pull the redis image from DockerHub
+image, err := client.Pull(ctx, &amp;quot;docker.io/library/redis:alpine&amp;quot;, containerd.WithPullUnpack)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ctr:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ctr -n example image pull docker.io/library/redis:alpine
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;创建containers&#34;&gt;创建containers&lt;/h4&gt;
+
+&lt;p&gt;container把docker的容器创建拆分成 &lt;code&gt;container&lt;/code&gt;和&lt;code&gt;task&lt;/code&gt; ，当然你也可以通过 &lt;code&gt;ctr run&lt;/code&gt; 直接创建并运行容器&lt;/p&gt;
+
+&lt;p&gt;go code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// create a container
+container, err := client.NewContainer(
+    ctx,
+    &amp;quot;redis-server&amp;quot;,
+    containerd.WithImage(image),
+    containerd.WithNewSnapshot(&amp;quot;redis-server-snapshot&amp;quot;, image),
+    containerd.WithNewSpec(oci.WithImageConfig(image)),
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ctr:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ctr -n example containers create   docker.io/library/redis:alpine  redis-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这2个有一个区别，通过go语言创建的，快照名是&lt;code&gt;redis-server-snapshot&lt;/code&gt;，而通过工具创建的则和container名一样是&lt;code&gt;redis-server&lt;/code&gt;，目前没找到命令行工具指定snapshot的方法&lt;/p&gt;
+
+&lt;h4 id=&#34;创建task&#34;&gt;创建task&lt;/h4&gt;
+
+&lt;p&gt;go code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// create a task from the container
+task, err := container.NewTask(ctx, cio.NewCreator(cio.WithStdio))
+if err != nil {
+    return err
+}
+
+defer task.Delete(ctx)
+// call start on the task to execute the redis server
+if err := task.Start(ctx); err != nil {
+    return err
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ctr:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ctr -n example task start redis-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;创建额外的process进程&#34;&gt;创建额外的process进程&lt;/h4&gt;
+
+&lt;p&gt;除了容器的主进程，也可以在容器执行额外的进程，相当与docker的exec&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;ps aux&lt;/code&gt;命令我们可以看到容器内进程和它们之间的关系&lt;/p&gt;
+
+&lt;p&gt;go code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;proc, err := task.Exec(ctx, &amp;quot;ps&amp;quot;, &amp;amp;specs.Process{
+    Terminal:        false,
+    Args:            []string{&amp;quot;/bin/ps&amp;quot;, &amp;quot;aux&amp;quot;},
+    CommandLine:     &amp;quot;ps&amp;quot;,
+    Cwd:             &amp;quot;/&amp;quot;,
+    NoNewPrivileges: false,
+    ApparmorProfile: &amp;quot;&amp;quot;,
+    OOMScoreAdj:     nil,
+    SelinuxLabel:    &amp;quot;&amp;quot;,
+}, cio.NewCreator(cio.WithStdio))
+// error process
+err = proc.Start(ctx)
+// error process
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ctr:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ctr -n example tasks exec --exec-id ps redis-server ps aux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;结尾&#34;&gt;结尾&lt;/h4&gt;
+
+&lt;p&gt;现在我们已经知道怎么通过containerd来创建一个redis服务端并使用它，但现在有个问题，我们没法连如该redis，因为它还没有虚拟网卡或者ip地址，下一篇，我们继续讲 cni，从而实现容器网络的配置&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>实现一个k8s的节点本地服务</title>
@@ -239,6 +430,276 @@ kubectl get pod -l vm/rack=k8s03
   endpointController-&amp;gt;kubeapi: 获取service更新，更新当前endpoint
   kube-proxy-&amp;gt;kubeapi: 获取endpoint信息，根据网络plugin修改规则
 &lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>prometheus介绍</title>
+      <link>https://bigpigeon.org/post/grafana-and-prometheus/</link>
+      <pubDate>Mon, 24 Feb 2020 10:39:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/grafana-and-prometheus/</guid>
+      <description>&lt;p&gt;普罗米休斯是目前非常流行的监控解决方案，他提供了一个非常好用的监控api规范和告警方法,以下是prometheus的特性&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Dimensional data, prometheus基于时间序列存储数据&lt;/li&gt;
+&lt;li&gt;Powerful queries, prometheus提供了一种PromQL的查询语言，使用户可以很方便汇总数据&lt;/li&gt;
+&lt;li&gt;Great visualization, 通过grafana实现强大的可视化功能， Grafana 2.5.0 (2015-10-28)开始支持prometheus的语法查询&lt;/li&gt;
+&lt;li&gt;Efficient storage, Prometheus包含一个存储在磁盘的本地数据库，但也整合了远程存储系统作为可选项&lt;/li&gt;
+&lt;li&gt;Simple operation, Prometheus可通过命令行参数和配置文件来配置它，命令行参数配置一些不变的系统参数，而配置文件则定义所有和爬取相关的任务&lt;/li&gt;
+&lt;li&gt;Precise alerting, 告警规则允许你基于prometheus的表达式来定义告警条件，然后发送关于火警通知到额外的服务，每当告警表达式在给定时间点生成一个或多个矢量时，对应标签的告警计数将为对应的成员响应&lt;/li&gt;
+&lt;li&gt;Many client libraries, 在你监控你的服务之前，你需要通过prometheus客户端库增加指标到你的代码中，它们实现了prometheus的所有指标类型&lt;/li&gt;
+&lt;li&gt;Many integrations, 有许多库和服务将第三方系统中的现有指标导出为prometheus指标，这对无法直接使用prometheus指标来检测给定系统的情况很有用(例如HAProxy或者Linux操作系统统计信息)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;一个简单的例子&#34;&gt;一个简单的例子&lt;/h1&gt;
+
+&lt;p&gt;下面我们通过结合prometheus服务和go客户端来实现一个简单的监控方案&lt;/p&gt;
+
+&lt;h3 id=&#34;安装和使用prometheus&#34;&gt;安装和使用prometheus&lt;/h3&gt;
+
+&lt;p&gt;你可以通过官方源下载到最新的prometheus &lt;a href=&#34;https://prometheus.io/download&#34;&gt;https://prometheus.io/download&lt;/a&gt; ，我这个例子用的是 &lt;code&gt;2.16.0 / 2020-02-13&lt;/code&gt;版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget https://github.com/prometheus/prometheus/releases/download/v2.16.0/prometheus-2.16.0.linux-amd64.tar.gz &amp;amp;&amp;amp; tar -xf prometheus-2.16.0.linux-amd64.tar.gz
+cd prometheus-2.16.0.linux-amd64 
+./prometheus --config.file prometheus.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;访问 &lt;a href=&#34;http://localhost:9090&#34;&gt;http://localhost:9090&lt;/a&gt; 即可通过webui访问prometheus了,&lt;/p&gt;
+
+&lt;p&gt;我们再来看看默认prometheus.yml写了什么,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;global.scrape_interval 表示爬取各个监控metrics的间隔，默认是15秒&lt;/li&gt;
+&lt;li&gt;global.evaluation_interval 表示告警分析间隔&lt;/li&gt;
+&lt;li&gt;global.scrape_timeout 表示爬去指标的超时时间&lt;/li&gt;
+&lt;li&gt;scrape_configs 定义各种爬取任务，默认的带的prometheus-example 就是对自己监控指标的爬取&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+//...
+
+scrape_configs:
+  # The job name is added as a label `job=&amp;lt;job_name&amp;gt;` to any timeseries scraped from this config.
+  - job_name: &#39;prometheus-example&#39;
+
+    # metrics_path defaults to &#39;/metrics&#39;
+    # scheme defaults to &#39;http&#39;.
+
+    static_configs:
+    - targets: [&#39;localhost:9090&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;启动一个go服务并导出prometheus指标&#34;&gt;启动一个go服务并导出prometheus指标&lt;/h3&gt;
+
+&lt;p&gt;这里使用 &lt;code&gt;v1.4.1&lt;/code&gt;版本的 github.com/prometheus/client_golang&lt;/p&gt;
+
+&lt;p&gt;以下是一个只带有一个opsProcessed的Counter指标的服务，opsProcessed每2秒增加1&lt;/p&gt;
+
+&lt;p&gt;go.mod&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module github.com/bigpigeon/Test/go/prometheus_example_http
+
+go 1.13
+
+require (
+	github.com/prometheus/client_golang v1.4.1
+	github.com/prometheus/common v0.9.1
+)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;main.go&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;github.com/prometheus/common/expfmt&amp;quot;
+	&amp;quot;net/http&amp;quot;
+	&amp;quot;time&amp;quot;
+
+	&amp;quot;github.com/prometheus/client_golang/prometheus&amp;quot;
+)
+
+func recordMetrics(opsProcessed prometheus.Counter) {
+	go func() {
+		for {
+			opsProcessed.Inc()
+			time.Sleep(2 * time.Second)
+		}
+	}()
+}
+
+func main() {
+	reg := prometheus.NewRegistry()
+	opsProcessed := prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: &amp;quot;bigpigeon&amp;quot;,
+		Subsystem: &amp;quot;test&amp;quot;,
+		Name:      &amp;quot;processed_test&amp;quot;,
+		Help:      &amp;quot;The total number of processed events&amp;quot;,
+	})
+
+	reg.MustRegister(opsProcessed)
+
+	recordMetrics(opsProcessed)
+
+	http.HandleFunc(&amp;quot;/metrics&amp;quot;, func(writer http.ResponseWriter, request *http.Request) {
+		mfs, err := reg.Gather()
+		if err != nil {
+			panic(err)
+		}
+		for _, mf := range mfs {
+			if _, err := expfmt.MetricFamilyToText(writer, mf); err != nil {
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	})
+	http.ListenAndServe(&amp;quot;:19090&amp;quot;, nil)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在prometheus增加以下job&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  - job_name: &amp;quot;processed-example&amp;quot;
+    static_configs:
+    - targets: [&#39;localhost:19090&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过SIGHUB信号reload prometheus&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;killall -SIGHUP ./prometheus
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后就可以在 prometheus的webui中的query 中输入bigpigeon_test_processed_test来查看结果&lt;/p&gt;
+
+&lt;h3 id=&#34;prometheus基础&#34;&gt;prometheus基础&lt;/h3&gt;
+
+&lt;p&gt;在prometheus表达式语法中，一个表达式或者子表达式可以是以下4个类型&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Instant vector: 每个Value包含一个数据样本和一个时间戳&lt;/li&gt;
+&lt;li&gt;Range vector: 每个Value包含一组 数据样本和时间戳&lt;/li&gt;
+&lt;li&gt;Scalar: 一个简单的浮点数&lt;/li&gt;
+&lt;li&gt;String: 一个简单的字符串，目前没被使用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;只有Instant vector是可以直接绘图的&lt;/p&gt;
+
+&lt;h5 id=&#34;string-literals&#34;&gt;String literals&lt;/h5&gt;
+
+&lt;p&gt;e.g:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;this is a string&amp;quot;
+&#39;these are unescaped: \n \\ \t&#39;
+`these are not unescaped: \n &#39; &amp;quot; \t`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;float-literals&#34;&gt;Float literals&lt;/h5&gt;
+
+&lt;p&gt;浮点数可以写成以下形式: &lt;a href=&#34;digits&#34;&gt;-&lt;/a&gt;[.(digits)]&lt;/p&gt;
+
+&lt;p&gt;e.g:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-2.43
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;vector-selectors&#34;&gt;vector selectors&lt;/h5&gt;
+
+&lt;p&gt;瞬时向量选择器就是一定时间范围的数据集&lt;/p&gt;
+
+&lt;p&gt;例如之前在Query输入的&lt;code&gt;bigpigeon_test_processed_test&lt;/code&gt;返回的就是瞬时向量，当然你也可以加入属性过滤，比如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bigpigeon_test_processed_test{job=&amp;quot;processed-example&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;job属性就是在prometheus的config中定义的job_name&lt;/p&gt;
+
+&lt;p&gt;如果你想查看范围向量，只需要在Query中输入&lt;code&gt;bigpigeon_test_processed_test[5m]&lt;/code&gt;即可&lt;/p&gt;
+
+&lt;p&gt;这样返回的数据就会以每5分钟一组的格式返回，m表示分钟，当然你也可以用秒(s)，小时(h)等单位&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;s - seconds
+m - minutes
+h - hours
+d - days
+w - weeks
+y - years
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;offset-modifier&#34;&gt;Offset modifier&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;offset&lt;/code&gt; 可以更改瞬时向量和范围向量的时间偏移量&lt;/p&gt;
+
+&lt;p&gt;一下查询查出来的是5分钟前的收集记录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bigpigeon_test_processed_test offset 5m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;prometheus操作&#34;&gt;prometheus操作&lt;/h3&gt;
+
+&lt;p&gt;prometheus的查询支持基本逻辑和算法操作，&lt;/p&gt;
+
+&lt;h5 id=&#34;算数二元操作符&#34;&gt;算数二元操作符&lt;/h5&gt;
+
+&lt;p&gt;下面是二元操作符可存在于prometheus中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+ (addition)
+- (subtraction)
+* (multiplication)
+/ (division)
+% (modulo)
+^ (power/exponentiation)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二元算法操作符支持 scalar/scalar, vector/scalar, and vector/vector 这几种组合&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;scalar/scalar&lt;/li&gt;
+&lt;li&gt;instant vector/scalar 这个操作让instant vector中所有数据样本对scaler进行运算&lt;/li&gt;
+&lt;li&gt;instant vector/instant vector 2个向量的成员必须完全匹配，有一边的成员不匹配，对应的指标名将从结果中去除，不在右边的条目将被删除&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;比对二元操作符&#34;&gt;比对二元操作符&lt;/h5&gt;
+
+&lt;p&gt;prometheus支持以下操作符&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;== (equal)
+!= (not-equal)
+&amp;gt; (greater-than)
+&amp;lt; (less-than)
+&amp;gt;= (greater-or-equal)
+&amp;lt;= (less-or-equal)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比对操作符支持 scalar/scalar, vector/scalar, and vector/vector 这几种组合&lt;/p&gt;
+
+&lt;p&gt;默认用作结果过滤&lt;/p&gt;
+
+&lt;p&gt;比如以下查询结果则会返回空，因为1分钟前的指标不可能大于当前指标&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bigpigeon_test_processed_test &amp;lt; (bigpigeon_test_processed_test offset 1m)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;逻辑二元操作符&#34;&gt;逻辑二元操作符&lt;/h5&gt;
+
+&lt;p&gt;逻辑操作符只能在 2个 instant vectors之间使用&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vector1 and vector2 返回所有成员与vector2匹配的vector1向量&lt;/li&gt;
+&lt;li&gt;vector1 and vector2 列出vector1和vector2匹配的所有向量&lt;/li&gt;
+&lt;li&gt;vector1 unless vector2 TODO， 目前不明，测试结果和说明不符&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;向量匹配&#34;&gt;向量匹配&lt;/h5&gt;
+
+&lt;p&gt;可以限定需要匹配的向量&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on bigpigeon</title>
+    <link>https://bigpigeon.org/categories/docker/</link>
+    <description>Recent content in Docker on bigpigeon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn-zh</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bigpigeon.org/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>containerd介绍</title>
+      <link>https://bigpigeon.org/post/containerd-tutorial-first/</link>
+      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/containerd-tutorial-first/</guid>
+      <description>&lt;h1 id=&#34;containerd是什么&#34;&gt;containerd是什么&lt;/h1&gt;
+
+&lt;p&gt;在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接&lt;code&gt;cri&lt;/code&gt;和&lt;code&gt;docker&lt;/code&gt;，下层对接容器执行器，比如&lt;code&gt;runc&lt;/code&gt;或者 Microsoft的&lt;code&gt;hcsshim&lt;/code&gt;,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

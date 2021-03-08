@@ -130,6 +130,112 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/go-ast-parser-file/">使用go/ast来解析go文件 </a> </h2>
+<div class="post-meta">Sat, May 5, 2018 - Read in 9 Min </div>
+</header>
+<div class="summary">
+    <p>go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具</p>
+
+<p>下面我们来看看如何ast树的结构</p>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;go/ast&quot;
+	&quot;go/parser&quot;
+	&quot;go/token&quot;
+)
+
+func main() {
+	src := `
+package main
+
+// 该声明为GenDecl TOK=token.IMPORT
+import &quot;fmt&quot;
+
+// 该声明为GenDecl TOK=token.TYPE
+type Product struct {
+	Name string
+}
+
+// 该声明为GenDecl TOK=token.VAR
+var product Product
+
+// 该声明为FunDecl
+func main() { //test1
+	fmt.Println(&quot;Hello, World!&quot;) //test2
+	a := []int{1,2,3}
+	a[1],a[2] = 5,6
+}
+`
+	fset := token.NewFileSet() // 位置是相对于节点
+	// 用ParseFile把文件解析成*ast.File节点
+	f, err := parser.ParseFile(fset, &quot;&quot;, src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// 打印ast节点
+	ast.Print(fset, f)
+}
+
+</code></pre>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-ast-parser-file/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
+<h2><a href="https://bigpigeon.org/post/gorm-tutorial-second/">gorm简介[中] </a> </h2>
+<div class="post-meta">Fri, Jun 23, 2017 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <p>上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块</p>
+
+<h3 id="scopes简介">scopes简介</h3>
+
+<p>scopes是需要一个自定义的函数<strong>func(db *gorm.DB) *gorm.DB</strong>作为参数，这样就可以在不破坏链式语法的情况下自定义操作了</p>
+
+<p>比如我要查询GreekAlphabet表中LatinName是&rdquo;Alpha&rdquo;或 &ldquo;Omega&rdquo;的条目可以这样</p>
+
+<pre><code class="language-golang">chars := []GreekAlphabet{}
+db.Model(&amp;GreekAlphabet{}).Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;}).Find(&amp;chars)
+</code></pre>
+
+<p>因为查询多个字段的值只能用 <strong>Where(&ldquo;field in (?)&rdquo;, fields)</strong> 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作</p>
+
+<pre><code class="language-golang">firstAndLast := func(db *gorm.DB) *gorm.DB {
+  return db.Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;})
+}
+chars := []GreekAlphabet{}
+db.Model(&amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;chars).Error
+</code></pre>
+
+<p>这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/gorm-tutorial-second/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/go-reflect-talk/">谈谈go的relfect </a> </h2>
 <div class="post-meta">Tue, Jun 6, 2017 - Read in 4 Min </div>
 </header>
@@ -150,51 +256,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/go-reflect-talk/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/gorm-tutorial-first/">gorm简介[前] </a> </h2>
-<div class="post-meta">Mon, May 29, 2017 - Read in 4 Min </div>
-</header>
-<div class="summary">
-    <p>我们都知道，在正式环境中直接使用sql来查询数据库是很危险的，处理不好就有被注入式攻击的风险</p>
-
-<p>而且组装sql语句也容易出错和减低代码的可维护性</p>
-
-<p>所以需要一个工具来管理数据库语句的组装和操作</p>
-
-<p>gorm是目前比较成熟的go语言数据库管理库,它可以很方便的把go的结构体和数据库表绑定，从而简化获取数据的操作
-</p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/gorm-tutorial-first/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/git-push-recover-way/">git错误push与回滚 </a> </h2>
-<div class="post-meta">Thu, Mar 9, 2017 - Read in 1 Min </div>
-</header>
-<div class="summary">
-    <p>之前看漏眼把一个zip的文件commit了,然后我又不小心push到远程gitlab上,导致项目直接大了10M。于是我查了下git的资料，发现可以用删除分支来解决这个问题,下面我来讲讲做法</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/git-push-recover-way/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

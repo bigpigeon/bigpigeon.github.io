@@ -130,6 +130,67 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/gin-framework/">gin框架介绍 </a> </h2>
+<div class="post-meta">Thu, Dec 24, 2015 - Read in 4 Min </div>
+</header>
+<div class="summary">
+    <h3 id="为何用gin">为何用gin</h3>
+
+<p>它是一个轻量级框架，框架简单而且速度很快，它的功能用来做rust api开发已经足够</p>
+
+<p>而因为它的简单我们也能很好的在它上面增加功能或再开发</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/gin-framework/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
+<h2><a href="https://bigpigeon.org/post/switchy-proxy-pac-optimization/">pac脚本优化 </a> </h2>
+<div class="post-meta">Sat, Dec 19, 2015 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <p>最近发现lantern和shadowsocks client自生成pac都一定的性能问题，在url数目上升到一定程度的时候加载速度明显慢了很多.</p>
+
+<p>于是我翻看了它们的实现</p>
+
+<ul>
+<li>lantern
+
+<ul>
+<li>把所有需要代理的domain组合成一个RegExp，然后在FindProxyForURL时对host做RegExp.exec的操作来判断是否需要代理</li>
+</ul></li>
+<li>shadowsocks
+
+<ul>
+<li>把domain做成一个{domain:1,&hellip;}的字典，然后在FindProxyForURL时对host做domains.hasOwnProperty判断是否在字典内，若不在，则去掉最前面的&rsquo;.&lsquo;和之前的内容 继续做domains.hasOwnProperty判断</li>
+</ul></li>
+</ul>
+
+<p>可以看出lantern的pac会严重影响网页的加载速度，shadowsocks的稍微好点，但在遇到不需要代理的网页时则会消耗更多无谓的判断
+
+于是我自己实现一个pac优化FindProxyForURL匹配速度</p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/switchy-proxy-pac-optimization/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/jekyll-deploy/">jekyll部署总结 </a> </h2>
 <div class="post-meta">Wed, Dec 9, 2015 - Read in 1 Min </div>
 </header>

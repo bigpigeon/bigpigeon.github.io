@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Containerd</title>
+      <link>https://bigpigeon.org/categories/containerd/</link>
+      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/categories/containerd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Deployment</title>
       <link>https://bigpigeon.org/categories/deployment/</link>
       <pubDate>Tue, 30 Apr 2019 11:47:00 +0800</pubDate>
@@ -26,6 +35,15 @@
       <pubDate>Thu, 21 May 2020 12:07:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/categories/develop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://bigpigeon.org/categories/docker/</link>
+      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/categories/docker/</guid>
       <description></description>
     </item>
     
@@ -50,7 +68,7 @@
     <item>
       <title>Go</title>
       <link>https://bigpigeon.org/categories/go/</link>
-      <pubDate>Sat, 05 Oct 2019 13:24:00 +0800</pubDate>
+      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/categories/go/</guid>
       <description></description>
@@ -125,6 +143,15 @@
       <pubDate>Wed, 15 Apr 2020 18:43:37 +0800</pubDate>
       
       <guid>https://bigpigeon.org/categories/%E5%BC%80%E5%8F%91/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>监控</title>
+      <link>https://bigpigeon.org/categories/%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Mon, 24 Feb 2020 10:39:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/categories/%E7%9B%91%E6%8E%A7/</guid>
       <description></description>
     </item>
     

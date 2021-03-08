@@ -130,6 +130,52 @@
 
                             <article class="post">
 <header>
+<h2><a href="https://bigpigeon.org/post/kubernetes-deployment/">kubernetes官方kubeadm部署笔记 </a> </h2>
+<div class="post-meta">Tue, Apr 30, 2019 - Read in 3 Min </div>
+</header>
+<div class="summary">
+    <p>老的k8s环境太乱，而且版本太老，但因为历史原因无法更新，于是我觉得在新的测试服部署一台新的k8s集群，并把所有服务慢慢迁移到新集群来</p>
+
+<p>这里做一个k8s部署(踩坑)笔记</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/kubernetes-deployment/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
+<h2><a href="https://bigpigeon.org/post/go-ast-walk/">使用go/ast来解析go文件III </a> </h2>
+<div class="post-meta">Sun, Sep 23, 2018 - Read in 2 Min </div>
+</header>
+<div class="summary">
+    <p>可能很多人想问types中的Type和Object接口有什么区别</p>
+
+<p>我觉得Object可以理解为有实体的Type或者是对Type的定义，Type则是一个Object的抽象</p>
+
+<p>比如type V1 struct {Name string}  和type V2 struct {Name string} V1和V2属于不同Object但它们的Underlying Type是一样的(Type不一样是因为它们是一个Named Type类型) ,不过type不能通过==来比较，必须用Identical</p>
+
+<p></p>
+</div>
+<footer>
+<a href='https://bigpigeon.org/post/go-ast-walk/'><nobr>继续阅读 →</nobr></a>
+</footer>
+</article>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+                        
+
+                            <article class="post">
+<header>
 <h2><a href="https://bigpigeon.org/post/go-ast-type/">使用go/ast来解析go文件II </a> </h2>
 <div class="post-meta">Wed, May 23, 2018 - Read in 17 Min </div>
 </header>
@@ -146,112 +192,6 @@
 </div>
 <footer>
 <a href='https://bigpigeon.org/post/go-ast-type/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/go-ast-parser-file/">使用go/ast来解析go文件 </a> </h2>
-<div class="post-meta">Sat, May 5, 2018 - Read in 9 Min </div>
-</header>
-<div class="summary">
-    <p>go/ast是go的type checker 标准包之一(不是编译器的那套工具，编译器用的另外一套)，它定义了抽象语法树(AST)的数据类型和操作ast节点的工具</p>
-
-<p>下面我们来看看如何ast树的结构</p>
-
-<pre><code class="language-golang">package main
-
-import (
-	&quot;go/ast&quot;
-	&quot;go/parser&quot;
-	&quot;go/token&quot;
-)
-
-func main() {
-	src := `
-package main
-
-// 该声明为GenDecl TOK=token.IMPORT
-import &quot;fmt&quot;
-
-// 该声明为GenDecl TOK=token.TYPE
-type Product struct {
-	Name string
-}
-
-// 该声明为GenDecl TOK=token.VAR
-var product Product
-
-// 该声明为FunDecl
-func main() { //test1
-	fmt.Println(&quot;Hello, World!&quot;) //test2
-	a := []int{1,2,3}
-	a[1],a[2] = 5,6
-}
-`
-	fset := token.NewFileSet() // 位置是相对于节点
-	// 用ParseFile把文件解析成*ast.File节点
-	f, err := parser.ParseFile(fset, &quot;&quot;, src, 0)
-	if err != nil {
-		panic(err)
-	}
-
-	// 打印ast节点
-	ast.Print(fset, f)
-}
-
-</code></pre>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/go-ast-parser-file/'><nobr>继续阅读 →</nobr></a>
-</footer>
-</article>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-                        
-
-                            <article class="post">
-<header>
-<h2><a href="https://bigpigeon.org/post/gorm-tutorial-second/">gorm简介[中] </a> </h2>
-<div class="post-meta">Fri, Jun 23, 2017 - Read in 2 Min </div>
-</header>
-<div class="summary">
-    <p>上篇讲到如何用gorm增删改查，但如果涉及一些复杂的操作又想避免使用字符串就需要借助Scopes模块</p>
-
-<h3 id="scopes简介">scopes简介</h3>
-
-<p>scopes是需要一个自定义的函数<strong>func(db *gorm.DB) *gorm.DB</strong>作为参数，这样就可以在不破坏链式语法的情况下自定义操作了</p>
-
-<p>比如我要查询GreekAlphabet表中LatinName是&rdquo;Alpha&rdquo;或 &ldquo;Omega&rdquo;的条目可以这样</p>
-
-<pre><code class="language-golang">chars := []GreekAlphabet{}
-db.Model(&amp;GreekAlphabet{}).Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;}).Find(&amp;chars)
-</code></pre>
-
-<p>因为查询多个字段的值只能用 <strong>Where(&ldquo;field in (?)&rdquo;, fields)</strong> 这种方法，相当于是自己拼接sql语句了，这种方法非常容易出错，所以我们用Scopes封装这部分操作</p>
-
-<pre><code class="language-golang">firstAndLast := func(db *gorm.DB) *gorm.DB {
-  return db.Where(&quot;latin_name in (?)&quot;, []string{&quot;Alpha&quot;, &quot;Omega&quot;})
-}
-chars := []GreekAlphabet{}
-db.Model(&amp;GreekAlphabet{}).Scopes(firstAndLast).Find(&amp;chars).Error
-</code></pre>
-
-<p>这样只要我们对firstAndLast做充足的单元测试就可以让其他人非常安心的使用了，但这样做还是很不灵活，所以下面我们使用offset来制造一个灵活的socpes查询</p>
-
-<p></p>
-</div>
-<footer>
-<a href='https://bigpigeon.org/post/gorm-tutorial-second/'><nobr>继续阅读 →</nobr></a>
 </footer>
 </article>
 <script>hljs.initHighlightingOnLoad();</script>

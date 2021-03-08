@@ -1,0 +1,350 @@
+  <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title> containerd介绍 &middot; bigpigeon </title>
+    
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/uno.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bigpigeon.org/css/lightGallery.css" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://bigpigeon.org/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="https://bigpigeon.org/favicon.ico">
+    
+    
+    
+    <script src="https://bigpigeon.org/js/jquery.min.js"></script>
+    <script src="https://bigpigeon.org/js/main.min.js"></script>
+    <link rel="stylesheet" href="https://bigpigeon.org/css/highlight/docco.css">
+    <script src="https://bigpigeon.org/js/highlight.pack.js"></script>
+
+
+</head>
+
+  <body>
+    <div id="scriptHeader">
+    <span class="mobile btn-mobile-menu">
+            <i class="fa fa-bars btn-mobile-menu__icon"></i>
+            <i class="fa fa-times btn-mobile-close__icon hidden"> </i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" >
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content"> 
+                <h1 class="panel-cover__title panel-title">
+                    <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                </h1>
+                <hr class="panel-cover__divider" />
+                <p class="panel-cover__description">
+                </p>
+                <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                <div class="navigation-wrapper">
+                    <nav class="cover-navigation cover-navigation--primary">
+                        <ul class="navigation">
+                            <li class="navigation__item"><a href="https://bigpigeon.org#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                            <li class="navigation__item"><a href="https://bigpigeon.org/demo" title="link to lab" class="blog-button">laboratory</a> </li></br> 
+                            
+                       </ul>
+                    </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay"></div>
+    </div>
+</header>
+</div>
+<noscript>
+    <style>
+        #scriptHeader {display:none;}
+        .navigation-wrapper{
+            display: block;
+            top: 0;
+        }
+    </style>
+
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url()">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content"> 
+                    <h1 class="panel-cover__title panel-title">
+                        <a href="https://bigpigeon.org/"  title="link to homepage for bigpigeon">bigpigeon</a>
+                    </h1>
+                    <hr class="panel-cover__divider" />
+                    <p class="panel-cover__description">  This site is built using <a href="http://gohugo.io">hugo</a> and the theme is built by <a href="http://fredrikloch.me">Fredrik</a> if you enjoy it, it is available at <a href="https://github.com/SenjinDarashiva/hugo-uno">github</a>  </p>
+                    <hr class="panel-cover__divider panel-cover__divider--secondary" />
+                    <div class="navigation-wrapper">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item"><a href="https://bigpigeon.org/#blog" title="link to bigpigeon blog" class="blog-button">Blog</a> </li></br>
+                                
+                                
+                           </ul>
+                        </nav> <nav class="cover-navigation navigation--social">
+    <ul class="navigation"> 
+        
+        <li class="navigation__item">
+            <a href="http://twitter.com/bigpigeon0" title="@bigpigeon0 on Twitter"> <i class='fa fa-twitter'></i> <span class="label">Twitter</span> </a>
+        </li>   
+        
+        <li class="navigation__item">
+            <a href="https://github.com/bigpigeon" title="bigpigeon on github"> <i class='fa fa-github'></i> <span class="label">Github</span> </a>
+        </li>  </br>   
+        
+        <li class="navigation__item">
+            <a href="mailto:bigpigeon0@gmail.com" title="Email bigpigeon0@gmail.com"> <i class='fa fa-envelope-o'></i> <span class="label">Email</span> </a>
+        </li>  </ul>
+</nav>
+ </div>
+                </div>
+            </div>
+            <div class="panel-cover--overlay"></div>
+        </div>
+    </header>
+</noscript>
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <div class="post">
+          <h2>containerd介绍</h2>
+          <span class="post-date">Mon, Mar 8, 2021</span>
+          <h1 id="containerd是什么">containerd是什么</h1>
+
+<p>在这里我用自己的理解总结一下，containerd是一个容器相关功能的管理工具，它上层能对接<code>cri</code>和<code>docker</code>，下层对接容器执行器，比如<code>runc</code>或者 Microsoft的<code>hcsshim</code>,中间层支持各种插件扩展，或者说containerd是一个插件集合，它的各个功能都是插件化的，你也可以加载自己的插件来增强containerd的功能</p>
+
+<p></p>
+
+<h1 id="启动containerd">启动containerd</h1>
+
+<p>首先需要启动containerd的daemon程序</p>
+
+<p>首先，去github下载最新的containerd <a href="https://github.com/containerd/containerd/releases">https://github.com/containerd/containerd/releases</a>,当然你也可以通过系统包管理直接安装，但我还是推荐官网下二进制的方式，因为这样你能尽早下载到最新的包使用最新的功能，其次了解containerd的运行原理，了解它的各个组件的用途</p>
+
+<p>下载后吧相关二进制放到/usr/local/bin</p>
+
+<p>然后，去github下载最新的runc<a href="https://github.com/opencontainers/runc/releases">https://github.com/opencontainers/runc/releases</a>,同样吧它放到/usr/local/bin</p>
+
+<p>然后，安装cni和它相关的plugins<a href="https://github.com/containernetworking/cni/tree/master/cnitool">https://github.com/containernetworking/cni/tree/master/cnitool</a></p>
+
+<h4 id="使用生成-默认配置文件-etc-containerd-config-toml">使用生成 默认配置文件  /etc/containerd/config.toml</h4>
+
+<pre><code>oom_score = -999
+
+[debug]
+        level = &quot;debug&quot;
+
+[metrics]
+        address = &quot;127.0.0.1:1338&quot;
+
+[plugins.linux]
+        runtime = &quot;runc&quot;
+        shim_debug = true
+</code></pre>
+
+<h4 id="配置systemd的配置文件">配置systemd的配置文件</h4>
+
+<pre><code>[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target
+
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/local/bin/containerd
+Delegate=yes
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>这里有2个很重要的选项，<code>Delegate=yes</code>和<code>KillMode=process</code>，你必须保证它在[Service]段中</p>
+
+<p><code>Delegate</code>允许containerd通过它创建的cgroup来管理容器，如果没有这个选项，systemd将尝试将进程移到containerd的cgroups中</p>
+
+<p><code>KillMode</code>决定containerd的被shutdown时的行为，默认情况下，systemd将查看该服务的cgroups的相关进程，并尝试把它们都杀死，但我们需要的是当更新containerd时，容器不会接收到kill信号影响，当设置<code>KillMode=process</code>时，systemd只会杀死daemon进程，其他子进程不受影响</p>
+
+<h4 id="启动containerd-1">启动containerd</h4>
+
+<p>启动并查看containerd</p>
+
+<pre><code>systemctl start containerd
+systemctl status containerd
+</code></pre>
+
+<h1 id="操作containerd">操作containerd</h1>
+
+<p>下面我会通过2种方式，一种是ctr命令行工具，一种是通过gosdk用代码创建，比对一下他们的区别</p>
+
+<h4 id="连接containerd">连接containerd</h4>
+
+<p>go code:</p>
+
+<pre><code>// create a new client connected to the default socket path for containerd
+client, err := containerd.New(&quot;/run/containerd/containerd.sock&quot;)
+if err != nil {
+    return err
+}
+defer client.Close()
+
+// create a new context with an &quot;example&quot; namespace
+ctx := namespaces.WithNamespace(context.Background(), &quot;example&quot;)
+</code></pre>
+
+<p>ctr command:</p>
+
+<pre><code>ctr --address /run/containerd/containerd.sock --namespace example # or
+ctr -a /run/containerd/containerd.sock -n example # or
+ctr -n example # ctr默认address就是/run/containerd/containerd.sock，可以不填
+</code></pre>
+
+<h4 id="拉取镜像">拉取镜像</h4>
+
+<p>可以理解为<code>docker pull</code>，但当拉取docker官方镜像时必须加上<code>docker.io/library/</code>前缀</p>
+
+<p>而且containerd可以拉k8s.io的镜像，而docker就不行</p>
+
+<p>go code:</p>
+
+<pre><code>// pull the redis image from DockerHub
+image, err := client.Pull(ctx, &quot;docker.io/library/redis:alpine&quot;, containerd.WithPullUnpack)
+</code></pre>
+
+<p>ctr:</p>
+
+<pre><code>ctr -n example image pull docker.io/library/redis:alpine
+</code></pre>
+
+<h4 id="创建containers">创建containers</h4>
+
+<p>container把docker的容器创建拆分成 <code>container</code>和<code>task</code> ，当然你也可以通过 <code>ctr run</code> 直接创建并运行容器</p>
+
+<p>go code:</p>
+
+<pre><code>// create a container
+container, err := client.NewContainer(
+    ctx,
+    &quot;redis-server&quot;,
+    containerd.WithImage(image),
+    containerd.WithNewSnapshot(&quot;redis-server-snapshot&quot;, image),
+    containerd.WithNewSpec(oci.WithImageConfig(image)),
+)
+</code></pre>
+
+<p>ctr:</p>
+
+<pre><code>ctr -n example containers create   docker.io/library/redis:alpine  redis-server
+</code></pre>
+
+<p>这2个有一个区别，通过go语言创建的，快照名是<code>redis-server-snapshot</code>，而通过工具创建的则和container名一样是<code>redis-server</code>，目前没找到命令行工具指定snapshot的方法</p>
+
+<h4 id="创建task">创建task</h4>
+
+<p>go code:</p>
+
+<pre><code>// create a task from the container
+task, err := container.NewTask(ctx, cio.NewCreator(cio.WithStdio))
+if err != nil {
+    return err
+}
+
+defer task.Delete(ctx)
+// call start on the task to execute the redis server
+if err := task.Start(ctx); err != nil {
+    return err
+}
+</code></pre>
+
+<p>ctr:</p>
+
+<pre><code>ctr -n example task start redis-server
+</code></pre>
+
+<h4 id="创建额外的process进程">创建额外的process进程</h4>
+
+<p>除了容器的主进程，也可以在容器执行额外的进程，相当与docker的exec</p>
+
+<p>通过<code>ps aux</code>命令我们可以看到容器内进程和它们之间的关系</p>
+
+<p>go code:</p>
+
+<pre><code>proc, err := task.Exec(ctx, &quot;ps&quot;, &amp;specs.Process{
+    Terminal:        false,
+    Args:            []string{&quot;/bin/ps&quot;, &quot;aux&quot;},
+    CommandLine:     &quot;ps&quot;,
+    Cwd:             &quot;/&quot;,
+    NoNewPrivileges: false,
+    ApparmorProfile: &quot;&quot;,
+    OOMScoreAdj:     nil,
+    SelinuxLabel:    &quot;&quot;,
+}, cio.NewCreator(cio.WithStdio))
+// error process
+err = proc.Start(ctx)
+// error process
+</code></pre>
+
+<p>ctr:</p>
+
+<pre><code>ctr -n example tasks exec --exec-id ps redis-server ps aux
+</code></pre>
+
+<h4 id="结尾">结尾</h4>
+
+<p>现在我们已经知道怎么通过containerd来创建一个redis服务端并使用它，但现在有个问题，我们没法连如该redis，因为它还没有虚拟网卡或者ip地址，下一篇，我们继续讲 cni，从而实现容器网络的配置</p>
+        </div>
+        <div class="sharing">
+<a href="https://twitter.com/intent/tweet?status=containerd%e4%bb%8b%e7%bb%8d-https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f" target="_blank" title="Follow me on Twitter" class="twitter">
+<span class="fa fa-twitter-square fa-3x"></span></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f" target="_blank" title="Join me on Facebook" class="facebook">
+<span class="fa fa-facebook-square fa-3x"></span></a>
+<a href="https://plus.google.com/share?url=https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f" target="_blank" title="Google+" class="googleplus">
+<span class="fa fa-google-plus-square fa-3x"></span></a>
+<a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f&title=containerd%e4%bb%8b%e7%bb%8d" target="_blank" title="LinkedIn" class="linkedin">
+<span class="fa fa-linkedin-square fa-3x"></span></a>
+<a href="http://www.reddit.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f" target="_blank" title="Reddit" class="reddit"><span class="fa fa-reddit-square fa-3x"></span></a>
+<a href="http://www.stumbleupon.com/submit?url=https%3a%2f%2fbigpigeon.org%2fpost%2fcontainerd-tutorial-first%2f" target="_blank" title="StumbleUpon" class="stumbleupon"><span class="fa fa-stumbleupon fa-3x">
+</span></a>
+</div>
+        
+
+
+<div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var disqusUsername = "httpbigpigeongithubio";
+
+  (function() { 
+  var d = document, s = d.createElement('script');
+
+  s.src = '//' + disqusUsername + '.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+  </body>
+  <footer class="footer"></footer>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</html>
