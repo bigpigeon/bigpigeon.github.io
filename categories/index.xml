@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Mar 2021 11:03:10 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>containerd</title>
       <link>https://bigpigeon.org/categories/containerd/</link>
-      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
       
       <guid>https://bigpigeon.org/categories/containerd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://bigpigeon.org/categories/go/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/categories/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s</title>
+      <link>https://bigpigeon.org/categories/k8s/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/categories/k8s/</guid>
       <description></description>
     </item>
     
@@ -23,15 +41,6 @@
       <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/categories/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://bigpigeon.org/categories/go/</link>
-      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
-      
-      <guid>https://bigpigeon.org/categories/go/</guid>
       <description></description>
     </item>
     

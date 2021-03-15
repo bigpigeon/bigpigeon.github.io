@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Mar 2021 11:03:10 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>开发</title>
-      <link>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</link>
-      <pubDate>Mon, 08 Mar 2021 10:06:00 +0800</pubDate>
+      <title>containerd</title>
+      <link>https://bigpigeon.org/tags/containerd/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
       
-      <guid>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</guid>
+      <guid>https://bigpigeon.org/tags/containerd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://bigpigeon.org/tags/go/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s</title>
+      <link>https://bigpigeon.org/tags/k8s/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/tags/k8s/</guid>
       <description></description>
     </item>
     
@@ -23,6 +41,15 @@
       <pubDate>Thu, 21 May 2020 12:07:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/tags/go%E8%AF%AD%E8%A8%80/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>开发</title>
+      <link>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Thu, 21 May 2020 12:07:00 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/tags/%E5%BC%80%E5%8F%91/</guid>
       <description></description>
     </item>
     
@@ -68,15 +95,6 @@
       <pubDate>Mon, 24 Feb 2020 10:39:00 +0800</pubDate>
       
       <guid>https://bigpigeon.org/tags/prometheus/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://bigpigeon.org/tags/go/</link>
-      <pubDate>Sat, 05 Oct 2019 13:24:00 +0800</pubDate>
-      
-      <guid>https://bigpigeon.org/tags/go/</guid>
       <description></description>
     </item>
     

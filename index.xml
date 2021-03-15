@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn-zh</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 08 Mar 2021 10:06:00 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Mar 2021 11:03:10 +0800</lastBuildDate><atom:link href="https://bigpigeon.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用CNI为Containerd创建网络接口</title>
+      <link>https://bigpigeon.org/post/containerd-tutorial-two/</link>
+      <pubDate>Tue, 09 Mar 2021 11:03:10 +0800</pubDate>
+      
+      <guid>https://bigpigeon.org/post/containerd-tutorial-two/</guid>
+      <description>&lt;p&gt;上一篇讲到如何创建一个&lt;code&gt;redis-server&lt;/code&gt;的容器服务，但该服务现在没有网络接口，所以我们在外面还没法访问这个服务，今天就来讲下如何通过CNI创建网络接口来访问Containerd服务&lt;/p&gt;
+&lt;h3 id=&#34;cni是什么&#34;&gt;CNI是什么&lt;/h3&gt;
+&lt;p&gt;CNI(Container Network Interface) 是一套容器网络接口规范，通过插件的形式支持各种各样的网络类型，而标准化的好处就是你只需一套标准json配置就可以为一个容器创建网络接口&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>containerd介绍</title>
       <link>https://bigpigeon.org/post/containerd-tutorial-first/</link>
