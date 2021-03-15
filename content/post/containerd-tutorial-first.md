@@ -5,9 +5,6 @@ Categories = [
   "containerd",
 ]
 Description = ""
-Tags = [
-  "开发",
-]
 date = "2021-03-08T10:06:00+08:00"
 title = "containerd介绍"
 +++
